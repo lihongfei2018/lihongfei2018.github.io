@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>文本处理工具 | LiHongFei.blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="文件查看类命令catcat -n显示文件并且有行数，cat -b显示行数，但是换行空不显示,cat -s相邻的空行压缩为一行。">
+<meta name="keywords" content="工具">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文本处理工具">
+<meta property="og:url" content="http://yoursite.com/2018/11/13/文本处理工具/index.html">
+<meta property="og:site_name" content="LiHongFei.blog">
+<meta property="og:description" content="文件查看类命令catcat -n显示文件并且有行数，cat -b显示行数，但是换行空不显示,cat -s相邻的空行压缩为一行。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://pf8eoyzmj.bkt.clouddn.com/%E7%8B%99%E5%87%BB%E7%8E%8B2.jpg">
+<meta property="og:updated_time" content="2018-10-02T04:49:01.831Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="文本处理工具">
+<meta name="twitter:description" content="文件查看类命令catcat -n显示文件并且有行数，cat -b显示行数，但是换行空不显示,cat -s相邻的空行压缩为一行。">
+<meta name="twitter:image" content="http://pf8eoyzmj.bkt.clouddn.com/%E7%8B%99%E5%87%BB%E7%8E%8B2.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="LiHongFei.blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">LiHongFei.blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-文本处理工具" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/13/文本处理工具/" class="article-date">
+  <time datetime="2018-11-13T02:50:32.844Z" itemprop="datePublished">2018-11-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/linux/">linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      文本处理工具
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://pf8eoyzmj.bkt.clouddn.com/%E7%8B%99%E5%87%BB%E7%8E%8B2.jpg" alt="狙击王"></p>
+<h2 id="文件查看类命令"><a href="#文件查看类命令" class="headerlink" title="文件查看类命令"></a>文件查看类命令</h2><h3 id="cat"><a href="#cat" class="headerlink" title="cat"></a>cat</h3><p><code>cat -n</code>显示文件并且有行数，<code>cat -b</code>显示行数，但是换行空不显示,<code>cat -s</code>相邻的空行压缩为一行。<br><a id="more"></a><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#cat -n a2</span></span><br><span class="line">     1  a</span><br><span class="line">     2</span><br><span class="line">     3  b</span><br><span class="line">[root@centos7 data]<span class="comment">#cat -b a2</span></span><br><span class="line">     1  a</span><br><span class="line"></span><br><span class="line">     2  b</span><br><span class="line">[root@centos7 data]<span class="comment">#</span></span><br></pre></td></tr></table></figure></p>
+<p><code>cat -E</code>显示结束符号，c后面有空格,<code>cat -A</code>显示更全，<code>^I</code>为tab键<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#cat -A a2</span></span><br><span class="line">a$</span><br><span class="line">$</span><br><span class="line">b$</span><br><span class="line">c  $</span><br><span class="line">^Ie$</span><br><span class="line">[root@centos7 data]<span class="comment">#</span></span><br></pre></td></tr></table></figure></p>
+<p><code>tac</code>和cat<code>cat</code>相反，把文本内容倒序显示,<code>rev</code>也是倒序<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#tac a1</span></span><br><span class="line">3</span><br><span class="line">2</span><br><span class="line">1</span><br><span class="line">[root@centos7 data]<span class="comment">#rev a2</span></span><br><span class="line">654321</span><br></pre></td></tr></table></figure></p>
+<h2 id="less"><a href="#less" class="headerlink" title="less"></a><code>less</code></h2><p><code>less</code>配合管道符可以实现大文件分页显示，q 退出 </p>
+<h2 id="head命令"><a href="#head命令" class="headerlink" title="head命令"></a>head命令</h2><p><code>head</code>指定显示文本前#行,默认显示前10行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#getent passwd |head -3</span></span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">bin:x:1:1:bin:/bin:/sbin/nologin</span><br><span class="line">daemon:x:2:2:daemon:/sbin:/sbin/nologin</span><br></pre></td></tr></table></figure></p>
+<p>获取指定的前几个字节<code>head -c#</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#cat a2</span></span><br><span class="line">123456</span><br><span class="line">[root@centos7 data]<span class="comment">#head -c3 a2</span></span><br><span class="line">123[root@centos7 data]<span class="comment">#</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="tail命令"><a href="#tail命令" class="headerlink" title="tail命令"></a>tail命令</h2><p><code>tail</code>指定文件的最后#行，默认显示最后10行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#getent passwd |cat -n|tail -3</span></span><br><span class="line">    43  li:x:1001:1001::/home/li:/bin/bash</span><br><span class="line">    44  liu:x:1002:1003::/home/liu:/bin/bash</span><br><span class="line">    45  zhang:x:1003:1005::/home/zhang:/bin/bash</span><br></pre></td></tr></table></figure></p>
+<p><code>tail -c</code>指定获取最后的几个字节<br><code>tail -f</code>可以追踪显示文件内容，一般用来看日志，日志更新了可以实时的查看到，如果文件被删除，则终止追踪<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#tail -f a2</span></span><br></pre></td></tr></table></figure></p>
+<p><code>tail -F</code>指定文件名，源文件被删除了，再重新建立一个和源文件一样名字的可以继续追踪</p>
+<h2 id="cut命令"><a href="#cut命令" class="headerlink" title="cut命令"></a>cut命令</h2><p>按照指定的分隔符来取字符，下例是以<code>:</code>为分隔符，去第1和第2列的内容，指定范围<code>#-#</code>。（内容太多，只取三行）<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[lihf@centos7 data]<span class="variable">$cut</span> -d: -f1,2 /etc/passwd |tail -3</span><br><span class="line">li:x</span><br><span class="line">liu:x</span><br><span class="line">zhang:x</span><br></pre></td></tr></table></figure></p>
+<p>也可以指定分隔符<code>--output-delimiter=</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[lihf@centos7 data]<span class="variable">$cut</span> -d: -f1,2  --output-delimiter=+ /etc/passwd |tail -2 </span><br><span class="line">liu+x</span><br><span class="line">zhang+x</span><br></pre></td></tr></table></figure></p>
+<h2 id="paste-命令"><a href="#paste-命令" class="headerlink" title="paste 命令"></a>paste 命令</h2><p><code>paste</code> 可以把两个文件合并显示，<code>-d</code>可以指定分割符，默认是tab 4个空格,<code>paste -s</code>合成一行显示。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#paste -d= a3 a4 </span></span><br><span class="line">1=a</span><br><span class="line">2=b</span><br><span class="line">3=c</span><br><span class="line">4=d</span><br><span class="line">5=e</span><br><span class="line">6=f</span><br><span class="line">[root@centos7 data]<span class="comment">#paste -s -d_ a3 a4   </span></span><br><span class="line">1_2_3_4_5_6</span><br><span class="line">a_b_c_d_e_f</span><br></pre></td></tr></table></figure></p>
+<h2 id="wc命令"><a href="#wc命令" class="headerlink" title="wc命令"></a>wc命令</h2><p>计数单词总数、行总数、字节总数和字符总数,下例第一个6表示行数，第二个6表示字数，第三个12表示字节数。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#wc a3</span></span><br><span class="line"> 6  6 12 a3</span><br></pre></td></tr></table></figure></p>
+<h2 id="sort命令"><a href="#sort命令" class="headerlink" title="sort命令"></a>sort命令</h2><p>用来排序，默认排序是用字符顺序来排的<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#getent passwd | sort |tail -3</span></span><br><span class="line">unbound:x:993:990:Unbound DNS resolver:/etc/unbound:/sbin/nologin</span><br><span class="line">usbmuxd:x:113:113:usbmuxd user:/:/sbin/nologin</span><br><span class="line">zhang:x:1003:1005::/home/zhang:/bin/bash</span><br></pre></td></tr></table></figure></p>
+<p>指定以第几列排序,<code>-t</code>是指定字段符<code>-k</code>指定第几列<code>-n</code>按照数字的大小排序</p>
+<pre><code class="bash">[root@centos7 ~]<span class="comment">#getent passwd | sort -t: -k3 -n | head -3</span>
+root:x:0:0:root:/root:/bin/bash
+bin:x:1:1:bin:/bin:/sbin/nologin
+daemon:x:2:2:daemon:/sbin:/sbin/nologin
+</code></pre>
+<p>其他选项：  </p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-r</td>
+<td>执行反方向（由上至下）整理</td>
+</tr>
+<tr>
+<td>-R</td>
+<td>随机排序</td>
+</tr>
+<tr>
+<td>-u</td>
+<td>选项（独特，unique）删除输出中的重复行</td>
+</tr>
+<tr>
+<td>-f</td>
+<td>选项忽略（fold）字符串中的字符大小写</td>
+</tr>
+</tbody>
+</table>
+<h2 id="uniq命令"><a href="#uniq命令" class="headerlink" title="uniq命令"></a>uniq命令</h2><p>从输入中删除前后相接的重复的行,下例取出重复的行(交集)</p>
+<pre><code class="bash">[root@centos7 data]<span class="comment">#paste a1 a2</span>
+1       1
+3       4
+5       5
+9       8
+[root@centos7 data]<span class="comment">#cat a1 a2 | sort | uniq -d</span>
+1
+5
+</code></pre>
+<p>其他选项  </p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-c:</td>
+<td>显示每行重复出现的次数</td>
+</tr>
+<tr>
+<td>-u:</td>
+<td>仅显示不曾重复的行</td>
+</tr>
+<tr>
+<td>-c:</td>
+<td>显示每行重复出现的次数（并集）</td>
+</tr>
+</tbody>
+</table>
+<h2 id="diff命令"><a href="#diff命令" class="headerlink" title="diff命令"></a>diff命令</h2><p>比较两个文件的不同之处</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/11/13/文本处理工具/" data-id="cjof53bqt0000wgvxn5gt7kv8" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工具/">工具</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/11/13/文件管理/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          linux文件管理
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/11/13/Linux文件系统高级管理（RAID、LVM）/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Linux文件系统高级管理（RAID LVM）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/内核/">内核</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/压缩/">压缩</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/文件系统/">文件系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/组/">组</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/启动/">启动</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工具/">工具</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文件/">文件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/权限/">权限</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/查找/">查找</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/磁盘/">磁盘</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/启动/" style="font-size: 10px;">启动</a> <a href="/tags/工具/" style="font-size: 20px;">工具</a> <a href="/tags/文件/" style="font-size: 10px;">文件</a> <a href="/tags/权限/" style="font-size: 10px;">权限</a> <a href="/tags/查找/" style="font-size: 20px;">查找</a> <a href="/tags/磁盘/" style="font-size: 10px;">磁盘</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/13/文件管理/">linux文件管理</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/文本处理工具/">文本处理工具</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/Linux文件系统高级管理（RAID、LVM）/">Linux文件系统高级管理（RAID LVM）</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/linux文件查找/">linux文件查找</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/正则表达式gerp/">Linux三剑客之grep、正则表达式</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 linux<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

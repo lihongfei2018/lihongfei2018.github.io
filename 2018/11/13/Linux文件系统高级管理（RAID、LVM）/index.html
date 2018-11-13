@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Linux文件系统高级管理（RAID LVM） | LiHongFei.blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="RAID1988年由加利福尼亚大学伯克利分校（University of California-Berkeley）“A Case for Redundant Arrays of Inexpensive Disks”多个磁盘合成一个“阵列”来提供更好的性能、冗余，或者两者都提供">
+<meta name="keywords" content="磁盘">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux文件系统高级管理（RAID LVM）">
+<meta property="og:url" content="http://yoursite.com/2018/11/13/Linux文件系统高级管理（RAID、LVM）/index.html">
+<meta property="og:site_name" content="LiHongFei.blog">
+<meta property="og:description" content="RAID1988年由加利福尼亚大学伯克利分校（University of California-Berkeley）“A Case for Redundant Arrays of Inexpensive Disks”多个磁盘合成一个“阵列”来提供更好的性能、冗余，或者两者都提供">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://images0.cnblogs.com/i/609710/201403/201453518817750.png">
+<meta property="og:image" content="https://images0.cnblogs.com/i/609710/201403/201455155066103.png">
+<meta property="og:image" content="https://images0.cnblogs.com/i/609710/201403/201457504277673.png">
+<meta property="og:image" content="http://www.5sharing.com/uploads/image/20180731/1533021168138291.jpg">
+<meta property="og:image" content="https://images0.cnblogs.com/i/609710/201403/201459267247587.png">
+<meta property="og:image" content="https://images0.cnblogs.com/i/609710/201403/201459442098345.png">
+<meta property="og:image" content="https://img.colabug.com/2017/08/a74f8454568f6668925165c10f0d6f96.png">
+<meta property="og:image" content="https://images2017.cnblogs.com/blog/1254925/201710/1254925-20171025142819082-1923671473.png">
+<meta property="og:updated_time" content="2018-10-23T10:48:05.772Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux文件系统高级管理（RAID LVM）">
+<meta name="twitter:description" content="RAID1988年由加利福尼亚大学伯克利分校（University of California-Berkeley）“A Case for Redundant Arrays of Inexpensive Disks”多个磁盘合成一个“阵列”来提供更好的性能、冗余，或者两者都提供">
+<meta name="twitter:image" content="https://images0.cnblogs.com/i/609710/201403/201453518817750.png">
+  
+    <link rel="alternate" href="/atom.xml" title="LiHongFei.blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">LiHongFei.blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Linux文件系统高级管理（RAID、LVM）" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/13/Linux文件系统高级管理（RAID、LVM）/" class="article-date">
+  <time datetime="2018-11-13T02:50:32.831Z" itemprop="datePublished">2018-11-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/文件系统/">文件系统</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Linux文件系统高级管理（RAID LVM）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="RAID"><a href="#RAID" class="headerlink" title="RAID"></a>RAID</h2><p>1988年由加利福尼亚大学伯克利分校（University of California-Berkeley）“A Case for Redundant Arrays of Inexpensive Disks”<br>多个磁盘合成一个“阵列”来提供更好的<strong>性能、冗余</strong>，或者两者都提供<br><a id="more"></a></p>
+<h3 id="RAID的作用"><a href="#RAID的作用" class="headerlink" title="RAID的作用"></a>RAID的作用</h3><p>提高IO能力<br>磁盘并行读写<br>提高耐用性<br>磁盘冗余来实现<br>级别：多块磁盘组织在一起的工作方式有所不同<br>RAID实现的方式<br>外接式磁盘阵列：通过扩展卡提供适配能力<br>内接式RAID：主板集成RAID控制器，安装OS前在BIOS里配置<br>软件RAID：通过OS实现</p>
+<h3 id="RAID-0"><a href="#RAID-0" class="headerlink" title="RAID-0"></a>RAID-0</h3><p><img src="https://images0.cnblogs.com/i/609710/201403/201453518817750.png" alt="raid"><br><strong>RAID 0的优缺点</strong></p>
+<blockquote>
+<p>读、写性能提升<br>可用空间：N*min(S1,S2,…)<br>无容错能力，如果坏掉一块，那么raid0就不能用了<br>最少磁盘数：2, 2+</p>
+</blockquote>
+<h3 id="RAID-1"><a href="#RAID-1" class="headerlink" title="RAID-1"></a>RAID-1</h3><p><img src="https://images0.cnblogs.com/i/609710/201403/201455155066103.png" alt="raid1"><br><strong>RAID1的优缺点</strong>  </p>
+<blockquote>
+<p>读性能提升、写性能略有下降<br>可用空间：1*min(S1,S2,…)<br>有冗余能力 ,只要不是两块硬盘同时损坏，基本上不会丢失数据<br>最少磁盘数：2, 2N  </p>
+</blockquote>
+<h3 id="RAID-5"><a href="#RAID-5" class="headerlink" title="RAID-5"></a>RAID-5</h3><p><img src="https://images0.cnblogs.com/i/609710/201403/201457504277673.png" alt="raid5"><br><strong>RAID5的优缺点</strong> </p>
+<blockquote>
+<p>读、写性能提升<br>可用空间：(N-1)*min(S1,S2,…)<br>有容错能力：允许最多1块磁盘损坏<br>最少磁盘数：3, 3+<br>如果一块硬盘损坏，也可以通过其他硬盘的校验位来重新建立数据。</p>
+</blockquote>
+<h3 id="RAID-6："><a href="#RAID-6：" class="headerlink" title="RAID-6："></a>RAID-6：</h3><p><img src="http://www.5sharing.com/uploads/image/20180731/1533021168138291.jpg" alt="raid6"><br><strong>RAID6的优缺点</strong> </p>
+<blockquote>
+<p>和raid5类似，校验位分开写到了不同的磁盘<br>读、写性能提升<br>可用空间：(N-2)*min(S1,S2,…)<br>有容错能力：允许最多2块磁盘损坏<br>最少磁盘数：4, 4+</p>
+</blockquote>
+<h3 id="RAID-10："><a href="#RAID-10：" class="headerlink" title="RAID-10："></a>RAID-10：</h3><p><img src="https://images0.cnblogs.com/i/609710/201403/201459267247587.png" alt="raid10"><br><strong>RAID10的优缺点</strong><br>利用率只能达到百分之50<br>读、写性能提升<br>可用空间：N*min(S1,S2,…)/2<br>有容错能力：每组镜像最多只能坏一块<br>最少磁盘数：4, 4+</p>
+<h3 id="RAID-01"><a href="#RAID-01" class="headerlink" title="RAID-01"></a>RAID-01</h3><p><img src="https://images0.cnblogs.com/i/609710/201403/201459442098345.png" alt="RAID01"><br>RAID 10是先镜射再分区数据，再将所有硬盘分为两组，视为是RAID 0的最低组合，然后将这两组各自视为RAID 1运作  </p>
+<p>RAID 01则是跟RAID 10的程序相反，是先分区再将数据镜射到两组硬盘。它将所有的硬盘分为两组，变成RAID 1的最低组合，而将两组硬盘各自视为RAID 0运作。  </p>
+<p>当RAID 10有一个硬盘受损，其余硬盘会继续运作。RAID 01只要有一个硬盘受损，<br>同组RAID 0的所有硬盘都会停止运作，只剩下其他组的硬盘运作，可靠性较低。</p>
+<h2 id="软RAID"><a href="#软RAID" class="headerlink" title="软RAID"></a>软RAID</h2><p>mdadm：为软RAID提供管理界面<br>RAID设备可命名为/dev/md0、/dev/md1、/dev/md2、/dev/md3等<br>支持的RAID级别：LINEAR, RAID0, RAID1, RAID4, RAID5, RAID6, RAID10<br>模式：<br>创建：-C<br>装配：-A<br>监控：-F<br>管理：-f, -r, -a<br><strong>-C: 创建模式</strong></p>
+<blockquote>
+<p>-n #: 使用#个块设备来创建此RAID<br>-l #：指明要创建的RAID的级别<br>-a {yes|no}：自动创建目标RAID设备的设备文件<br>-c CHUNK_SIZE: 指明块大小,单位k<br>-x #: 指明空闲盘的个数</p>
+</blockquote>
+<p><strong>-D：显示raid的详细信息</strong><br>mdadm-D /dev/md#<br><strong>管理模式：</strong><br>-f: 标记指定磁盘为损坏<br>-a: 添加磁盘<br>-r: 移除磁盘<br><strong>观察md的状态：cat /proc/mdstat</strong></p>
+<h2 id="创建一个RAID-0"><a href="#创建一个RAID-0" class="headerlink" title="创建一个RAID-0"></a>创建一个RAID-0</h2><p>（1）用分区来创建raid ，首先创建两个raid的分区，大小一样<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#fdisk -l /dev/sdb</span></span><br><span class="line"></span><br><span class="line">Disk /dev/sdb: 161.1 GB, 161061273600 bytes, 314572800 sectors</span><br><span class="line">Units = sectors of 1 * 512 = 512 bytes</span><br><span class="line">Sector size (logical/physical): 512 bytes / 512 bytes</span><br><span class="line">I/O size (minimum/optimal): 512 bytes / 512 bytes</span><br><span class="line">Disk label <span class="built_in">type</span>: dos</span><br><span class="line">Disk identifier: 0x90c3db64</span><br><span class="line"></span><br><span class="line">   Device Boot      Start         End      Blocks   Id  System</span><br><span class="line">/dev/sdb1            2048    10487807     5242880   fd  Linux raid autodetect</span><br><span class="line">/dev/sdb2        10487808    20973567     5242880   fd  Linux raid autodetect</span><br></pre></td></tr></table></figure></p>
+<p>（2）再把两个分区创建为raid-0,<code>-C</code>表示进入创建模式 <code>-a</code>自动创建设备文件 <code>-l</code>指定raid类型 <code>-n</code>指定块设备<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#mdadm -C -a yes /dev/md0 -l 0 -n 2 /dev/sdb&#123;1,2&#125;</span></span><br><span class="line">mdadm: Defaulting to version 1.2 metadata</span><br><span class="line">mdadm: array /dev/md0 started.</span><br></pre></td></tr></table></figure></p>
+<p>（3）查看已经建立好raid的信息<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#mdadm -D /dev/md0 </span></span><br><span class="line">/dev/md0:</span><br><span class="line">           Version : 1.2</span><br><span class="line">     Creation Time : Tue Oct 23 12:06:55 2018</span><br><span class="line">        Raid Level : raid0</span><br><span class="line">        Array Size : 10475520 (9.99 GiB 10.73 GB)</span><br><span class="line">      Raid Devices : 2</span><br><span class="line">     Total Devices : 2</span><br><span class="line">       Persistence : Superblock is persistent</span><br><span class="line"></span><br><span class="line">       Update Time : Tue Oct 23 12:06:55 2018</span><br><span class="line">             State : clean </span><br><span class="line">    Active Devices : 2</span><br><span class="line">   Working Devices : 2</span><br><span class="line">    Failed Devices : 0</span><br><span class="line">     Spare Devices : 0</span><br><span class="line"></span><br><span class="line">        Chunk Size : 512K</span><br><span class="line"></span><br><span class="line">Consistency Policy : none</span><br><span class="line"></span><br><span class="line">              Name : centos7.5.localdomain:0  (<span class="built_in">local</span> to host centos7.5.localdomain)</span><br><span class="line">              UUID : c954f4cf:3428c9c3:4e5dfc8c:96c3aece</span><br><span class="line">            Events : 0</span><br><span class="line"></span><br><span class="line">    Number   Major   Minor   RaidDevice State</span><br><span class="line">       0       8       17        0      active sync   /dev/sdb1</span><br><span class="line">       1       8       18        1      active sync   /dev/sdb2</span><br></pre></td></tr></table></figure></p>
+<p>(4)创建raid的文件系统<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#mkfs.xfs /dev/md0</span></span><br></pre></td></tr></table></figure></p>
+<p>(5)挂载硬盘,把ID信息添加到<code>/etc/fstab</code>文件里<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#blkid /dev/md0</span></span><br><span class="line">/dev/md0: UUID=<span class="string">"56089a5a-833c-4415-8c54-789173344652"</span> TYPE=<span class="string">"xfs"</span></span><br><span class="line">[root@centos7 ~]<span class="comment">#mount -a</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="RAID-5实验"><a href="#RAID-5实验" class="headerlink" title="RAID-5实验"></a>RAID-5实验</h2><p>(1)以centos6 4块硬盘来试验(b,c,d,e)<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[root@CentOS6 ~]<span class="variable">$lsblk</span></span><br><span class="line">NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT</span><br><span class="line">sr0     11:0    1  3.7G  0 rom  </span><br><span class="line">sr1     11:1    1    2G  0 rom  </span><br><span class="line">sda      8:0    0  200G  0 disk </span><br><span class="line">├─sda1   8:1    0    1G  0 part /boot</span><br><span class="line">├─sda2   8:2    0 48.8G  0 part /</span><br><span class="line">├─sda3   8:3    0 29.3G  0 part /data</span><br><span class="line">├─sda4   8:4    0    1K  0 part </span><br><span class="line">└─sda5   8:5    0    2G  0 part [SWAP]</span><br><span class="line">sdb      8:16   0   20G  0 disk </span><br><span class="line">sdc      8:32   0   20G  0 disk </span><br><span class="line">sdd      8:48   0   20G  0 disk </span><br><span class="line">sde      8:64   0   20G  0 disk</span><br></pre></td></tr></table></figure></p>
+<p>(2)设置为raid-5 <code>-x</code> 指一个热备份硬盘<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@CentOS6 ~]<span class="variable">$mdadm</span> -C -a yes /dev/md1 -l 5 -n 3 -x 1 /dev/sd&#123;b..e&#125;</span><br></pre></td></tr></table></figure></p>
+<p>(3)查看新建的md1硬盘信息硬盘sde为备用硬盘<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">[root@CentOS6 ~]<span class="variable">$mdadm</span> -D /dev/md1</span><br><span class="line">/dev/md1:</span><br><span class="line">        Version : 1.2</span><br><span class="line">  Creation Time : Tue Oct 23 12:36:47 2018</span><br><span class="line">     Raid Level : raid5</span><br><span class="line">     Array Size : 41910272 (39.97 GiB 42.92 GB)</span><br><span class="line">  Used Dev Size : 20955136 (19.98 GiB 21.46 GB)</span><br><span class="line">   Raid Devices : 3</span><br><span class="line">  Total Devices : 4</span><br><span class="line">    Persistence : Superblock is persistent</span><br><span class="line"></span><br><span class="line">    Update Time : Tue Oct 23 12:38:32 2018</span><br><span class="line">          State : clean </span><br><span class="line"> Active Devices : 3</span><br><span class="line">Working Devices : 4</span><br><span class="line"> Failed Devices : 0</span><br><span class="line">  Spare Devices : 1</span><br><span class="line"></span><br><span class="line">         Layout : left-symmetric</span><br><span class="line">     Chunk Size : 512K</span><br><span class="line"></span><br><span class="line">           Name : CentOS6.10.localdomain:1  (<span class="built_in">local</span> to host CentOS6.10.localdomain)</span><br><span class="line">           UUID : afc70631:08758f06:c3c8b61c:7668a8c5</span><br><span class="line">         Events : 18</span><br><span class="line"></span><br><span class="line">    Number   Major   Minor   RaidDevice State</span><br><span class="line">       0       8       16        0      active sync   /dev/sdb</span><br><span class="line">       1       8       32        1      active sync   /dev/sdc</span><br><span class="line">       4       8       48        2      active sync   /dev/sdd</span><br><span class="line"></span><br><span class="line">       3       8       64        -      spare   /dev/sde</span><br></pre></td></tr></table></figure></p>
+<p>(4) 给硬盘建立文件系统即可挂载。</p>
+<h2 id="软RAID管理"><a href="#软RAID管理" class="headerlink" title="软RAID管理"></a>软RAID管理</h2><p>生成配置文件：mdadm–D –s &gt;&gt; /etc/mdadm.conf<br>停止设备：mdadm–S /dev/md0<br>激活设备：mdadm–A –s /dev/md0 激活<br>强制启动：mdadm–R /dev/md0<br>删除raid信息：mdadm–zero-superblock /dev/sdb1</p>
+<h3 id="软RAID测试和修复"><a href="#软RAID测试和修复" class="headerlink" title="软RAID测试和修复"></a>软RAID测试和修复</h3><p>模拟磁盘故障<br>mdadm/dev/md0 -f /dev/sda1<br>移除磁盘<br>mdadm/dev/md0 –r /dev/sda1<br>从软件RAID磁盘修复磁盘故障<br>•替换出故障的磁盘然后开机<br>•在备用驱动器上重建分区<br>•mdadm/dev/md0 -a /dev/sda1<br>mdadm、/proc/mdstat及系统日志信息</p>
+<h2 id="LVM"><a href="#LVM" class="headerlink" title="LVM"></a>LVM</h2><p>逻辑卷（Logical Volume）是由逻辑磁盘形成的虚拟盘，也可称为磁盘分区。<br><strong>用途</strong>：解决分区空间不够用或者分区空间绰绰有余的情况。<br><strong>逻辑卷的工作原理</strong>：逻辑卷（lv）是将几个磁盘分区或者块设备组织起来形成一个大的扩展分区（卷组），该扩展分区不能直接用，需要将其划分成逻辑卷（lv）才能使用，lv可以格式化成不同的文件系统，挂载后直接使用。 lv的扩展和缩减是不会影响原有数据的，但逻辑卷缩减的风险大于逻辑卷扩展的风险。逻辑卷可以支持快照功能。<br><img src="https://img.colabug.com/2017/08/a74f8454568f6668925165c10f0d6f96.png" alt="LVM"></p>
+<h3 id="创建一个LVM"><a href="#创建一个LVM" class="headerlink" title="创建一个LVM"></a>创建一个LVM</h3><p><strong>（1）</strong>首先创建两个分区/硬盘来,下例为<strong>sdb1</strong>分区和<strong>sdc1</strong>分区<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">[root@centos7 ~]<span class="comment">#fdisk -l /dev/sdb /dev/sdc </span></span><br><span class="line"></span><br><span class="line">Disk /dev/sdb: 161.1 GB, 161061273600 bytes, 314572800 sectors</span><br><span class="line">Units = sectors of 1 * 512 = 512 bytes</span><br><span class="line">Sector size (logical/physical): 512 bytes / 512 bytes</span><br><span class="line">I/O size (minimum/optimal): 512 bytes / 512 bytes</span><br><span class="line">Disk label <span class="built_in">type</span>: dos</span><br><span class="line">Disk identifier: 0x90c3db64</span><br><span class="line"></span><br><span class="line">   Device Boot      Start         End      Blocks   Id  System</span><br><span class="line">/dev/sdb1            2048    41945087    20971520   8e  Linux LVM</span><br><span class="line"></span><br><span class="line">Disk /dev/sdc: 107.4 GB, 107374182400 bytes, 209715200 sectors</span><br><span class="line">Units = sectors of 1 * 512 = 512 bytes</span><br><span class="line">Sector size (logical/physical): 512 bytes / 512 bytes</span><br><span class="line">I/O size (minimum/optimal): 512 bytes / 512 bytes</span><br><span class="line">Disk label <span class="built_in">type</span>: dos</span><br><span class="line">Disk identifier: 0x000c72ff</span><br><span class="line"></span><br><span class="line">   Device Boot      Start         End      Blocks   Id  System</span><br><span class="line">/dev/sdc1            2048    41945087    20971520   8e  Linux LVM</span><br></pre></td></tr></table></figure></p>
+<p>（2）创建PV 使用<code>pvcreate/dev/DEVICE</code>把两个分区创建为PV,用<code>pvs/pvdisplay</code>查看PV信息。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#pvcreate /dev/sdb1 /dev/sdc1</span></span><br><span class="line">  Physical volume <span class="string">"/dev/sdb1"</span> successfully created.</span><br><span class="line">  Physical volume <span class="string">"/dev/sdc1"</span> successfully created.</span><br><span class="line">[root@centos7 ~]<span class="comment">#pvdisplay </span></span><br><span class="line">  <span class="string">"/dev/sdc1"</span> is a new physical volume of <span class="string">"20.00 GiB"</span></span><br><span class="line">  --- NEW Physical volume ---</span><br><span class="line">  PV Name               /dev/sdc1</span><br><span class="line">  VG Name               </span><br><span class="line">  PV Size               20.00 GiB</span><br><span class="line">  Allocatable           NO</span><br><span class="line">  PE Size               0   </span><br><span class="line">  Total PE              0</span><br><span class="line">  Free PE               0</span><br><span class="line">  Allocated PE          0</span><br><span class="line">  PV UUID               gIYSbC-QrkI-MRto-xMdP-PJoX-vq40-0JUhSK</span><br><span class="line">   </span><br><span class="line">  <span class="string">"/dev/sdb1"</span> is a new physical volume of <span class="string">"20.00 GiB"</span></span><br><span class="line">  --- NEW Physical volume ---</span><br><span class="line">  PV Name               /dev/sdb1</span><br><span class="line">  VG Name               </span><br><span class="line">  PV Size               20.00 GiB</span><br><span class="line">  Allocatable           NO</span><br><span class="line">  PE Size               0   </span><br><span class="line">  Total PE              0</span><br><span class="line">  Free PE               0</span><br><span class="line">  Allocated PE          0</span><br><span class="line">  PV UUID               ONZUYP-4RfT-HDny-c2QD-yi8R-ecsF-n76KkI</span><br></pre></td></tr></table></figure></p>
+<p>(3) 创建VG <code>vgcreate &quot;vgname&quot; /dev/sd</code> 创建VG,加<code>-s</code> 可以指定PE大小，<code>vgs/vgdisplay</code>查看VG信息<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#vgcreate vg1 /dev/sdb1 /dev/sdc1</span></span><br><span class="line">  Volume group <span class="string">"vg1"</span> successfully created</span><br><span class="line">[root@centos7 ~]<span class="comment">#vgs</span></span><br><span class="line">  VG  <span class="comment">#PV #LV #SN Attr   VSize  VFree </span></span><br><span class="line">  vg1   2   0   0 wz--n- 39.99g 39.99g</span><br></pre></td></tr></table></figure></p>
+<p>(4)创建LV <code>lvcreate</code>常见选项如下</p>
+<blockquote>
+<p>-n  指定LV的名称<br>-L  指定lv的大小<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#lvcreate -n lv_mysql -L 15G vg1</span></span><br><span class="line">  Logical volume <span class="string">"lv_mysql"</span> created.</span><br><span class="line">[root@centos7 ~]<span class="comment">#lvdisplay </span></span><br><span class="line">  --- Logical volume ---</span><br><span class="line">  LV Path                /dev/vg1/lv_mysql</span><br><span class="line">  LV Name                lv_mysql</span><br><span class="line">  VG Name                vg1</span><br><span class="line">  LV UUID                jycUPI-cTfZ-n1Pe-aHA7-g16p-2PMH-PkAA1F</span><br><span class="line">  LV Write Access        <span class="built_in">read</span>/write</span><br><span class="line">  LV Creation host, time centos7.5.localdomain, 2018-10-23 15:36:57 +0800</span><br><span class="line">  LV Status              available</span><br><span class="line">  <span class="comment"># open                 0</span></span><br><span class="line">  LV Size                15.00 GiB</span><br><span class="line">  Current LE             3840</span><br><span class="line">  Segments               1</span><br><span class="line">  Allocation             inherit</span><br><span class="line">  Read ahead sectors     auto</span><br><span class="line">  - currently <span class="built_in">set</span> to     8192</span><br><span class="line">  Block device           253:0</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>(5)创建lv只会，就可以设置文件系统，挂载了。</p>
+<h3 id="删除LV-VG-PV命令"><a href="#删除LV-VG-PV命令" class="headerlink" title="删除LV VG PV命令"></a>删除LV VG PV命令</h3><blockquote>
+<p><strong>删除逻辑卷</strong><br>lvremove/dev/VG_NAME/LV_NAME<br><strong>删除卷组</strong><br>先做pvmove，再做vgremove<br><strong>删除pv</strong><br>pvremove/dev/DEVICE   </p>
+</blockquote>
+<h3 id="扩展PVM"><a href="#扩展PVM" class="headerlink" title="扩展PVM"></a>扩展PVM</h3><p>（1）如果正在使用的某个lv空间快要满的时候，可以给lv增加空前，前提是VG里有空闲的空间。<code>lvextend -l</code> 可以指定pe大小扩展空间，可以用百分百表示，<code>-L</code>直接写单位。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#lvextend -l +50%FREE /dev/vg1/lv_mysql</span></span><br><span class="line">[root@centos7 ~]<span class="comment">#lvextend -L +1G /dev/vg1/lv_mysql</span></span><br></pre></td></tr></table></figure></p>
+<p>(2)指定完需要增加空间的大小之后用<code>xfs_growfs</code>更新，etx系列的文件系统用<code>resize2fs</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#xfs_growfs /dev/vg1/lv_mysql </span></span><br><span class="line">meta-data=/dev/mapper/vg1-lv_mysql isize=512    agcount=4, agsize=983040 blks</span><br><span class="line">         =                       sectsz=512   attr=2, projid32bit=1</span><br><span class="line">         =                       crc=1        finobt=0 spinodes=0</span><br><span class="line">data     =                       bsize=4096   blocks=3932160, imaxpct=25</span><br><span class="line">         =                       sunit=0      swidth=0 blks</span><br><span class="line">naming   =version 2              bsize=4096   ascii-ci=0 ftype=1</span><br><span class="line"><span class="built_in">log</span>      =internal               bsize=4096   blocks=2560, version=2</span><br><span class="line">         =                       sectsz=512   sunit=0 blks, lazy-count=1</span><br><span class="line">realtime =none                   extsz=4096   blocks=0, rtextents=0</span><br><span class="line">data blocks changed from 3932160 to 10483712</span><br></pre></td></tr></table></figure></p>
+<h3 id="为卷组扩展空间"><a href="#为卷组扩展空间" class="headerlink" title="为卷组扩展空间"></a>为卷组扩展空间</h3><p>（1）如果卷组的的空间不够了也可以扩展，先看下卷组空间可用空间已经为0<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#vgs</span></span><br><span class="line">  VG  <span class="comment">#PV #LV #SN Attr   VSize  VFree</span></span><br><span class="line">  vg1   2   1   0 wz--n- 39.99g    0</span><br></pre></td></tr></table></figure></p>
+<p>（2）先找一块硬盘，把他设置为PV,pvs显示sde硬盘没有加入到任何卷组。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#pvcreate /dev/sde</span></span><br><span class="line">WARNING: dos signature detected on /dev/sde at offset 510. Wipe it? [y/n]: y</span><br><span class="line">  Wiping dos signature on /dev/sde.</span><br><span class="line">  Physical volume <span class="string">"/dev/sde"</span> successfully created.</span><br><span class="line">[root@centos7 ~]<span class="comment">#pvs</span></span><br><span class="line">  PV         VG  Fmt  Attr PSize   PFree </span><br><span class="line">  /dev/sdb1  vg1 lvm2 a--  &lt;20.00g     0 </span><br><span class="line">  /dev/sdc1  vg1 lvm2 a--  &lt;20.00g     0 </span><br><span class="line">  /dev/sde       lvm2 ---   50.00g 50.00g</span><br></pre></td></tr></table></figure></p>
+<p>(3)把硬盘加入到指定的卷组<code>vgextend</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#vgextend vg1 /dev/sde</span></span><br><span class="line">  Volume group <span class="string">"vg1"</span> successfully extended</span><br><span class="line">[root@centos7 ~]<span class="comment">#vgs</span></span><br><span class="line">  VG  <span class="comment">#PV #LV #SN Attr   VSize   VFree  </span></span><br><span class="line">  vg1   3   1   0 wz--n- &lt;89.99g &lt;50.00g</span><br></pre></td></tr></table></figure></p>
+<p>(4)卷组扩展完毕之后就可以再给卷组里其他逻辑卷扩展空间了。<br>（5）删除卷组里的pv设备<code>vgreduce</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#vgreduce vg1 /dev/sde</span></span><br><span class="line">  Removed <span class="string">"/dev/sde"</span> from volume group <span class="string">"vg1"</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="缩减逻辑卷"><a href="#缩减逻辑卷" class="headerlink" title="缩减逻辑卷"></a>缩减逻辑卷</h3><p>只有在ext系列上才可以缩减逻辑卷，在xfs的文件系统上不支持此操作。<br>操作步骤：</p>
+<blockquote>
+<p>1，取消挂载<br>2，先缩减文件系统<br>3，再缩减逻辑卷大小<br>(1)卸载逻辑卷<br>(2)缩减文件系统为20G<code>resize2fs</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#resize2fs /dev/vg1/lv_mysql 20G</span></span><br><span class="line">resize2fs 1.42.9 (28-Dec-2013)</span><br><span class="line">resize2fs: New size smaller than minimum (64422)</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>(3)缩减逻辑卷<code>lvreduce</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#lvreduce -L 20G /dev/vg1/lv_mysql </span></span><br><span class="line">  WARNING: Reducing active logical volume to 20.00 GiB.</span><br><span class="line">  THIS MAY DESTROY YOUR DATA (filesystem etc.)</span><br><span class="line">Do you really want to reduce vg1/lv_mysql? [y/n]: y</span><br><span class="line">  Size of logical volume vg1/lv_mysql changed from 39.99 GiB (10238 extents) to 20.00 GiB (5120 extents).</span><br><span class="line">  Logical volume vg1/lv_mysql successfully resized.</span><br></pre></td></tr></table></figure></p>
+<p>（4）重新挂载逻辑卷</p>
+<h3 id="逻辑卷命令"><a href="#逻辑卷命令" class="headerlink" title="逻辑卷命令"></a>逻辑卷命令</h3><p><strong>lvextend -r -L  ：扩展逻辑卷空间使用</strong><br><strong>lvremove ：删除逻辑卷</strong><br><strong>resize2fs ：缩减文件系统大小</strong><br><strong>lvreduce -L： 缩减逻辑卷大小</strong><br><strong>vgextend ： 扩展卷组，把新的pv加入到卷组</strong><br><strong>resize2fs /dev/vg/ ext4</strong><br><strong>xfs_growfs /dev/vg/ xfs</strong><br><strong>vgreduce ：删除卷组里的pv设备</strong><br><strong>vgrename ： 卷组改名</strong><br><strong>pvmove ：可以把pv上使用的pe迁移到相同卷组的其他pv上</strong><br><strong>pcscan : 扫描</strong></p>
+<h3 id="迁移逻辑卷"><a href="#迁移逻辑卷" class="headerlink" title="迁移逻辑卷"></a>迁移逻辑卷</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#pvmove /dev/sdc1 </span></span><br><span class="line">  /dev/sdc1: Moved: 100.00%</span><br></pre></td></tr></table></figure>
+<p>迁移vg1卷组，查看下卷组下的pv<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#pvdisplay </span></span><br><span class="line">  --- Physical volume ---</span><br><span class="line">  PV Name               /dev/sdb1</span><br><span class="line">  VG Name               vg1</span><br><span class="line">  PV Size               20.00 GiB / not usable 4.00 MiB</span><br><span class="line">  Allocatable           yes </span><br><span class="line">  PE Size               4.00 MiB</span><br><span class="line">  Total PE              5119</span><br><span class="line">  Free PE               2559</span><br><span class="line">  Allocated PE          2560</span><br><span class="line">  PV UUID               ONZUYP-4RfT-HDny-c2QD-yi8R-ecsF-n76KkI</span><br></pre></td></tr></table></figure></p>
+<p>(1)首先取消挂载<br>(2)把卷组设置为禁用状态<code>vgchange–an</code> 激活为<code>-ay</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#vgchange -an vg1</span></span><br><span class="line">  0 logical volume(s) <span class="keyword">in</span> volume group <span class="string">"vg1"</span> now active</span><br></pre></td></tr></table></figure></p>
+<p>(3)把卷组下的逻辑卷设置为导出状态<code>vgexport vg1</code> 导入为<code>vgimport vg</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#vgexport vg1</span></span><br><span class="line">  Volume group <span class="string">"vg1"</span> successfully exported</span><br><span class="line">[root@centos7 ~]<span class="comment">#lvdisplay </span></span><br><span class="line">  Volume group vg1 is exported</span><br></pre></td></tr></table></figure></p>
+<p>（4）设置为导出状态之后，就可以把磁盘拔下来插入到其他服务器上面，然后再把导出状态改为导入，把禁用状态激活即可。</p>
+<h2 id="LVM快照"><a href="#LVM快照" class="headerlink" title="LVM快照"></a>LVM快照</h2><p>快照就是将当时的系统信息记录下来，就好像照相一般，若将来有任何数据改动了，则原始数据会被移动到快照区，没有改动的区域则由快照区和文件系统共享。<br>建立快照的卷大小只需要原始逻辑卷的15%～20%就够了,也可以使用lvextend放大快照<br>快照只会保留原有的文件，新建的文件没有<br><img src="https://images2017.cnblogs.com/blog/1254925/201710/1254925-20171025142819082-1923671473.png" alt="lvm快照">  </p>
+<h3 id="创建一个快照"><a href="#创建一个快照" class="headerlink" title="创建一个快照"></a>创建一个快照</h3><p>基于<strong>ext</strong>系统<br>也是用lvcreate; <code>-s</code>指明是一个逻辑卷的快照<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 lv]<span class="comment">#lvcreate -n kuaizhao -s -L 2G /dev/vg1/lv_mysql</span></span><br><span class="line">  Logical volume <span class="string">"kuaizhao"</span> created.</span><br><span class="line">root@centos7 lv]<span class="comment">#lvdisplay </span></span><br><span class="line">  --- Logical volume ---</span><br><span class="line">  LV Path                /dev/vg1/lv_mysql</span><br><span class="line">  LV Name                lv_mysql</span><br><span class="line">  VG Name                vg1</span><br><span class="line">  LV UUID                jycUPI-cTfZ-n1Pe-aHA7-g16p-2PMH-PkAA1F</span><br><span class="line">  LV Write Access        <span class="built_in">read</span>/write</span><br><span class="line">  LV Creation host, time centos7.5.localdomain, 2018-10-23 15:36:57 +0800</span><br><span class="line">  LV snapshot status     <span class="built_in">source</span> of</span><br><span class="line">                         kuaizhao [active]</span><br><span class="line">  LV Status              available</span><br><span class="line">  <span class="comment"># open                 1</span></span><br><span class="line">  LV Size                10.00 GiB</span><br><span class="line">  Current LE             2560</span><br><span class="line">  Segments               1</span><br><span class="line">  Allocation             inherit</span><br><span class="line">  Read ahead sectors     auto</span><br><span class="line">  - currently <span class="built_in">set</span> to     8192</span><br><span class="line">  Block device           253:0</span><br><span class="line">   </span><br><span class="line">  --- Logical volume ---</span><br><span class="line">  LV Path                /dev/vg1/kuaizhao</span><br><span class="line">  LV Name                kuaizhao</span><br><span class="line">  VG Name                vg1</span><br><span class="line">  LV UUID                dk8cT0-Ykl5-p3CW-LGsc-KxIA-3oMl-iESK0J</span><br><span class="line">  LV Write Access        <span class="built_in">read</span>/write</span><br><span class="line">  LV Creation host, time centos7.5.localdomain, 2018-10-23 17:51:11 +0800</span><br><span class="line">  LV snapshot status     active destination <span class="keyword">for</span> lv_mysql</span><br><span class="line">  LV Status              available</span><br><span class="line">  <span class="comment"># open                 0</span></span><br><span class="line">  LV Size                10.00 GiB</span><br><span class="line">  Current LE             2560</span><br><span class="line">  COW-table size         2.00 GiB</span><br><span class="line">  COW-table LE           512</span><br><span class="line">  Allocated to snapshot  0.01%</span><br><span class="line">  Snapshot chunk size    4.00 KiB</span><br><span class="line">  Segments               1</span><br><span class="line">  Allocation             inherit</span><br><span class="line">  Read ahead sectors     auto</span><br><span class="line">  - currently <span class="built_in">set</span> to     8192</span><br><span class="line">  Block device           253:3</span><br></pre></td></tr></table></figure></p>
+<h3 id="还原快照"><a href="#还原快照" class="headerlink" title="还原快照"></a>还原快照</h3><p>还原快照要取消挂载<br>还原快照用<code>lvconvert--merge +快照路径</code>命令可以把快照还原到原来的逻辑卷<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 mnt]<span class="comment">#lvconvert --merge /dev/vg1/kuaizhao </span></span><br><span class="line">  Merging of volume vg1/kuaizhao started.</span><br><span class="line">  vg1/lv_mysql: Merged: 100.00%</span><br></pre></td></tr></table></figure></p>
+<p>基于<strong>xfs</strong><br>xfs系统里创建好快照之后，在挂载的时候要使用<code>mount -o nouuid</code>不检查uuid，因为创建的快照UUID和逻辑卷的UUID是相同的</p>
+<h3 id="快照其他选项"><a href="#快照其他选项" class="headerlink" title="快照其他选项"></a>快照其他选项</h3><p>lvremove/dev/vg0/databackup  删除快照</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/11/13/Linux文件系统高级管理（RAID、LVM）/" data-id="cjof53brg0009wgvxuh88g6k1" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/磁盘/">磁盘</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/11/13/文本处理工具/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          文本处理工具
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/11/13/linux文件查找/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">linux文件查找</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/内核/">内核</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/压缩/">压缩</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/文件系统/">文件系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/组/">组</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/启动/">启动</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工具/">工具</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文件/">文件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/权限/">权限</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/查找/">查找</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/磁盘/">磁盘</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/启动/" style="font-size: 10px;">启动</a> <a href="/tags/工具/" style="font-size: 20px;">工具</a> <a href="/tags/文件/" style="font-size: 10px;">文件</a> <a href="/tags/权限/" style="font-size: 10px;">权限</a> <a href="/tags/查找/" style="font-size: 20px;">查找</a> <a href="/tags/磁盘/" style="font-size: 10px;">磁盘</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/13/文件管理/">linux文件管理</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/文本处理工具/">文本处理工具</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/Linux文件系统高级管理（RAID、LVM）/">Linux文件系统高级管理（RAID LVM）</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/linux文件查找/">linux文件查找</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/正则表达式gerp/">Linux三剑客之grep、正则表达式</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 linux<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>linux文件管理 | LiHongFei.blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="文件系统与目录结构文件系统就是在一块硬盘格式化之后选择的文件类型，文件系统类型在centos 6中一般为ext4 在centos 7中一般为xfs ，常见的Windows一般为NTFS 或者fat类型。文件系统的目录结构：">
+<meta name="keywords" content="文件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux文件管理">
+<meta property="og:url" content="http://yoursite.com/2018/11/13/文件管理/index.html">
+<meta property="og:site_name" content="LiHongFei.blog">
+<meta property="og:description" content="文件系统与目录结构文件系统就是在一块硬盘格式化之后选择的文件类型，文件系统类型在centos 6中一般为ext4 在centos 7中一般为xfs ，常见的Windows一般为NTFS 或者fat类型。文件系统的目录结构：">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://pf8eoyzmj.bkt.clouddn.com/%E5%B1%B1%E6%B2%BB1.jpg">
+<meta property="og:image" content="http://pf8eoyzmj.bkt.clouddn.com/1537610899%281%29.jpg">
+<meta property="og:image" content="http://pf8eoyzmj.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20180925143116.png">
+<meta property="og:image" content="http://pf8eoyzmj.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20180925153132.png">
+<meta property="og:image" content="http://pf8eoyzmj.bkt.clouddn.com/1.jpg">
+<meta property="og:image" content="http://pf8eoyzmj.bkt.clouddn.com/2.jpg">
+<meta property="og:updated_time" content="2018-10-01T07:27:52.877Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="linux文件管理">
+<meta name="twitter:description" content="文件系统与目录结构文件系统就是在一块硬盘格式化之后选择的文件类型，文件系统类型在centos 6中一般为ext4 在centos 7中一般为xfs ，常见的Windows一般为NTFS 或者fat类型。文件系统的目录结构：">
+<meta name="twitter:image" content="http://pf8eoyzmj.bkt.clouddn.com/%E5%B1%B1%E6%B2%BB1.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="LiHongFei.blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">LiHongFei.blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-文件管理" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/13/文件管理/" class="article-date">
+  <time datetime="2018-11-13T02:50:32.856Z" itemprop="datePublished">2018-11-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/linux/">linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      linux文件管理
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://pf8eoyzmj.bkt.clouddn.com/%E5%B1%B1%E6%B2%BB1.jpg" alt="图片"></p>
+<h2 id="文件系统与目录结构"><a href="#文件系统与目录结构" class="headerlink" title="文件系统与目录结构"></a>文件系统与目录结构</h2><p>文件系统就是在一块硬盘格式化之后选择的文件类型，文件系统类型在centos 6中一般为ext4 在centos 7中一般为xfs ，常见的Windows一般为NTFS 或者fat类型。<br>文件系统的目录结构：<br><a id="more"></a><br><img src="http://pf8eoyzmj.bkt.clouddn.com/1537610899%281%29.jpg" alt="图片"></p>
+<h2 id="每个目录对应的作用："><a href="#每个目录对应的作用：" class="headerlink" title="每个目录对应的作用："></a>每个目录对应的作用：</h2><h3 id="home"><a href="#home" class="headerlink" title="/home"></a>/home</h3><p>用来存放用户数据，系统中除了root用户之外其他的用户数据都存放在/home中</p>
+<h3 id="etc"><a href="#etc" class="headerlink" title="/etc"></a>/etc</h3><p>存放系统的配置文件，相当于Windows中的注册表</p>
+<h3 id="root"><a href="#root" class="headerlink" title="/root"></a>/root</h3><p>系统管理员的家目录</p>
+<h3 id="bin"><a href="#bin" class="headerlink" title="/bin"></a>/bin</h3><p>存放用户可执行的文件，用户不可以操作sbin下的文件</p>
+<h3 id="sbins"><a href="#sbins" class="headerlink" title="/sbins"></a>/sbins</h3><p>存放管理员可执行的文件</p>
+<h3 id="boot"><a href="#boot" class="headerlink" title="/boot"></a>/boot</h3><p>系统的引导文件，内核文件(vmlinuz)、引导加载器(bootloader, grub)都存放于此目录</p>
+<h3 id="dev"><a href="#dev" class="headerlink" title="/dev"></a>/dev</h3><p>设备的文件和设备特殊的文件存放的位置。</p>
+<h3 id="run"><a href="#run" class="headerlink" title="/run"></a>/run</h3><p>存放正在运行的文件</p>
+<h3 id="tmp"><a href="#tmp" class="headerlink" title="/tmp"></a>/tmp</h3><p>临时文件存储位</p>
+<h3 id="usr"><a href="#usr" class="headerlink" title="/usr"></a>/usr</h3><p>bin: 保证系统拥有完整功能而提供的应用程序<br>sbin:<br>lib：32位使用<br>lib64：只存在64位系统<br>include: C程序的头文件(header files)<br>share：结构化独立的数据，例如doc, man等<br>local：第三方应用程序的安装位置<br>bin, sbin, lib, lib64, etc, share</p>
+<h3 id="proc"><a href="#proc" class="headerlink" title="/proc"></a>/proc</h3><p>现在内存里的数据</p>
+<h3 id="var"><a href="#var" class="headerlink" title="/var"></a>/var</h3><p>cache: 应用程序缓存数据目录<br>lib: 应用程序状态信息数据<br>local：专用于为/usr/local下的应用程序存储可变数据；<br>lock: 锁文件<br>log: 日志目录及文件<br>opt: 专用于为/opt下的应用程序存储可变数据；<br>run: 运行中的进程相关数据,通常用于存储进程pid文件<br>spool: 应用程序数据池<br>tmp: 保存系统两次重启之间产生的临时数据</p>
+<h3 id="sys"><a href="#sys" class="headerlink" title="/sys"></a>/sys</h3><p>用于输出当前系统上硬件设备相关信息虚拟文件系统</p>
+<h2 id="Linux下的文件类型"><a href="#Linux下的文件类型" class="headerlink" title="Linux下的文件类型"></a>Linux下的文件类型</h2><p><code>ll</code>命令可查看目录下文件的类型<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#ll</span></span><br><span class="line">total 12</span><br><span class="line">-rw-r--r--. 1 root root  292 Sep 24 18:04 11.txt</span><br><span class="line">-rw-------. 1 root root 1898 Sep 19 19:54 anaconda-ks.cfg</span><br><span class="line">drwxr-xr-x. 2 root root    6 Sep 19 21:56 Desktop</span><br><span class="line">drwxr-xr-x. 2 root root    6 Sep 19 21:56 Documents</span><br><span class="line">drwxr-xr-x. 2 root root    6 Sep 19 21:56 Downloads</span><br><span class="line">-rw-r--r--. 1 root root 1929 Sep 19 20:05 initial-setup-ks.cfg</span><br><span class="line">drwxr-xr-x. 2 root root    6 Sep 19 21:56 Music</span><br><span class="line">drwxr-xr-x. 2 root root    6 Sep 19 21:56 Pictures</span><br><span class="line">drwxr-xr-x. 2 root root    6 Sep 19 21:56 Public</span><br><span class="line">drwxr-xr-x. 2 root root    6 Sep 19 21:56 Templates</span><br><span class="line">drwxr-xr-x. 2 root root    6 Sep 19 21:56 Videos</span><br></pre></td></tr></table></figure></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-：</td>
+<td>普通文件</td>
+</tr>
+<tr>
+<td>d:</td>
+<td>目录文件</td>
+</tr>
+<tr>
+<td>b:</td>
+<td>块设备</td>
+</tr>
+<tr>
+<td>c:</td>
+<td>字符设备</td>
+</tr>
+<tr>
+<td>l:</td>
+<td>符号链接文件</td>
+</tr>
+<tr>
+<td>p:</td>
+<td>管道文件pipe</td>
+</tr>
+<tr>
+<td>s:</td>
+<td>套接字文件socket</td>
+</tr>
+</tbody>
+</table>
+<h2 id="pwd命令"><a href="#pwd命令" class="headerlink" title="pwd命令"></a>pwd命令</h2><p><code>pwd</code>显示当前在的目录，全称<code>pwd -L</code>，在linux中默认使用。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#pwd</span></span><br><span class="line">/root</span><br></pre></td></tr></table></figure></p>
+<h2 id="绝对和相对路径"><a href="#绝对和相对路径" class="headerlink" title="绝对和相对路径"></a>绝对和相对路径</h2><p>绝对路径:以斜杠开始,完整的文件的位置路径，精确的指定一文件，从根到文件的路径。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 proc]<span class="comment">#rpm -inv /run/media/root/CentOS\ 7\ x86_64/Packages/tree-1.6.0-10.el7.x86_64.rpm</span></span><br></pre></td></tr></table></figure></p>
+<p>相对路径：不以斜线开始,指定相对于当前工作目录或某目录的位置<br>可以作为一个简短的形式指定一个文件名<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 Packages]<span class="comment">#rpm -inv tree-1.6.0-10.el7.x86_64.rpm</span></span><br></pre></td></tr></table></figure></p>
+<p>查看基名和目录名：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#basename /etc/sysconfig/network-scripts/</span></span><br><span class="line">network-scripts</span><br><span class="line">[root@centos7 ~]<span class="comment">#dirname /etc/sysconfig/network-scripts/</span></span><br><span class="line">/etc/sysconfig</span><br></pre></td></tr></table></figure></p>
+<h2 id="cd-命令更改目录"><a href="#cd-命令更改目录" class="headerlink" title="cd 命令更改目录"></a>cd 命令更改目录</h2><p>使用绝对命令更改目录：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#cat /data/test1/test2/test3/testa.txt</span></span><br><span class="line">aaaabbbbb<span class="comment">#</span></span><br></pre></td></tr></table></figure></p>
+<p>使用相对命令更改目录：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 test2]<span class="comment">#cat test3/testa.txt </span></span><br><span class="line">aaaabbbbb</span><br></pre></td></tr></table></figure></p>
+<p>切换到父目录<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 test3]<span class="comment">#cd ..</span></span><br><span class="line">[root@centos7 test2]<span class="comment">#</span></span><br></pre></td></tr></table></figure></p>
+<p>切换到当前用户的根目录直接输入<code>cd</code>命令<br>切换至以前的工作目录直接输入<code>cd -</code></p>
+<h2 id="ls命令使用"><a href="#ls命令使用" class="headerlink" title="ls命令使用"></a>ls命令使用</h2><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ls -a</code></td>
+<td>查看当前目录下的所有文件,包括隐藏文件</td>
+</tr>
+<tr>
+<td><code>ls -l</code></td>
+<td>显示目录下文件的其他属性信息，默认<code>ll</code> 就<code>ls -a</code></td>
+</tr>
+<tr>
+<td><code>ls -R</code></td>
+<td>目录递归通过</td>
+</tr>
+<tr>
+<td><code>ls -ld</code></td>
+<td>显示文件夹信息</td>
+</tr>
+<tr>
+<td><code>ls -1</code></td>
+<td>文件以一列显示 ，2不可以</td>
+</tr>
+<tr>
+<td><code>ls –S</code></td>
+<td>按从大到小排序</td>
+</tr>
+<tr>
+<td><code>ls –t</code></td>
+<td>按mtime排序</td>
+</tr>
+<tr>
+<td><code>ls –S</code></td>
+<td>按从大到小排序</td>
+</tr>
+<tr>
+<td><code>ls –t</code></td>
+<td>按mtime排序</td>
+</tr>
+</tbody>
+</table>
+<p>查看文件的三个时间戳<br>access time：访问时间，atime，读取文件内容<br>modify time: 修改时间, mtime，改变文件内容（数据）<br>change time: 改变时间, ctime，元数据发生改变<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#stat text1.bak </span></span><br><span class="line">  File: ‘text1.bak’</span><br><span class="line">  Size: 10              Blocks: 8          IO Block: 4096   regular file</span><br><span class="line">Device: 803h/2051d      Inode: 68          Links: 1</span><br><span class="line">Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)</span><br><span class="line">Context: unconfined_u:object_r:etc_runtime_t:s0</span><br><span class="line">Access: 2018-09-24 20:19:30.110156610 +0800</span><br><span class="line">Modify: 2018-09-24 20:19:36.576156795 +0800</span><br><span class="line">Change: 2018-09-24 20:19:36.576156795 +0800</span><br></pre></td></tr></table></figure></p>
+<h2 id="通配符的使用"><a href="#通配符的使用" class="headerlink" title="通配符的使用"></a>通配符的使用</h2><p><code>*</code> 匹配任意类型的文件<br><code>？</code>匹配单个任意字符，可在命令后面加问号匹配单个命令<br><code>[0-9]</code>指定匹配数字范围<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#ls a[0-6]</span></span><br><span class="line">a1  a2  a3  a4  a5  a6</span><br></pre></td></tr></table></figure></p>
+<p><code>[a-z]</code>指定匹配字母范围小写<br><code>[A-Z]</code>指定匹配字母范围大写<br><code>[wang]</code>匹配列表中的任何的一个字符<br><code>^</code> 可以匹配字符以外的所有字符,下例显示所有不是a开头的文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#ls [^a]*</span></span><br><span class="line">b1  b2  b3</span><br></pre></td></tr></table></figure></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[:digit:]</td>
+<td>任意数字，相当于0-9</td>
+</tr>
+<tr>
+<td>[:lower:]</td>
+<td>任意小写字母</td>
+</tr>
+<tr>
+<td>[:upper:]</td>
+<td>任意大写字母</td>
+</tr>
+<tr>
+<td>[:alpha:]</td>
+<td>任意大小写字母</td>
+</tr>
+<tr>
+<td>[:alnum:]</td>
+<td>任意数字或字母</td>
+</tr>
+<tr>
+<td>[:blank:]</td>
+<td>水平空白字符</td>
+</tr>
+<tr>
+<td>[:space:]</td>
+<td>水平或垂直空白字符</td>
+</tr>
+<tr>
+<td>[:punct:]</td>
+<td>标点符号</td>
+</tr>
+<tr>
+<td>[:print:]</td>
+<td>可打印字符</td>
+</tr>
+<tr>
+<td>[:cntrl:]</td>
+<td>控制（非打印）字符</td>
+</tr>
+<tr>
+<td>[:graph:]</td>
+<td>图形字符</td>
+</tr>
+<tr>
+<td>[:xdigit:]</td>
+<td>十六进制字符</td>
+</tr>
+</tbody>
+</table>
+<h2 id="touch命令使用"><a href="#touch命令使用" class="headerlink" title="touch命令使用"></a>touch命令使用</h2><p>用来创建新文件和刷新文件时间<br>如果已经有的一个文件再用<code>touch</code>创建只会刷新三个时间戳，不会覆盖文件和删除文件内容<br><code>touch -a</code> 如果创建的文件存在的话只会刷新atime和ctime两个时间戳<br><code>touch -m</code> 如果创建的文件存在的话只会刷新mtime和ctime两个时间戳<br><img src="http://pf8eoyzmj.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20180925143116.png" alt="时间戳"><br><code>touch `date +%F`</code>可以生成当前日期的文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#touch  `date +%F`.log</span></span><br><span class="line">[root@centos7 data]<span class="comment">#ls</span></span><br><span class="line">2018-09-25.log</span><br></pre></td></tr></table></figure></p>
+<h2 id="cp命令使用"><a href="#cp命令使用" class="headerlink" title="cp命令使用"></a>cp命令使用</h2><p>格式：</p>
+<blockquote>
+<p>cp[OPTION]… [-T] SOURCE DEST<br>cp[OPTION]… SOURCE… DIRECTORY<br>cp[OPTION]… -t DIRECTORY SOURCE…<br>cp SRC DEST   </p>
+</blockquote>
+<p><strong>如果目标不存在</strong>：新建DEST，并将SRC中内容填充至DEST中<br><strong>如果目标存在</strong>：将SRC中的内容覆盖至DEST中<br><strong>如果DEST是目录</strong>：在DEST下新建与原文件同名的文件，并将SRC中内容填充至新文件中<br><strong>如果SRC是多个文件</strong>，目标是一个的话 报错,目标是一个文件夹会把文件复制到文件夹下。<br><strong>SRC是目录</strong>：此时使用选项：-r<br><strong>如果DEST不存在</strong>：则创建指定目录，复制SRC目录中所有文件至DEST中<br><strong>如果DEST存在</strong>：copy文件夹到目标文件夹下的目录下。<br>在centos 7中 <code>cp</code> 是个别名 <code>cp -i</code>会提示如果目标已经存在会问是否覆盖，在centos 6中cp就是cp就算目标存在也不会提示，会直接覆盖。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#alias cp</span></span><br><span class="line"><span class="built_in">alias</span> cp=<span class="string">'cp -i'</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="常见选项"><a href="#常见选项" class="headerlink" title="常见选项"></a>常见选项</h3><p>-i：覆盖前提示<br>-r: 递归复制目录及内部的所有内容<br>-v: 显示复制的过程<br>-d：不复制原文件，只复制链接名<br>-p: 等同–preserv=mode,ownership,timestamp,默认是复制是all<br>-f: 强制复制<br>-u:–update 只复制源比目标更新文件或目标不存在的文件<br>-b:目标存在，覆盖前先备份 会自动生成一个带 <code>~</code> 的文件<br><img src="http://pf8eoyzmj.bkt.clouddn.com/QQ%E6%88%AA%E5%9B%BE20180925153132.png" alt="图片"></p>
+<h2 id="mv命令使用"><a href="#mv命令使用" class="headerlink" title="mv命令使用"></a>mv命令使用</h2><p>常用选项：<br>-i: 交互式（默认）<br>-f: 强制<br>-b: 目标存在，覆盖前先备份</p>
+<h3 id="rename"><a href="#rename" class="headerlink" title="rename"></a>rename</h3><p>可以大批量的重命名文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#ls</span></span><br><span class="line">a1.bak  a2.bak  a3.bak  a4.bak  a5.bak</span><br><span class="line">[root@centos7 data]<span class="comment">#rename bak txt *.bak</span></span><br><span class="line">[root@centos7 data]<span class="comment">#ls</span></span><br><span class="line">a1.txt  a2.txt  a3.txt  a4.txt  a5.txt</span><br></pre></td></tr></table></figure></p>
+<h2 id="rm-命令使用"><a href="#rm-命令使用" class="headerlink" title="rm 命令使用"></a>rm 命令使用</h2><p>常用选项：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-i</td>
+<td>交互式（默认）</td>
+</tr>
+<tr>
+<td>-f</td>
+<td>强制删除</td>
+</tr>
+<tr>
+<td>-r</td>
+<td>递归</td>
+</tr>
+<tr>
+<td>–no-preserve-root</td>
+<td>删除/ （<strong>慎重 慎重</strong>）</td>
+</tr>
+<tr>
+<td>&gt;+ 文件 + rm -rf</td>
+<td>清空文件，再删除可以立即释放硬盘空间</td>
+</tr>
+</tbody>
+</table>
+<h2 id="tree-命令使用"><a href="#tree-命令使用" class="headerlink" title="tree 命令使用"></a>tree 命令使用</h2><p>tree 显示目录树<br>-d: 只显示目录<br>-L level：指定显示的层级数目，（1..）<br>-P pattern: 只显示由指定pattern匹配到的路径</p>
+<h2 id="mkdir-命令使用"><a href="#mkdir-命令使用" class="headerlink" title="mkdir 命令使用"></a>mkdir 命令使用</h2><p>mkdir创建目录<br>-p: 存在于不报错，且可自动创建所需的各目录<br>-v: 显示详细信息<br>-m MODE: 创建目录时直接指定权限<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#mkdir -vp test2/test2/test3/   </span></span><br><span class="line">mkdir: created directory ‘test2’</span><br><span class="line">mkdir: created directory ‘test2/test2’</span><br><span class="line">mkdir: created directory ‘test2/test2/test3/’</span><br></pre></td></tr></table></figure></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rmdir</td>
+<td>删除空目录,文件夹不为空不删除。</td>
+</tr>
+<tr>
+<td>-p:</td>
+<td>递归删除父空目录</td>
+</tr>
+<tr>
+<td>-v:</td>
+<td>显示详细信息</td>
+</tr>
+<tr>
+<td>rm-r</td>
+<td>递归删除目录树</td>
+</tr>
+</tbody>
+</table>
+<h2 id="inode表"><a href="#inode表" class="headerlink" title="inode表"></a>inode表</h2><p>在磁盘上存的数据有一个节点表，里面存放文件数据的属性（元数据）一个文件一个节点编号，<code>ls -i</code>可以查看文件的节点编号,节点编号代表着文件的唯一标示，磁盘上有一块部分用来存放节点表。<br><code>dh -i</code>可以查看分区上最多能有多少的节点编号，节点编号用完之后会提示空间不足</p>
+<blockquote>
+<p>文件类型，权限，UID，GID<br>链接数（指向这个文件名路径名称个数）<br>该文件的大小和不同的时间戳<br>指向磁盘上文件的数据块指针<br>有关文件的其他数据  </p>
+</blockquote>
+<h3 id="inode表结构"><a href="#inode表结构" class="headerlink" title="inode表结构"></a>inode表结构</h3><p><img src="http://pf8eoyzmj.bkt.clouddn.com/1.jpg" alt="表结构"></p>
+<h3 id="inode表-1"><a href="#inode表-1" class="headerlink" title="inode表"></a>inode表</h3><p><img src="http://pf8eoyzmj.bkt.clouddn.com/2.jpg" alt="2"></p>
+<h3 id="inode表和rm的关系"><a href="#inode表和rm的关系" class="headerlink" title="inode表和rm的关系"></a>inode表和rm的关系</h3><p>在磁盘中删除文件其实并不是直接把文件给删除掉，而是把磁盘上文件对应的节点编号和目录给删除了，实际上被删除的文件还在，但是会打上标记，这块空间可以使用，再新建文件的时候会直接使用这块空间。</p>
+<h3 id="inode表和mv的关系"><a href="#inode表和mv的关系" class="headerlink" title="inode表和mv的关系"></a>inode表和mv的关系</h3><p>在同一个分区移动文件只是把目录下的文件名改变一下，删除旧目录条目对应的旧的文件名，对应的节点表不变，指针不变，不影响inode表（除时间戳）或磁盘上的数据位置：没有数据被移动.<br>如果文件移动到其他分区那就是真正意义上的移动文件了。</p>
+<h2 id="cp和inode"><a href="#cp和inode" class="headerlink" title="cp和inode"></a>cp和inode</h2><p>分配一个空闲的inode号，在inode表中生成新条目在目录中创建一个目录项，将名称与inode编号关联<br>拷贝数据生成新的文件。</p>
+<h2 id="硬链接"><a href="#硬链接" class="headerlink" title="硬链接"></a>硬链接</h2><p>硬链接：硬链接：对一个文件起多个名字，不可以跨分区，可以跨目录，不支持目录的硬链接，同一个文件，只是名字不同<br>创建硬链接之后链接和源文件总占用的空间大小是一样的，不是1+1；<br>源文件删除之后硬链接仍然可用访问，硬链接指向的是文件本身<br><code>ln |source| destination|</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#ln a1.txt a11.txt</span></span><br><span class="line">[root@centos7 data]<span class="comment">#ll a1.txt a11.txt </span></span><br><span class="line">-rw-r--r--. 2 root root 0 Sep 25 17:41 a11.txt</span><br><span class="line">-rw-r--r--. 2 root root 0 Sep 25 17:41 a1.txt</span><br></pre></td></tr></table></figure></p>
+<p>创建硬链接的话连接数会增加<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#ll -i </span></span><br><span class="line">total 0</span><br><span class="line">74 -rw-r--r--. 2 root root  0 Sep 25 17:41 a11.txt</span><br><span class="line">74 -rw-r--r--. 2 root root  0 Sep 25 17:41 a1.txt</span><br></pre></td></tr></table></figure></p>
+<h2 id="软链接"><a href="#软链接" class="headerlink" title="软链接"></a>软链接</h2><p>软连接：支持文件夹链接，支持跨分区，原始文件一般使用相对路径<br>软链接创建好之后如果源文件删除了，那么链接便会失效,重新创建一个删除的源文件名字一样的链接就会再指向新建的文件.软链接指向的是文件名。<br>软链接支持对文件夹指向链接,也可以跨分区<br><code>ln -s |source| destination|</code>在写软链接的时候一般使用相对路径，相对目标的相对路径<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#ln -s ../../../../data/a2 q1/q2/q3/a222 </span></span><br><span class="line">[root@centos7 data]<span class="comment">#ll  q1/q2/q3 </span></span><br><span class="line">total 0</span><br><span class="line">lrwxrwxrwx. 1 root root 19 Sep 25 19:24 a222 -&gt; ../../../../data/a2</span><br></pre></td></tr></table></figure></p>
+<h3 id="软链接和硬链接的区别："><a href="#软链接和硬链接的区别：" class="headerlink" title="软链接和硬链接的区别："></a>软链接和硬链接的区别：</h3><blockquote>
+<p>1、硬链接是同一个文件，因为节点编号一样，只是多个一个名字，软链接不是同一个文件。<br>2、硬链接不可以跨分区，软链接可以跨分区<br>3、链接数量，硬链接不会增加链接数，软链接会<br>4、节点编号，硬链接一样，软链接不一样<br>5、原始文件删了，硬链接不受影响，软链接不可以<br>6、文件大小，软链接的大小是路径的大小，硬链接是文件本身的大小<br>7、软链接支持链接目录，硬链接不支持<br>8、路径写法不一样，硬链接是绝对路径，软链接是相对路径</p>
+</blockquote>
+<h2 id="file命令使用"><a href="#file命令使用" class="headerlink" title="file命令使用"></a>file命令使用</h2><p>检查文件的类型，然后确定适当的打开命令或应用程序使用,判断文件的类型<br>有些格式用<code>cat</code>命令是看不了的，会显示乱码，比如可执行的文件.<br>常用选项:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-b</td>
+<td>列出文件辨识结果时，不显示文件名称</td>
+</tr>
+<tr>
+<td>-f</td>
+<td>filelist列出文件filelist中文件名的文件类型</td>
+</tr>
+<tr>
+<td>-F</td>
+<td>使用指定分隔符号替换输出文件名后默认的”:”分隔符</td>
+</tr>
+<tr>
+<td>-L</td>
+<td>查看对应软链接对应文件的文件类型</td>
+</tr>
+</tbody>
+</table>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/11/13/文件管理/" data-id="cjof53br80003wgvxg4rbl5sl" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/文件/">文件</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/11/13/文本处理工具/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">文本处理工具</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/内核/">内核</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/压缩/">压缩</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/文件系统/">文件系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/组/">组</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/启动/">启动</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工具/">工具</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文件/">文件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/权限/">权限</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/查找/">查找</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/磁盘/">磁盘</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/启动/" style="font-size: 10px;">启动</a> <a href="/tags/工具/" style="font-size: 20px;">工具</a> <a href="/tags/文件/" style="font-size: 10px;">文件</a> <a href="/tags/权限/" style="font-size: 10px;">权限</a> <a href="/tags/查找/" style="font-size: 20px;">查找</a> <a href="/tags/磁盘/" style="font-size: 10px;">磁盘</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/13/文件管理/">linux文件管理</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/文本处理工具/">文本处理工具</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/Linux文件系统高级管理（RAID、LVM）/">Linux文件系统高级管理（RAID LVM）</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/linux文件查找/">linux文件查找</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/正则表达式gerp/">Linux三剑客之grep、正则表达式</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 linux<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
