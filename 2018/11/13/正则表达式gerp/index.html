@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Linux三剑客之grep、正则表达式 | LiHongFei.blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="linux 文本处理三剑客grep ：文本过滤工具。sed ：文本编辑器。awk ： linux上的实现gawk，文本报告生成器。">
+<meta name="keywords" content="工具">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux三剑客之grep、正则表达式">
+<meta property="og:url" content="http://yoursite.com/2018/11/13/正则表达式gerp/index.html">
+<meta property="og:site_name" content="LiHongFei.blog">
+<meta property="og:description" content="linux 文本处理三剑客grep ：文本过滤工具。sed ：文本编辑器。awk ： linux上的实现gawk，文本报告生成器。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://pf8eoyzmj.bkt.clouddn.com/%E8%89%BE%E6%96%AF4.jpg">
+<meta property="og:image" content="http://pf8eoyzmj.bkt.clouddn.com/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F2.png">
+<meta property="og:image" content="http://pf8eoyzmj.bkt.clouddn.com/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F.png">
+<meta property="og:updated_time" content="2018-10-09T01:34:38.940Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux三剑客之grep、正则表达式">
+<meta name="twitter:description" content="linux 文本处理三剑客grep ：文本过滤工具。sed ：文本编辑器。awk ： linux上的实现gawk，文本报告生成器。">
+<meta name="twitter:image" content="http://pf8eoyzmj.bkt.clouddn.com/%E8%89%BE%E6%96%AF4.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="LiHongFei.blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">LiHongFei.blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-正则表达式gerp" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/13/正则表达式gerp/" class="article-date">
+  <time datetime="2018-11-13T02:47:47.960Z" itemprop="datePublished">2018-11-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/linux/">linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Linux三剑客之grep、正则表达式
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://pf8eoyzmj.bkt.clouddn.com/%E8%89%BE%E6%96%AF4.jpg" alt="艾斯"></p>
+<h2 id="linux-文本处理三剑客"><a href="#linux-文本处理三剑客" class="headerlink" title="linux 文本处理三剑客"></a>linux 文本处理三剑客</h2><p>grep ：文本过滤工具。<br>sed ：文本编辑器。<br>awk ： linux上的实现gawk，文本报告生成器。<br><a id="more"></a></p>
+<h2 id="grep命令使用"><a href="#grep命令使用" class="headerlink" title="grep命令使用"></a>grep命令使用</h2><p>作用：文本搜索工具，根据用户指定的“模式”对目标文本逐行进行匹配检查<br>模式：由正则表达式字符及文本字符所编写的过滤条件<br>直接使用<code>grep</code>筛选包含<code>root</code>的行：<br>筛选不包括<code>root</code>的行，可以加 -v 取反<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#grep root /etc/passwd</span></span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">operator:x:11:0:operator:/root:/sbin/nologin</span><br></pre></td></tr></table></figure></p>
+<p><code>grep</code>也可以识别命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#grep `whoami` /etc/passwd</span></span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">operator:x:11:0:operator:/root:/sbin/nologin</span><br></pre></td></tr></table></figure></p>
+<p>显示匹配到内容的后几行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#grep -nA3 root /etc/passwd</span></span><br><span class="line">1:root:x:0:0:root:/root:/bin/bash</span><br><span class="line">2-bin:x:1:1:bin:/bin:/sbin/nologin</span><br><span class="line">3-daemon:x:2:2:daemon:/sbin:/sbin/nologin</span><br><span class="line">4-adm:x:3:4:adm:/var/adm:/sbin/nologin</span><br><span class="line">--</span><br><span class="line">10:operator:x:11:0:operator:/root:/sbin/nologin</span><br><span class="line">11-games:x:12:100:games:/usr/games:/sbin/nologin</span><br><span class="line">12-ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin</span><br><span class="line">13-nobody:x:99:99:Nobody:/:/sbin/nologin</span><br></pre></td></tr></table></figure></p>
+<p>显示匹配到内容的前几行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#grep -nB2 lihf /etc/passwd  </span></span><br><span class="line">40-ntp:x:38:38::/etc/ntp:/sbin/nologin</span><br><span class="line">41-tcpdump:x:72:72::/:/sbin/nologin</span><br><span class="line">42:lihf:x:1000:1000:lihf:/home/lihf:/bin/bash</span><br></pre></td></tr></table></figure></p>
+<p>显示匹配到内容的前后几行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#grep -nC2 lihf /etc/passwd </span></span><br><span class="line">40-ntp:x:38:38::/etc/ntp:/sbin/nologin</span><br><span class="line">41-tcpdump:x:72:72::/:/sbin/nologin</span><br><span class="line">42:lihf:x:1000:1000:lihf:/home/lihf:/bin/bash</span><br><span class="line">43-li:x:1001:1001::/home/li:/bin/bash</span><br><span class="line">44-liu:x:1002:1003::/home/liu:/bin/bash</span><br></pre></td></tr></table></figure></p>
+<p>匹配多个字符,两个<code>-e</code>是“或”的关系<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#grep -e root -e lihf /etc/passwd</span></span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">operator:x:11:0:operator:/root:/sbin/nologin</span><br><span class="line">lihf:x:1000:1000:lihf:/home/lihf:/bin/bash</span><br></pre></td></tr></table></figure></p>
+<p>取两个文档有交集的字符<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#grep -f a1 a2</span></span><br><span class="line">1</span><br><span class="line">5</span><br></pre></td></tr></table></figure></p>
+<h3 id="grep命令选项统计"><a href="#grep命令选项统计" class="headerlink" title="grep命令选项统计"></a>grep命令选项统计</h3><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>–color=auto:</td>
+<td>对匹配到的文本着色显示</td>
+</tr>
+<tr>
+<td>-v:</td>
+<td>显示不被pattern匹配到的行</td>
+</tr>
+<tr>
+<td>-i:</td>
+<td>忽略字符大小写</td>
+</tr>
+<tr>
+<td>-n：</td>
+<td>显示匹配的行号</td>
+</tr>
+<tr>
+<td>-c:</td>
+<td>统计匹配的行数</td>
+</tr>
+<tr>
+<td>-o:</td>
+<td>仅显示匹配到的字符串</td>
+</tr>
+<tr>
+<td>-q:</td>
+<td>静默模式，不输出任何信息</td>
+</tr>
+<tr>
+<td>-A #:</td>
+<td>after, 后#行</td>
+</tr>
+<tr>
+<td>-B #:</td>
+<td>before, 前#行</td>
+</tr>
+<tr>
+<td>-C #：</td>
+<td>context, 前后各#行</td>
+</tr>
+<tr>
+<td>-e：</td>
+<td>实现多个选项间的逻辑or关系</td>
+</tr>
+<tr>
+<td>-w：</td>
+<td>匹配整个单词</td>
+</tr>
+<tr>
+<td>-E：</td>
+<td>使用ERE</td>
+</tr>
+<tr>
+<td>-F：</td>
+<td>相当于fgrep，不支持正则表达式、</td>
+</tr>
+<tr>
+<td>-ffile:</td>
+<td>根据模式文件处理</td>
+</tr>
+</tbody>
+</table>
+<h2 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h2><blockquote>
+<p>正则表达式是对字符串（包括普通字符（例如，a 到 z 之间的字母）和特殊字符（称为“元字符”））操作的一种逻辑公式，就是用事先定义好的一些特定字符、及这些特定字符的组合，组成一个“规则字符串”，这个“规则字符串”用来表达对字符串的一种过滤逻辑。正则表达式是一种文本模式，模式描述在搜索文本时要匹配的一个或多个字符串。  </p>
+</blockquote>
+<h3 id="基本正则表达式"><a href="#基本正则表达式" class="headerlink" title="基本正则表达式"></a>基本正则表达式</h3><h3 id="正则表达式-字符匹配："><a href="#正则表达式-字符匹配：" class="headerlink" title="正则表达式-字符匹配："></a>正则表达式-字符匹配：</h3><p><code>.</code>匹配任意单个字符,两个点代表中间有两个字符r开头t结尾的行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#grep r..t /etc/passwd</span></span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">operator:x:11:0:operator:/root:/sbin/nologin</span><br><span class="line">ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin</span><br></pre></td></tr></table></figure></p>
+<p><code>[]</code>匹配指定范围内的任意单个字符,例匹配带有<code>a,b</code>其中一个字符的行，内容太多显示前两行。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#grep [a-b] /etc/passwd | head -2</span></span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">bin:x:1:1:bin:/bin:/sbin/nologi</span><br></pre></td></tr></table></figure></p>
+<p><strong>常见选项：</strong>  </p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>.</td>
+<td>匹配任意单个字符</td>
+</tr>
+<tr>
+<td>[]</td>
+<td>匹配指定范围内的任意单个字符，示例：[wang] [0-9] [a-z] [a-zA-Z]</td>
+</tr>
+<tr>
+<td>[^]</td>
+<td>匹配指定范围外的任意单个字符</td>
+</tr>
+<tr>
+<td>[:alnum:]</td>
+<td>字母和数字</td>
+</tr>
+<tr>
+<td>[:alpha:]</td>
+<td>代表任何英文大小写字符，亦即A-Z, a-z</td>
+</tr>
+<tr>
+<td>[:lower:]</td>
+<td>小写字母[:upper:] 大写字母</td>
+</tr>
+<tr>
+<td>[:blank:]</td>
+<td>空白字符（空格和制表符）</td>
+</tr>
+<tr>
+<td>[:space:]</td>
+<td>水平和垂直的空白字符（比[:blank:]包含的范围广）</td>
+</tr>
+<tr>
+<td>[:cntrl:]</td>
+<td>不可打印的控制字符（退格、删除、警铃…）</td>
+</tr>
+<tr>
+<td>[:digit:]</td>
+<td>十进制数字[:xdigit:]十六进制数字</td>
+</tr>
+<tr>
+<td>[:graph:]</td>
+<td>可打印的非空白字符</td>
+</tr>
+<tr>
+<td>[:print:]</td>
+<td>可打印字符</td>
+</tr>
+<tr>
+<td>[:punct:]</td>
+<td>标点符号</td>
+</tr>
+</tbody>
+</table>
+<h3 id="正则表达式-匹配次数"><a href="#正则表达式-匹配次数" class="headerlink" title="正则表达式-匹配次数"></a>正则表达式-匹配次数</h3><p><code>*</code>匹配前面的字符任意次，包括0次;贪婪模式：尽可能长的匹配<br>匹配<code>a</code>后不知道有几个<code>o</code> 加* 0次也包括<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#grep ao*b a3</span></span><br><span class="line">aooob</span><br><span class="line">aob</span><br><span class="line">aoooooooooooob</span><br><span class="line">ab</span><br></pre></td></tr></table></figure></p>
+<p><code>\?</code>匹配其前面的字符0或1次<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#grep "ao\?b" a3</span></span><br><span class="line">aob</span><br><span class="line">ab</span><br></pre></td></tr></table></figure></p>
+<p><code>+</code>匹配其前面的字符至少1次<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#grep "ao\+" a3</span></span><br><span class="line">aooob</span><br><span class="line">aob</span><br><span class="line">aoooooooooooob</span><br><span class="line">aooooo</span><br></pre></td></tr></table></figure></p>
+<p><code>\{n\}</code>匹配前面的字符3次<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#grep "ao\&#123;3\&#125;b" a3</span></span><br><span class="line">aooob</span><br></pre></td></tr></table></figure></p>
+<p><code>\{m,n\}</code>匹配前面的字符至少3次，至多5次<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#grep "ao\&#123;3,5\&#125;b" a3</span></span><br><span class="line">aooob</span><br><span class="line">aooooob</span><br></pre></td></tr></table></figure></p>
+<p><code>\{n,\}</code>匹配前面的字符至少n次<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#grep "ao\&#123;4,\&#125;b" a3 </span></span><br><span class="line">aoooooooooooob</span><br><span class="line">aooooob</span><br></pre></td></tr></table></figure></p>
+<p>{,n}匹配前面的字符至多n次<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#grep "ao\&#123;,5\&#125;b" a3 </span></span><br><span class="line">aooob</span><br><span class="line">aob</span><br><span class="line">aooooob</span><br><span class="line">ab</span><br></pre></td></tr></table></figure></p>
+<p><strong>常见选项：</strong>  </p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>*</td>
+<td>匹配前面的字符任意次，包括0次；贪婪模式：尽可能长的匹配</td>
+</tr>
+<tr>
+<td>.*</td>
+<td>任意长度的任意字符</td>
+</tr>
+<tr>
+<td>\?</td>
+<td>匹配其前面的字符0或1次</td>
+</tr>
+<tr>
+<td>+</td>
+<td>匹配其前面的字符至少1次</td>
+</tr>
+<tr>
+<td>{n}</td>
+<td>匹配前面的字符n次</td>
+</tr>
+<tr>
+<td>{m,n}</td>
+<td>匹配前面的字符至少m次，至多n次</td>
+</tr>
+<tr>
+<td>{,n}</td>
+<td>匹配前面的字符至多n次</td>
+</tr>
+<tr>
+<td>{n,}</td>
+<td>匹配前面的字符至少n次</td>
+</tr>
+</tbody>
+</table>
+<h3 id="正则表达式-位置锚定"><a href="#正则表达式-位置锚定" class="headerlink" title="正则表达式-位置锚定"></a>正则表达式-位置锚定</h3><p>定位出现的位置,下例以<code>root</code>开头的行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#grep "^root" /etc/passwd</span></span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br></pre></td></tr></table></figure></p>
+<p>查看以<code>root</code>开头<code>bash</code>结尾的行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#cat /etc/passwd | grep "^root" | grep "bash$"</span></span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br></pre></td></tr></table></figure></p>
+<p>精确到单词的匹配。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#grep "\&lt;root\&gt;" /etc/passwd</span></span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">operator:x:11:0:operator:/root:/sbin/nologi</span><br></pre></td></tr></table></figure></p>
+<p><strong>常见选项</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>^</td>
+<td>行首锚定，用于模式的最左侧</td>
+</tr>
+<tr>
+<td>$</td>
+<td>行尾锚定，用于模式的最右侧</td>
+</tr>
+<tr>
+<td>^PATTERN$</td>
+<td>用于模式匹配整行</td>
+</tr>
+<tr>
+<td>^$</td>
+<td>空行</td>
+</tr>
+<tr>
+<td>^[[:space:]]*$</td>
+<td>空白行</td>
+</tr>
+<tr>
+<td>\&lt; 或\b</td>
+<td>词首锚定，用于单词模式的左侧</td>
+</tr>
+<tr>
+<td>\&gt;或\b</td>
+<td>词尾锚定，用于单词模式的右侧</td>
+</tr>
+<tr>
+<td>\&lt;PATTERN></td>
+<td>匹配整个单词</td>
+</tr>
+</tbody>
+</table>
+<h3 id="正则表达式-分组"><a href="#正则表达式-分组" class="headerlink" title="正则表达式-分组"></a>正则表达式-分组</h3><p>分组：<code>\(\)</code> 将一个或多个字符捆绑在一起，当作一个整体处理，<br>显示某一组字符出现的次数,下例显示123这三个数组出现3次的行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#cat a4</span></span><br><span class="line">123</span><br><span class="line">123123123</span><br><span class="line">123123</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#grep "\(123\)\&#123;3\&#125;" a4</span></span><br><span class="line">123123123</span><br></pre></td></tr></table></figure>
+<p>后向引用：引用前面的分组括号中的模式所匹配字符，而非模式本身,例匹配123数字之后又出现123数字的行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#grep "\(123\).*\(456\).*\1" a5</span></span><br><span class="line">123 456 123 456 123</span><br></pre></td></tr></table></figure></p>
+<p>或者<code>\|</code>应用<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#grep "^\(a\|b\)"  /etc/passwd </span></span><br><span class="line"></span><br><span class="line">bin:x:1:1:bin:/bin:/sbin/nologin</span><br><span class="line">adm:x:3:4:adm:/var/adm:/sbin/nologin</span><br><span class="line">abrt:x:173:173::/etc/abrt:/sbin/nologin</span><br><span class="line">avahi:x:70:70:Avahi mDNS/DNS-SD Stack:/var/run/avahi-daemon:/sbin/nologin</span><br></pre></td></tr></table></figure></p>
+<h2 id="正则表达式元字符统计"><a href="#正则表达式元字符统计" class="headerlink" title="正则表达式元字符统计"></a>正则表达式元字符统计</h2><p><img src="http://pf8eoyzmj.bkt.clouddn.com/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F2.png" alt="正则表达式"><br><img src="http://pf8eoyzmj.bkt.clouddn.com/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F.png" alt="正则表达式"></p>
+<h2 id="egrep扩展正则表达式"><a href="#egrep扩展正则表达式" class="headerlink" title="egrep扩展正则表达式"></a>egrep扩展正则表达式</h2><p>egrep= grep -E<br>扩展正则表达式和基本正则表达式格式一样，在一些命令输入的时候省略了<code>/</code> 看上去更清晰了</p>
+<h3 id="扩展正则表达式的元字符："><a href="#扩展正则表达式的元字符：" class="headerlink" title="扩展正则表达式的元字符："></a>扩展正则表达式的元字符：</h3><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>.</td>
+<td>任意单个字符</td>
+</tr>
+<tr>
+<td>[]</td>
+<td>指定范围的字符</td>
+</tr>
+<tr>
+<td>[^]</td>
+<td>不在指定范围的字符</td>
+</tr>
+</tbody>
+</table>
+<h3 id="次数匹配："><a href="#次数匹配：" class="headerlink" title="次数匹配："></a>次数匹配：</h3><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>*</td>
+<td>匹配前面字符任意次</td>
+</tr>
+<tr>
+<td>?</td>
+<td>0或1次</td>
+</tr>
+<tr>
+<td>+</td>
+<td>1次或多次</td>
+</tr>
+<tr>
+<td>{m}</td>
+<td>匹配m次</td>
+</tr>
+<tr>
+<td>{m,n}</td>
+<td>至少m，至多n次</td>
+</tr>
+</tbody>
+</table>
+<h3 id="位置锚定："><a href="#位置锚定：" class="headerlink" title="位置锚定："></a>位置锚定：</h3><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>^</td>
+<td>行首</td>
+</tr>
+<tr>
+<td>$</td>
+<td>行尾</td>
+</tr>
+<tr>
+<td>\&lt;, \b</td>
+<td>语首</td>
+</tr>
+<tr>
+<td>>, \b</td>
+<td>语尾</td>
+</tr>
+</tbody>
+</table>
+<h3 id="分组："><a href="#分组：" class="headerlink" title="分组："></a>分组：</h3><p><strong>分组最为明显，都不需要写斜杠了<br>()<br>后向引用：\1, \2, …</strong></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/11/13/正则表达式gerp/" data-id="cjof4zu8q0005ekvxk9l5lma8" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工具/">工具</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/11/13/用户、组和权限/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">用户、组和权限</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/内核/">内核</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/压缩/">压缩</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/组/">组</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/启动/">启动</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工具/">工具</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/权限/">权限</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/查找/">查找</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/启动/" style="font-size: 10px;">启动</a> <a href="/tags/工具/" style="font-size: 10px;">工具</a> <a href="/tags/权限/" style="font-size: 10px;">权限</a> <a href="/tags/查找/" style="font-size: 10px;">查找</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/13/正则表达式gerp/">Linux三剑客之grep、正则表达式</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/用户、组和权限/">用户、组和权限</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/linux压缩工具/">linux压缩工具</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/linux-系统启动和内核管理/">linux-系统启动和内核管理</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/开博大吉/">开博大吉</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 linux<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

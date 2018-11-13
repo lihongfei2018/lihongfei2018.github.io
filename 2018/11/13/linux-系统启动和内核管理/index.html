@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>linux-系统启动和内核管理 | LiHongFei.blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="了解linux的启动流程可以帮助我们在生产中遇到内核不能启动，快速的恢复启动。">
+<meta name="keywords" content="启动">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux-系统启动和内核管理">
+<meta property="og:url" content="http://yoursite.com/2018/11/13/linux-系统启动和内核管理/index.html">
+<meta property="og:site_name" content="LiHongFei.blog">
+<meta property="og:description" content="了解linux的启动流程可以帮助我们在生产中遇到内核不能启动，快速的恢复启动。">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-13T02:40:02.630Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="linux-系统启动和内核管理">
+<meta name="twitter:description" content="了解linux的启动流程可以帮助我们在生产中遇到内核不能启动，快速的恢复启动。">
+  
+    <link rel="alternate" href="/atom.xml" title="LiHongFei.blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">LiHongFei.blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-linux-系统启动和内核管理" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/13/linux-系统启动和内核管理/" class="article-date">
+  <time datetime="2018-11-13T02:47:47.953Z" itemprop="datePublished">2018-11-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/内核/">内核</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      linux-系统启动和内核管理
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>了解linux的启动流程可以帮助我们在生产中遇到内核不能启动，快速的恢复启动。<br><a id="more"></a></p>
+<h2 id="Linux组成"><a href="#Linux组成" class="headerlink" title="Linux组成"></a>Linux组成</h2><blockquote>
+<p><strong>Linux: kernel+rootfs</strong><br>    kernel: 进程管理、内存管理、网络管理、驱动程序、文件系统、安全功能<br>    rootfs:程序和glibc<br>    库：函数集合, function, 调用接口（头文件负责描述）<br>        过程调用：procedure，无返回值<br>        函数调用：function<br>    程序：二进制执行文件<br>内核设计流派：<br>    单内核(monolithic kernel)：Linux<br>        把所有功能集成于同一个程序<br>    微内核(micro kernel)：Windows, Solaris<br>        每种功能使用一个单独子系统实现</p>
+</blockquote>
+<h3 id="内核"><a href="#内核" class="headerlink" title="内核"></a>内核</h3><blockquote>
+<p>Linux内核特点：<br>    支持模块化：.ko（内核对象）<br>        如：文件系统，硬件驱动，网络协议等<br>    支持内核模块的动态装载和卸载<br>组成部分：<br>    核心文件：/boot/vmlinuz-VERSION-release<br>        initramdisk：辅助的伪根系统,虚拟文件系统里面有一些必要的驱动，让我们可以通过内核挂载根<br>    CentOS 5: /boot/initrd-VERSION-release.img<br>    CentOS 6,7: /boot/initramfs-VERSION-release.img<br>模块文件：/lib/modules/VERSION-release</p>
+</blockquote>
+<p>linux操作系统最核心的文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 /]<span class="comment">#ls /boot/vmlinuz-3.10.0-862.el7.x86_64 -l -h</span></span><br><span class="line">-rwxr-xr-x. 1 root root 6.0M Apr 21  2018 /boot/vmlinuz-3.10.0-862.el7.x86_64</span><br></pre></td></tr></table></figure></p>
+<p><strong>驱动模块,支持动态加载和卸载</strong><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 /]<span class="comment">#cd /lib/modules/3.10.0-862.el7.x86_64/</span></span><br><span class="line">[root@centos7 3.10.0-862.el7.x86_64]<span class="comment">#cd kernel/      #内核</span></span><br><span class="line">[root@centos7 kernel]<span class="comment">#ls</span></span><br><span class="line">arch  crypto  drivers  fs  kernel  lib  mm  net  sound  virt</span><br><span class="line">[root@centos7 kernel]<span class="comment">#ls fs/     #对应的文件系统包</span></span><br><span class="line">binfmt_misc.ko.xz  ceph    dlm    fat      gfs2   lockd          nfs_common  overlayfs  udf</span><br><span class="line">btrfs              cifs    exofs  fscache  isofs  mbcache.ko.xz  nfsd        pstore     xfs</span><br><span class="line">cachefiles         cramfs  ext4   fuse     jbd2   nfs            nls         squashfs</span><br><span class="line">[root@centos7 3.10.0-862.el7.x86_64]<span class="comment">#ls kernel/fs/xfs/</span></span><br><span class="line">xfs.ko.xz   <span class="comment">#模块</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="CentOS6启动流程"><a href="#CentOS6启动流程" class="headerlink" title="CentOS6启动流程"></a>CentOS6启动流程</h2><blockquote>
+<p>1.加载BIOS的硬件信息，获取第一个启动设备<br>2.读取第一个启动设备MBR的引导加载程序(grub)的启动信息<br>3.加载核心操作系统的核心信息，核心开始解压缩，并尝试驱动所有的硬件设备<br>4.核心执行init程序，并获取默认的运行信息<br>5.init程序执行/etc/rc.d/rc.sysinit文件<br>6.启动核心的外挂模块<br>7.init执行运行的各个批处理文件(scripts)<br>8.init执行/etc/rc.d/rc.local<br>9.执行/bin/login程序，等待用户登录<br>10.登录之后开始以Shell控制主机  </p>
+</blockquote>
+<h3 id="启动流程"><a href="#启动流程" class="headerlink" title="启动流程"></a>启动流程</h3><p>POST：Power-On-Self-Test，加电自检，是BIOS功能的一个主要部分。负责完成对CPU、主板、内存、硬盘子系统、显示子系统、串并行接口、键盘等硬件情况的检测<br>    ROM：BIOS，Basic Input and Output System，保存着有关计算机系统最重要的基本输入输出程序，系统信息设置、开机加电自检程序和系统启动自举程序等<br>    RAM：CMOS互补金属氧化物半导体，保存各项参数的设定<br>    按次序查找引导设备，第一个有引导程序的设备为本次启动设备<br>bootloader: 引导加载器，引导程序<br>    windows: ntloader，仅是启动OS<br>    Linux：功能丰富，提供菜单，允许用户选择要启动系统或不同的内核版本；把用户选定的内核装载到内存中的特定空间中，解压、展开，并把系统控制权移交给内核<br>    LILO：LInux LOader<br>    GRUB: GRand Unified Bootloader<br>        GRUB 0.X: GRUB Legacy， GRUB2</p>
+<p><strong>MBR</strong>：<br>    第一个扇区<br>    前446字节 bootloader<br>    中间64字节 分区表<br>    最后2字节 55AA</p>
+<p><strong>GRUB</strong>:<br>primary boot loader : 1st stage，1.5 stage<br>secondary boot loader ：2nd stage，分区文件</p>
+<p><strong>kernel：</strong><br>自身初始化：<br>    探测可识别到的所有硬件设备<br>    加载硬件驱动程序（借助于ramdisk加载驱动）<br>    以只读方式挂载根文件系统<br>    运行用户空间的第一个应用程序：/sbin/init</p>
+<h3 id="ramdisk管理"><a href="#ramdisk管理" class="headerlink" title="ramdisk管理"></a>ramdisk管理</h3><p>启动菜单<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 boot]<span class="comment">#ll initramfs-3.10.0-862.el7.x86_64.img </span></span><br><span class="line">-rw-------. 1 root root 29167508 Sep 19 19:54 initramfs-3.10.0-862.el7.x86_64.img</span><br></pre></td></tr></table></figure></p>
+<p>误删除修复命令<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 boot]<span class="comment">#mkinitrd /boot/initramfs-`uname -r`.img `uname -r`</span></span><br><span class="line">[root@centos7 boot]<span class="comment">#sync    #写入磁盘</span></span><br></pre></td></tr></table></figure></p>
+<p>ramdisk文件的制作：<br>(1) mkinitrd命令<br>为当前正在使用的内核重新制作ramdisk文件<br>mkinitrd /boot/initramfs-$(uname -r).img $(uname -r)<br>(2) dracut命令<br>为当前正在使用的内核重新制作ramdisk文件<br>dracut /boot/initramfs-$(uname -r).img $(uname -r)</p>
+<h3 id="系统启动流程"><a href="#系统启动流程" class="headerlink" title="系统启动流程"></a>系统启动流程</h3><p>init程序的类型：<br>SysV: init, CentOS 5之前<br>    配置文件：/etc/inittab<br>Upstart: init,CentOS 6<br>    配置文件：/etc/inittab, /etc/init/*.conf<br>Systemd：systemd, CentOS 7<br>    配置文件：/usr/lib/systemd/system<br>            /etc/systemd/system<br><strong>CentOS 6 /etc/inittab</strong><br><code>/etc/inittab</code>中记录了开机进入的<strong>runlevel</strong>的类型<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">[root@centos6 ~]<span class="comment">#cat /etc/inittab</span></span><br><span class="line">usage <span class="string">'tty TTY=/dev/ttyX  - where X is console id'</span></span><br><span class="line">[root@centos6 ~]<span class="comment">#cat /etc/inittab    </span></span><br><span class="line"><span class="comment"># inittab is only used by upstart for the default runlevel.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># ADDING OTHER CONFIGURATION HERE WILL HAVE NO EFFECT ON YOUR SYSTEM.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># System initialization is started by /etc/init/rcS.conf</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Individual runlevels are started by /etc/init/rc.conf</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Ctrl-Alt-Delete is handled by /etc/init/control-alt-delete.conf</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Terminal gettys are handled by /etc/init/tty.conf and /etc/init/serial.conf,</span></span><br><span class="line"><span class="comment"># with configuration in /etc/sysconfig/init.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For information on how to write upstart event handlers, or how</span></span><br><span class="line"><span class="comment"># upstart works, see init(5), init(8), and initctl(8).</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Default runlevel. The runlevels used are:</span></span><br><span class="line"><span class="comment">#   0 - halt (Do NOT set initdefault to this)</span></span><br><span class="line"><span class="comment">#   1 - Single user mode</span></span><br><span class="line"><span class="comment">#   2 - Multiuser, without NFS (The same as 3, if you do not have networking)</span></span><br><span class="line"><span class="comment">#   3 - Full multiuser mode</span></span><br><span class="line"><span class="comment">#   4 - unused</span></span><br><span class="line"><span class="comment">#   5 - X11</span></span><br><span class="line"><span class="comment">#   6 - reboot (Do NOT set initdefault to this)</span></span><br><span class="line"><span class="comment"># </span></span><br><span class="line">id:5:initdefault:</span><br></pre></td></tr></table></figure></p>
+<p><code>/sbin/init</code> CentOS6之前 <code>/etc/inittab</code></p>
+<blockquote>
+<p>运行级别：为系统运行或维护等目的而设定；0-6：7个级别<br>0：关机<br>1：单用户模式(root自动登录), single, 维护模式<br>2: 多用户模式，启动网络功能，但不会启动NFS；维护模式<br>3：多用户模式，正常模式；文本界面<br>4：预留级别；可同3级别<br>5：多用户模式，正常模式；图形界面<br>6：重启<br>默认级别：3, 5<br>切换级别：init #<br>查看级别：runlevel ; who -r</p>
+</blockquote>
+<p><strong>启动流程</strong><br>说明：rc N –&gt; 意味着读取/etc/rc.d/rcN.d/<br>K<em>: K##</em>：##运行次序；数字越小，越先运行；数字越小的服务，通常为依赖到别的服务<br>S<em>: S##</em>：##运行次序；数字越小，越先运行；数字越小的服务，通常为被依赖到的服务</p>
+<p>根据进入系统的模式，开启和关闭的服务，相关服务在<code>/etc/rc*.d</code>,里面的文件全部都是软链接，如果想要删除某个进程，直接删除软链接即可。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@centos6 etc]<span class="comment">#ls rc5.d/</span></span><br><span class="line">K01smartd        K61nfs-rdma        K84ripngd          S02lvm2-monitor  S22messagebus        S70spice-vdagentd</span><br><span class="line">K02oddjobd       K69rpcsvcgssd      K84wpa_supplicant  S05rdma          S24nfslock           S80postfix</span><br><span class="line">K05wdaemon       K73winbind         K85zebra           S08ip6tables     S24rpcgssd           S82abrtd</span><br><span class="line">K10psacct        K74ntpd            K87restorecond     S10network       S25blk-availability  S83abrt-ccpp</span><br><span class="line">K10saslauthd     K75ntpdate         K88sssd            S11auditd        S25cups              S90crond</span><br><span class="line">K15htcacheclean  K75quota_nld       K89netconsole      S11portreserve   S25netfs             S95atd</span><br><span class="line">K15httpd         K76ypbind          K89rdisc           S12rsyslog       S26acpid             S99certmonger</span><br><span class="line">K50dnsmasq       K84bgpd            K92iptables        S13cpuspeed      S26haldaemon         S99local</span><br><span class="line">K50kdump         K84NetworkManager  K92pppoe-server    S13irqbalance    S26udev-post</span><br><span class="line">K50snmpd         K84ospf6d          K95firstboot       S13rpcbind       S28autofs</span><br><span class="line">K50snmptrapd     K84ospfd           K99rngd            S15mdmonitor     S50bluetooth</span><br><span class="line">K60nfs           K84ripd            S01sysstat         S17watchquagga   S55sshd</span><br></pre></td></tr></table></figure></p>
+<p><strong>ntsysv命令</strong><br><strong><code>ntsysv</code>可以查看进程里的程序，已经开启的为 </strong><code>*</code><strong> ,空格修改，tab键切换到保存退出的键上。</strong><br><strong>如果想要更改其他模式的启动服务<code>ntsysv --level=*</code>即可修改对应模式下的进程。</strong></p>
+<h3 id="chkconfig命令"><a href="#chkconfig命令" class="headerlink" title="chkconfig命令"></a>chkconfig命令</h3><p>chkconfig命令<br>查看服务在所有级别的启动或关闭设定情形：<br>    chkconfig [–list] [name]<br>添加：<br>SysV的服务脚本放置于/etc/rc.d/init.d (/etc/init.d)<br>    chkconfig –add name</p>
+<pre><code>#!/bin/bash
+#LLLL 表示初始在哪个级别下启动，-表示都不启动
+# chkconfig: LLLL nn nn
+</code></pre><p>删除：<br>    chkconfig –del name<br>修改指定的链接类型<br>    chkconfig [–level levels] name &lt;on|off|reset&gt;<br>        –level LLLL: 指定要设置的级别；省略时表示2345<br><strong>示例</strong><br>显示所有<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@centos6 etc]<span class="comment">#chkconfig --list</span></span><br></pre></td></tr></table></figure></p>
+<p>修改模式下的状态；如：修改1和3模式下的atd程序状态<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos6 etc]<span class="comment">#chkconfig --level 13 atd on</span></span><br><span class="line">[root@centos6 etc]<span class="comment">#chkconfig --list atd</span></span><br><span class="line">atd             0:off   1:on    2:off   3:on    4:on    5:on    6:off</span><br></pre></td></tr></table></figure></p>
+<p>常用的修改模式命令,默认作用于2，3，4，5<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos6 etc]<span class="comment">#chkconfig atd on</span></span><br><span class="line">[root@centos6 etc]<span class="comment">#chkconfig --list atd</span></span><br><span class="line">atd             0:off   1:off   2:on    3:on    4:on    5:on    6:off</span><br></pre></td></tr></table></figure></p>
+<h3 id="xinetd管理的服务"><a href="#xinetd管理的服务" class="headerlink" title="xinetd管理的服务"></a>xinetd管理的服务</h3><p>service 命令：手动管理服务<br>    service 服务 start|stop|restart<br>    service –status-all<br>瞬态（Transient）服务被xinetd进程所管理<br>进入的请求首先被xinetd代理<br>配置文件：/etc/xinetd.conf、/etc/xinetd.d/<service><br>与libwrap.so文件链接<br>用chkconfig控制的服务：<br>示例：chkconfig tftp on<br>用于不经常使用的服务，在使用的时候，可以瞬间唤醒服务，没有使用的时候处于睡眠状态。<br><strong>xinetd可以唤醒的服务在，<code>/etc/xinetd.d/&lt;service&gt;</code></strong></service></p>
+<h2 id="centos6开机流程总结"><a href="#centos6开机流程总结" class="headerlink" title="centos6开机流程总结"></a>centos6开机流程总结</h2><p>1，开机加电自检<br>2，读取mbr里面的Grub的1.5阶段<br>3，2阶段，boot下的/boot/grub/grub.conf定义了vmlinux的路径，以及根在哪，读取根需要有initramfs.img来加载驱动<br>4，读取系统里的第一个进程 /etc/init   然后读取/etc/inittab/下对应的模式，再读取/etc/rc.d/rc.sysinit的初始化脚本，根据模式再读取/etc/rc*.d/下的文件，先运行K开头的，再运行S开头的，最后运行/etc/rc.d/rc.local.</p>
+<h3 id="制作一个开机启动的服务脚本"><a href="#制作一个开机启动的服务脚本" class="headerlink" title="制作一个开机启动的服务脚本"></a>制作一个开机启动的服务脚本</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">[root@centos6 ~]<span class="comment">#vim /etc/init.d/testsvr</span></span><br><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment">#chkconfig: 35 96 03 </span></span><br><span class="line"><span class="comment">#description: test service</span></span><br><span class="line">. /etc/init.d/<span class="built_in">functions</span></span><br><span class="line"><span class="keyword">case</span> <span class="variable">$1</span> <span class="keyword">in</span></span><br><span class="line">start)</span><br><span class="line">        touch /var/lock/subsys/testsrv</span><br><span class="line">        action <span class="string">"Starting testsrv"</span> <span class="literal">true</span></span><br><span class="line">        ;;</span><br><span class="line">stop)</span><br><span class="line">        rm -f /var/lock/subsys/testsrv</span><br><span class="line">        action <span class="string">"Stopping testsrv"</span> <span class="literal">true</span></span><br><span class="line">        ;;</span><br><span class="line">restart)</span><br><span class="line">        action <span class="string">"Starting testsrv"</span> <span class="literal">true</span></span><br><span class="line">        action <span class="string">"Stopping testsrv"</span> <span class="literal">true</span></span><br><span class="line">        ;;</span><br><span class="line">status)</span><br><span class="line">        <span class="keyword">if</span> [ -f /var/lock/subsys/testsrv ];<span class="keyword">then</span></span><br><span class="line">                <span class="built_in">echo</span> testsrv is running...</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">                <span class="built_in">echo</span> testsrv is stopped</span><br><span class="line">        <span class="keyword">fi</span></span><br><span class="line">        ;;</span><br><span class="line">*)</span><br><span class="line">        <span class="built_in">echo</span> <span class="string">"Usage: /etc/init.d/testsrv &#123;start|stop|restart|status&#125;"</span></span><br><span class="line"><span class="keyword">esac</span></span><br><span class="line"></span><br><span class="line">[root@centos6 ~]<span class="comment">#chkconfig --add testsvr</span></span><br><span class="line">[root@centos6 ~]<span class="comment">#chkconfig --list testsvr</span></span><br><span class="line">testsvr         0:off   1:off   2:off   3:on    4:off   5:on    6:off</span><br></pre></td></tr></table></figure>
+<h2 id="模拟故障"><a href="#模拟故障" class="headerlink" title="模拟故障"></a>模拟故障</h2><h3 id="服务脚本故障"><a href="#服务脚本故障" class="headerlink" title="服务脚本故障"></a>服务脚本故障</h3><p>如果开机启动的服务脚本出现故障，导致开机开不了，如何解决。<br>答：开机按任意键，进入选择菜单界面，输入<code>a</code> 然后输入1，进入1模式，把故障的服务改为<code>off</code> <code>chkconfig --level 35 testsvr off</code> </p>
+<h3 id="grub446阶段损坏"><a href="#grub446阶段损坏" class="headerlink" title="grub446阶段损坏"></a>grub446阶段损坏</h3><p>如果grup的446个字节损坏，如何恢复：<strong>在损坏之后重启系统会直接进入光盘启动界面</strong><br>1)<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@centos6 ~]<span class="comment">#dd if=/dev/zero of=/dev/sda bs=1 count=446</span></span><br><span class="line">446+0 records <span class="keyword">in</span></span><br><span class="line">446+0 records out</span><br><span class="line">446 bytes (446 B) copied, 0.000926493 s, 481 kB/s</span><br></pre></td></tr></table></figure></p>
+<p>2) 通过光盘进入到救援模式。<br>3）进入到救援模式之后，切换到硬盘的根下<code>chroot /mnt/sysimage/</code>之后，执行<code>grub-install /dev/sda</code>修复完成即可，<code>sync</code>写入磁盘。<br>4)在修复完成之后在<code>/boot/grub/</code>会生成如下文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@centos6 grub]<span class="comment">#ls</span></span><br><span class="line">device.map     ffs_stage1_5      jfs_stage1_5    reiserfs_stage1_5  stage2           xfs_stage1_5</span><br><span class="line">e2fs_stage1_5  grub.conf         menu.lst        splash.xpm.gz      ufs2_stage1_5</span><br><span class="line">fat_stage1_5   iso9660_stage1_5  minix_stage1_5  stage1             vstafs_stage1_5</span><br></pre></td></tr></table></figure></p>
+<h3 id="删除grub-conf如何修复。"><a href="#删除grub-conf如何修复。" class="headerlink" title="删除grub.conf如何修复。"></a>删除grub.conf如何修复。</h3><p>开机就会进入命令行<code>grub&gt;</code>开头的界面<br>执行<code>kernel /vmlinux-2.6.32(tab补全) root=/dev/sda2</code> root=根的位置<br>    <code>initrd /initramfs-2.6.32(tab补全)</code><br>    <code>boot</code>重启<br>进入系统之后重新创建一个<code>grub.conf</code>文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@centos6 ~]<span class="comment">#vim /boot/grub/grub.conf</span></span><br><span class="line">default=0</span><br><span class="line">timeout=3</span><br><span class="line">title lihf-linux</span><br><span class="line">kernel  /vmlinuz-2.6.32-754.el6.x86_64 root=/dev/sda2</span><br><span class="line">initrd  /initramfs-2.6.32-754.el6.x86_64.img</span><br></pre></td></tr></table></figure></p>
+<h3 id="删除boot目录恢复："><a href="#删除boot目录恢复：" class="headerlink" title="删除boot目录恢复："></a>删除boot目录恢复：</h3><p>现象：开机会进入<code>grub&gt;</code>界面<br>1：进入光盘救援模式<br>2：安装内核：<br>切根<code>chroot /mnt/sysimage</code><br>挂光盘<code>mount /dev/sr0 /mnt/cdrom</code><br>安装内核<code>rpm -ivh /mnt/cdrom/Packages/kernel-2.6.32  --force</code><br>修复grub<code>grub-install /dev/sda</code><br>创建grub.conf：<code>default=0</code><br>               <code>timeout=5</code><br>               <code>title lihf-linux</code><br>              <code>kernel /vmlinux-2.6.32(tab补全) root=/dev/sda2</code> root=根的位置<br>              <code>initrd /initramfs-2.6.32(tab补全)</code><br>重启即可</p>
+<h3 id="删除init恢复"><a href="#删除init恢复" class="headerlink" title="删除init恢复"></a>删除init恢复</h3><h2 id="GRUP阶段"><a href="#GRUP阶段" class="headerlink" title="GRUP阶段"></a>GRUP阶段</h2><p>grub: GRand Unified Bootloader<br>grub 0.97: grub legacy<br>grub 2.x: grub2<br>grub legacy:<br>stage1: mbr<br>stage1_5: mbr之后的扇区，让stage1中的bootloader能识别stage2所在的分区上的文件系统<br>stage2：磁盘分区(/boot/grub/)  </p>
+<p><strong>在分区表里的前446字节存的为grup信息</strong>如果前446字节损坏，就会无法启动系统（1.5阶段）<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">[root@centos6 ~]<span class="comment">#hexdump -C /dev/sda -n 512</span></span><br><span class="line">00000000  eb 48 90 10 8e d0 bc 00  b0 b8 00 00 8e d8 8e c0  |.H..............|</span><br><span class="line">00000010  fb be 00 7c bf 00 06 b9  00 02 f3 a4 ea 21 06 00  |...|.........!..|</span><br><span class="line">00000020  00 be be 07 38 04 75 0b  83 c6 10 81 fe fe 07 75  |....8.u........u|</span><br><span class="line">00000030  f3 eb 16 b4 02 b0 01 bb  00 7c b2 80 8a 74 03 02  |.........|...t..|</span><br><span class="line">00000040  80 00 00 80 80 0c 05 00  00 08 fa 90 90 f6 c2 80  |................|</span><br><span class="line">00000050  75 02 b2 80 ea 59 7c 00  00 31 c0 8e d8 8e d0 bc  |u....Y|..1......|</span><br><span class="line">00000060  00 20 fb a0 40 7c 3c ff  74 02 88 c2 52 f6 c2 80  |. ..@|&lt;.t...R...|</span><br><span class="line">00000070  74 54 b4 41 bb aa 55 <span class="built_in">cd</span>  13 5a 52 72 49 81 fb 55  |tT.A..U..ZRrI..U|</span><br><span class="line">00000080  aa 75 43 a0 41 7c 84 c0  75 05 83 e1 01 74 37 66  |.uC.A|..u....t7f|</span><br><span class="line">00000090  8b 4c 10 be 05 7c c6 44  ff 01 66 8b 1e 44 7c c7  |.L...|.D..f..D|.|</span><br><span class="line">000000a0  04 10 00 c7 44 02 01 00  66 89 5c 08 c7 44 06 00  |....D...f.\..D..|</span><br><span class="line">000000b0  70 66 31 c0 89 44 04 66  89 44 0c b4 42 <span class="built_in">cd</span> 13 72  |pf1..D.f.D..B..r|</span><br><span class="line">000000c0  05 bb 00 70 eb 7d b4 08  <span class="built_in">cd</span> 13 73 0a f6 c2 80 0f  |...p.&#125;....s.....|</span><br><span class="line">000000d0  84 f0 00 e9 8d 00 be 05  7c c6 44 ff 00 66 31 c0  |........|.D..f1.|</span><br><span class="line">000000e0  88 f0 40 66 89 44 04 31  d2 88 ca c1 e2 02 88 e8  |..@f.D.1........|</span><br><span class="line">000000f0  88 f4 40 89 44 08 31 c0  88 d0 c0 e8 02 66 89 04  |..@.D.1......f..|</span><br><span class="line">00000100  66 a1 44 7c 66 31 d2 66  f7 34 88 54 0a 66 31 d2  |f.D|f1.f.4.T.f1.|</span><br><span class="line">00000110  66 f7 74 04 88 54 0b 89  44 0c 3b 44 08 7d 3c 8a  |f.t..T..D.;D.&#125;&lt;.|</span><br><span class="line">00000120  54 0d c0 e2 06 8a 4c 0a  fe c1 08 d1 8a 6c 0c 5a  |T.....L......l.Z|</span><br><span class="line">00000130  8a 74 0b bb 00 70 8e c3  31 db b8 01 02 <span class="built_in">cd</span> 13 72  |.t...p..1......r|</span><br><span class="line">00000140  2a 8c c3 8e 06 48 7c 60  1e b9 00 01 8e db 31 f6  |*....H|`......1.|</span><br><span class="line">00000150  31 ff <span class="built_in">fc</span> f3 a5 1f 61 ff  26 42 7c be 7f 7d e8 40  |1.....a.&amp;B|..&#125;.@|</span><br><span class="line">00000160  00 eb 0e be 84 7d e8 38  00 eb 06 be 8e 7d e8 30  |.....&#125;.8.....&#125;.0|</span><br><span class="line">00000170  00 be 93 7d e8 2a 00 eb  fe 47 52 55 42 20 00 47  |...&#125;.*...GRUB .G|</span><br><span class="line">00000180  65 6f 6d 00 48 61 72 64  20 44 69 73 6b 00 52 65  |eom.Hard Disk.Re|</span><br><span class="line">00000190  61 64 00 20 45 72 72 6f  72 00 bb 01 00 b4 0e <span class="built_in">cd</span>  |ad. Error.......|</span><br><span class="line">000001a0  10 ac 3c 00 75 f4 c3 00  00 00 00 00 00 00 00 00  |..&lt;.u...........|</span><br><span class="line">000001b0  00 00 00 00 00 00 00 00  66 98 0e 00 00 00 80 20  |........f...... |</span><br><span class="line">000001c0  21 00 83 17 18 ff 00 08  00 00 00 80 3e 00 00 17  |!...........&gt;...|</span><br><span class="line">000001d0  19 ff 83 fe ff ff 00 88  3e 00 00 80 1a 06 00 fe  |........&gt;.......|</span><br><span class="line">000001e0  ff ff 83 fe ff ff 00 08  59 06 00 80 a9 03 00 fe  |........Y.......|</span><br><span class="line">000001f0  ff ff 05 fe ff ff 00 88  02 0a 00 78 fd 0e 55 aa  |...........x..U.|</span><br><span class="line">00000200</span><br></pre></td></tr></table></figure></p>
+<p>如果grub分区表被损坏可以恢复。<br>安装grub：<br>(1) grub-install /dev/sd*<br>安装grub stage1和stage1_5到/dev/DISK磁盘上，并复制GRUB相关文件到 DIR/boot目录下<br><strong>初始化安装的系统1.5阶段的27个扇区不一定会在前512字节之后，也可能在磁盘的其他地方。</strong></p>
+<h3 id="boot-grub-grub-conf"><a href="#boot-grub-grub-conf" class="headerlink" title="/boot/grub/grub.conf"></a>/boot/grub/grub.conf</h3><blockquote>
+<p><code>/boot/grub/grub.conf</code>文件内容为系统的启动菜单<br>配置文件：<code>/boot/grub/grub.conf</code><br>default=#: 设定默认启动的菜单项；落单项(title)编号从0开始<br>timeout=#：指定菜单项等待选项选择的时长<br>splashimage=(hd#,#)/PATH/XPM_FILE：菜单背景图片文件路径<br>password [–md5] STRING: 启动菜单编辑认证<br>hiddenmenu：隐藏菜单<br>title TITLE：定义菜单项“标题”, 可出现多次<br>root (hd0,0)：查找stage2及kernel文件所在设备分区；为grub的根,hd表示硬盘0表示第一个硬盘<code>，</code>后面的0表示第一个分区。<br>kernel /PATH/TO/VMLINUZ_FILE [PARAMETERS]：启动的内核<br>initrd /PATH/TO/INITRAMFS_FILE: 内核匹配的ramfs文件<br>password [–md5|–encrypted ] STRING: 启动选定的内核或操作系统时进行认证<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[root@centos6 ~]<span class="comment">#vim /boot/grub/grub.conf </span></span><br><span class="line"><span class="comment"># grub.conf generated by anaconda</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Note that you do not have to rerun grub after making changes to this file</span></span><br><span class="line"><span class="comment"># NOTICE:  You have a /boot partition.  This means that</span></span><br><span class="line"><span class="comment">#          all kernel and initrd paths are relative to /boot/, eg.</span></span><br><span class="line"><span class="comment">#          root (hd0,0)</span></span><br><span class="line"><span class="comment">#          kernel /vmlinuz-version ro root=/dev/sda2</span></span><br><span class="line"><span class="comment">#          initrd /initrd-[generic-]version.img</span></span><br><span class="line"><span class="comment">#boot=/dev/sda</span></span><br><span class="line">default=0</span><br><span class="line">timeout=5</span><br><span class="line">splashimage=(hd0,0)/grub/splash.xpm.gz</span><br><span class="line">hiddenmenu</span><br><span class="line">title CentOS 6 (2.6.32-754.el6.x86_64)</span><br><span class="line">        root (hd0,0)</span><br><span class="line">        kernel /vmlinuz-2.6.32-754.el6.x86_64 ro root=UUID=283f8503-e182-4133-b854-07c7cc5ba2ef rd_NO_LUKS rd_NO_LVM</span><br><span class="line">LANG=en_US.UTF-8 rd_NO_MD SYSFONT=latarcyrheb-sun16 crashkernel=auto  KEYBOARDTYPE=pc KEYTABLE=us rd_NO_DM rhgb quiet</span><br><span class="line">        initrd /initramfs-2.6.32-754.el6.x86_64.img</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p><strong>更改背景图片：</strong><br><code>/boot/grub/splash.xpm.gz</code>为背景图片<br>格式为：640X480像素<br>要更改文件格式，后缀改为安装一个<code>.xpm</code>后缀。安装包<code>yum install ImageMagick</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos6 ~]<span class="comment">#convert -resize 640x480 -colors 14 win.png win.xpm</span></span><br><span class="line">[root@centos6 ~]<span class="comment">#gzip win.xpm</span></span><br></pre></td></tr></table></figure></p>
+<p>写在<code>/boot/grub/grub.conf</code>里<code>splashimage=(hd0,0)/grub/win.xpm.gz</code></p>
+<p><strong>给进入单用户加密码：</strong><br>在<code>/boot/grub/grub.conf</code>文件里的<code>timeout=5</code>的下面加一行<code>password+密码</code>即可。这种方法为明文密码，要想加密，可用下面的命令加密。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@centos6 ~]<span class="comment">#grub-md5-crypt </span></span><br><span class="line">Password: </span><br><span class="line">Retype password: </span><br><span class="line"><span class="variable">$1</span><span class="variable">$V4AY60</span><span class="variable">$zNedw</span>/uX37B7F/Aeuuomu1    <span class="comment">#复制到grub.conf文件password --md5即可。</span></span><br><span class="line">[root@centos6 ~]<span class="comment">#grub-crypt </span></span><br><span class="line">Password: </span><br><span class="line">Retype password: </span><br><span class="line"><span class="variable">$6</span><span class="variable">$QKdhDeafl10JC1Dt</span><span class="variable">$e</span>.uC46JFOA.QZim2zRO534/9ESz2cPiQ/SmRBRUCXxKPiOB85Jx1Dw5snIScd2PYWO.HmWDJ4kfP3eqKk.lHi.</span><br></pre></td></tr></table></figure></p>
+<p>书写格式：<strong>password –md5</strong><br>         <strong>password –encrypted</strong> </p>
+<p><strong>系统配置文件丢失修复</strong></p>
+<blockquote>
+<p>没有备份文件的恢复办法<br>如果一些配置文件丢失或软件误删除，且无备份，可以通过重新安装软件包来恢复，首先查找到/etc/inittab属于哪一个RPM包<br>chroot /mnt/sysimage<br>rpm -qf /etc/inittab 查询到此文件来自initscripts包<br>exit 退出chroot模式<br>mount /dev/sr0 /mnt/source 挂载存放RPM包的安装光盘<br>rpm –ivh force /mnt/Packages/initscripts-9.03.49-1.el6.centos.x86_64.rpm<br>CentOS 6系统的要修复的硬盘系统的根目录在/mnt/sysimage下，需要使用–root选项指定其位置。使用选项–replacepkgs 或–force 表示覆盖安装<br>如果想只提取RPM包中的/etc/inittab文件进行恢复，可以在进入救援模式后，执行命令：<br>rpm2cpio /mnt/source/Packages/initscripts-9.03.49-1.el6.centos.x86_64.rpm| cpio -idv ./etc/inittab<br>cp etc/inittab /mnt/sysimage/etc<br>注意此命令执行时不能将文件直接恢复至/etc目录，只能提取到当前目录下，且恢复的文件名称所在路径要写完整的路径。提取文件成功后，将其复制到根分区所在的/mnt/sysimage目录下相应位置即可</p>
+</blockquote>
+<h2 id="自制linux"><a href="#自制linux" class="headerlink" title="自制linux"></a>自制linux</h2><blockquote>
+<p>1：增加一块硬盘，并分区，创建文件系统。<br>2：建一个名字为boot的文件夹，用于临时挂载boot分区，存放相关文件。<br>3：安装grub相关信息,需要制定root在哪<code>grub-install --root-directory=/mnt/  /dev/sdb</code><br>4: 复制<code>initramfs-2.6.32-754.el6.x86_64.img`</code>vmlinuz-2.6.32-754.el6.x86_64<code>到/mnt/boot/目录,并且创建</code>grub.conf<code>文件</code>default=0<code></code>timeout=5<code></code>title test-linux<code></code>kernel vmlinuz-2.6.32-754.el6.x86_64  selinux=0 init=/sbin/bash<code></code>initrd initramfs-2.6.32-754.el6.x86_64.img<code>5: 挂载用作于根的硬盘，并且创建一下根下面的文件夹，如：</code>etc dev proc sys uer var tmp mnt lib lib64 bin sbin`<br>6: 复制一些相关命令到根下，用脚本实现，拷贝网卡。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[root@centos6 ~]<span class="comment">#bash copycmd.sh </span></span><br><span class="line">Please input a <span class="built_in">command</span>: bash</span><br><span class="line">Please input a <span class="built_in">command</span> or quit: ls</span><br><span class="line">Please input a <span class="built_in">command</span> or quit: cat</span><br><span class="line">Please input a <span class="built_in">command</span> or quit: df</span><br><span class="line">Please input a <span class="built_in">command</span> or quit: ping</span><br><span class="line">Please input a <span class="built_in">command</span> or quit: ifconfig</span><br><span class="line">Please input a <span class="built_in">command</span> or quit: mount</span><br><span class="line">Please input a <span class="built_in">command</span> or quit: blkid</span><br><span class="line">Please input a <span class="built_in">command</span> or quit: lsblk</span><br><span class="line">Please input a <span class="built_in">command</span> or quit: insmod</span><br><span class="line">Please input a <span class="built_in">command</span> or quit: mv</span><br><span class="line">Please input a <span class="built_in">command</span> or quit: rm</span><br><span class="line">Please input a <span class="built_in">command</span> or quit: vi</span><br><span class="line">Please input a <span class="built_in">command</span> or quit: vim</span><br><span class="line">Please input a <span class="built_in">command</span> or quit: modprobe</span><br><span class="line">Please input a <span class="built_in">command</span> or quit: quit</span><br><span class="line">[root@centos6 media]<span class="comment">#cp /lib/modules/2.6.32-754.el6.x86_64/kernel/drivers/net/e1000/e1000.ko /mnt/media/bin/</span></span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>7：<br>实验结果，把虚拟磁盘接到其他虚拟机。</p>
+<h2 id="proc目录"><a href="#proc目录" class="headerlink" title="proc目录"></a>proc目录</h2><p>proc目录：<br>    内核把自己内部状态信息及统计信息，以及可配置参数通<br>    过proc伪文件系统加以输出<br>参数：只读：输出信息<br>    可写：可接受用户指定“新值”来实现对内核某功<br>          能或特性的配置<br>/proc/sys<br>    (1) sysctl命令用于查看或设定此目录中诸多参数<br>    sysctl -w path.to.parameter=VALUE<br>    sysctl -w kernel.hostname=mail.magedu.com<br>    (2) echo命令通过重定向方式也可以修改大多数参数的值<br>    echo “VALUE” &gt; /proc/sys/path/to/parameter<br>    echo “websrv” &gt; /proc/sys/kernel/hostname</p>
+<h3 id="sysctl命令"><a href="#sysctl命令" class="headerlink" title="sysctl命令"></a>sysctl命令</h3><p>sysctl命令：<br>    默认配置文件：/etc/sysctl.conf<br>    (1) 设置某参数<br>        sysctl -w parameter=VALUE<br>    (2) 通过读取配置文件设置参数<br>       sysctl -p [/path/to/conf_file]<br>    (3) 查看所有生效参数<br>         sysctl -a<br>常用的几个参数：<br>    net.ipv4.ip_forward<br>    net.ipv4.icmp_echo_ignore_all<br>    vm.drop_caches<br><strong>释放缓存</strong><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[root@centos6 ~]<span class="comment">#cat /proc/sys/vm/drop_caches </span></span><br><span class="line">0       <span class="comment">#0代表保留缓存</span></span><br><span class="line">[root@centos6 ~]<span class="comment">#free -h    #缓存有371M</span></span><br><span class="line">             total       used       free     shared    buffers     cached</span><br><span class="line">Mem:          1.4G       671M       776M       2.6M        35M       371M</span><br><span class="line">-/+ buffers/cache:       264M       1.2G</span><br><span class="line">Swap:         3.9G         0B       3.9G  </span><br><span class="line">[root@centos6 ~]<span class="comment">#cat /proc/sys/vm/drop_caches </span></span><br><span class="line">1</span><br><span class="line">[root@centos6 ~]<span class="comment">#free -h    #释放过之后只有54M</span></span><br><span class="line">             total       used       free     shared    buffers     cached</span><br><span class="line">Mem:          1.4G       316M       1.1G       2.6M       164K        54M</span><br><span class="line">-/+ buffers/cache:       261M       1.2G</span><br><span class="line">Swap:         3.9G         0B       3.9G</span><br></pre></td></tr></table></figure></p>
+<p><strong>禁ping</strong>把0修改为1之后就ping不通了。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos6 ~]<span class="comment">#cat /proc/sys/net/ipv4/icmp_echo_ignore_all </span></span><br><span class="line">0</span><br></pre></td></tr></table></figure></p>
+<p>以上内容想要保存需要写到<code>/etc/sysctl.conf</code>如：net/ipv4/icmp_echo_ignore_all写入到配置文件的话要把斜杠改为<code>.</code> –<code>net.ipv4.icmp_echo_ignore_all=1</code>，配置文件生效执行<code>sysctl -p</code></p>
+<h3 id="sys目录-一般情况下不会修改"><a href="#sys目录-一般情况下不会修改" class="headerlink" title="/sys目录(一般情况下不会修改)"></a>/sys目录(一般情况下不会修改)</h3><p><strong>/sys目录：</strong><br>sysfs：为用户使用的伪文件系统，输出内核识别出的各硬件设备的相关属性信息，也有内核对硬件特性的设定信息；有些参数是可以修改的，用于调整硬件工作特性<br>udev通过此路径下输出的信息动态为各设备创建所需要设备文件，udev是运行用户空间程序<br>专用工具：udevadmin, hotplug<br>udev为设备创建设备文件时，会读取其事先定义好的规则文件，一般在/etc/udev/rules.d及/usr/lib/udev/rules.d目录下</p>
+<h2 id="内核编译"><a href="#内核编译" class="headerlink" title="内核编译"></a>内核编译</h2><p>单内核体系设计、但充分借鉴了微内核设计体系的优点，为内核引入模块化机制<br>内核组成部分：<br>        kernel：内核核心，一般为bzImage，通常在/boot目录下<br>        名称为 vmlinuz-VERSION-RELEASE<br>kernel object：内核对象，一般放置于<br>    /lib/modules/VERSION-RELEASE/</p>
+<p><strong>内核版本查看命令</strong></p>
+<blockquote>
+<p>运行中的内核：<br>uname命令：<br>uname - print system information<br>uname [OPTION]…<br>-n: 显示节点名称<br>-r: 显示VERSION-RELEASE<br>-a:显示所有信息</p>
+</blockquote>
+<p><strong>内核模块命令</strong></p>
+<blockquote>
+<p>lsmod命令：<br>    显示由核心已经装载的内核模块<br>    显示的内容来自于: /proc/modules文件<br>modinfo命令：<br>    显示模块的详细描述信息<br>modinfo [ -k kernel ] [ modulename|filename… ]<br>-n：只显示模块文件路径<br>-p：显示模块参数<br>-a：作者<br>-d：描述<br>示例：lsmod |grep xfs<br>modinfo xfs</p>
+</blockquote>
+<p><strong>内核模块管理</strong><br>modprobe命令：可以解决模块依赖关系，类似于yum<br>装载或卸载内核模块<br>modprobe [ -C config-file ] [ modulename ] [ module parame-ters… ]<br>modprobe [ -r ] modulename…<br>配置文件：/etc/modprobe.conf, /etc/modprobe.d/*.conf</p>
+<p><strong>内核模块管理</strong><br>depmod命令：<br>内核模块依赖关系文件及系统信息映射文件的生成工具<br>装载或卸载内核模块：<br>insmod命令：指定模块文件，不自动解决依赖模块<br>    insmod [ filename ] [ module options… ]<br>    insmod <code>modinfo –n exportfs</code><br>    lnsmod <code>modinfo –n xfs</code><br>rmmod命令：卸载模块<br>    rmmod [ modulename ]<br>    rmmod xfs<br>    rmmod exportfs</p>
+<p><strong>获取内核源代码包</strong><br><a href="http://www.kernel.org" target="_blank" rel="noopener">www.kernel.org</a><br><strong>参考现有系统的模块的编译</strong><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos6 boot]<span class="comment">#ls config-2.6.32-754.el6.x86_64 </span></span><br><span class="line">config-2.6.32-754.el6.x86_64</span><br></pre></td></tr></table></figure></p>
+<p><strong>开发环境准备</strong></p>
+<blockquote>
+<p>包组<br>Development Tools<br>目标主机硬件设备相关信息<br>CPU：<br>cat /proc/cpuinfo<br>x86info -a<br>lscpu</p>
+</blockquote>
+<p>安装开发包组<br>下载源码文件<br>.config：准备文本配置文件<br>make menuconfig：配置内核选项<br>make [-j #]<br>make modules_install：安装模块<br>make install ：安装内核相关文件<br>安装bzImage为/boot/vmlinuz-VERSION-RELEASE<br>生成initramfs文件<br>编辑grub的配置文件</p>
+<p><strong>配置内核选项</strong><br>支持“更新”模式进行配置：make help</p>
+<blockquote>
+<p>(a) make config：基于命令行以遍历的方式配置内核中可配置的每个选项<br>(b) make menuconfig：基于curses的文本窗口界面<br>(c) make gconfig：基于GTK (GNOME）环境窗口界面<br>(d) make xconfig：基于QT(KDE)环境的窗口界面<br>支持“全新配置”模式进行配置<br>(a) make defconfig：基于内核为目标平台提供的“默认”配置进行配置<br>(b) make allyesconfig: 所有选项均回答为“yes“<br>(c) make allnoconfig: 所有选项均回答为“no“</p>
+</blockquote>
+<p><strong>编译</strong></p>
+<blockquote>
+<p>全编译:make [-j #]<br>编译内核的一部分功能：<br>(a) 只编译某子目录中的相关代码<br>cd /usr/src/linux<br>make dir/<br>(b) 只编译一个特定的模块<br>cd /usr/src/linux<br>make dir/file.ko<br>示例：只为e1000编译驱动：<br>make drivers/net/ethernet/intel/e1000/e1000.ko</p>
+</blockquote>
+<p><strong>内核编译清理</strong><br>在已经执行过编译操作的内核源码树做重新编译<br>需要事先清理操作：<br>make clean：清理大多数编译生成的文件，但会保留config文件等<br>make mrproper: 清理所有编译生成的文件、config及某些备份文件<br>make distclean：mrproper、清理patches以及编辑器备份文件</p>
+<h3 id="编译步骤"><a href="#编译步骤" class="headerlink" title="编译步骤"></a>编译步骤</h3><p>一、<br>下载内核源码包，解压缩之后把现有系统的模块模本拷贝到解压缩的目录里<code>tar xvf linux-4.18</code>，改名为<code>.config</code><br>二、<br>安装开发包组<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">[root@centos6 data]<span class="comment">#yum groupinstall "development tools"</span></span><br><span class="line">``` </span><br><span class="line">进入到文件加目录通过`make menuconfig`可以配置需要开启哪些服务。</span><br><span class="line">三</span><br><span class="line">编译安装`make -j 4 `</span><br><span class="line">**删除编译内核**</span><br><span class="line">make clean：清理大多数编译生成的文件，但会保留config文件等</span><br><span class="line">make mrproper: 清理所有编译生成的文件、config及某些备份文件</span><br><span class="line">make distclean：mrproper、清理patches以及编辑器备份文件</span><br><span class="line"><span class="comment">## 破解CentOS7的root口令方法</span></span><br><span class="line">&gt;启动时任意键暂停启动</span><br><span class="line">按e键进入编辑模式</span><br><span class="line">将光标移动linux16开始的行，添加内核参数rd.break</span><br><span class="line">按ctrl-x启动</span><br><span class="line">mount –o remount,rw /sysroot</span><br><span class="line">chroot /sysroot</span><br><span class="line">passwd root</span><br><span class="line">touch /.autorelabel</span><br><span class="line"><span class="built_in">exit</span></span><br><span class="line">reboot</span><br><span class="line"></span><br><span class="line">**口令加密**</span><br><span class="line">**`grub2-setpassword`**</span><br><span class="line"></span><br><span class="line">**默认启动自己指定的内核**</span><br><span class="line">根据`/boot/grub2/grub.cfg`里的配置启动某个内核</span><br><span class="line">```bash</span><br><span class="line">[root@centos7 default]<span class="comment">#vim /etc/default/grub </span></span><br><span class="line">GRUB_TIMEOUT=5</span><br><span class="line">GRUB_DISTRIBUTOR=<span class="string">"<span class="variable">$(sed 's, release .*$,,g' /etc/system-release)</span>"</span></span><br><span class="line">GRUB_DEFAULT=saved</span><br><span class="line">GRUB_DISABLE_SUBMENU=<span class="literal">true</span></span><br><span class="line">GRUB_TERMINAL_OUTPUT=<span class="string">"console"</span></span><br><span class="line">GRUB_CMDLINE_LINUX=<span class="string">"crashkernel=auto rhgb quiet"</span></span><br><span class="line">GRUB_DISABLE_RECOVERY=<span class="string">"true"</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>systemd</strong><br>核心概念：unit<br>unit表示不同类型的systemd对象，通过配置文件进行标识和配置；文件中主要包含了系统服务、监听socket、保存的系统快照以及其它与init相关的信息<br>配置文件<br>/usr/lib/systemd/system:每个服务最主要的启动脚本设置，类似于之前的/etc/init.d/<br>/run/systemd/system：系统执行过程中所产生的服务脚本，比上面目录优先运行<br>/etc/systemd/system：管理员建立的执行脚本，类似于/etc/rcN.d/Sxx的功能，比上面目录优先运行</p>
+<h2 id="CentOS7引导顺序"><a href="#CentOS7引导顺序" class="headerlink" title="CentOS7引导顺序"></a>CentOS7引导顺序</h2><blockquote>
+<p>UEFi或BIOS初始化，运行POST开机自检<br>选择启动设备<br>引导装载程序, centos7是grub2<br>加载装载程序的配置文件：<br>/etc/grub.d/<br>/etc/default/grub<br>/boot/grub2/grub.cfg<br>加载initramfs驱动模块<br>加载内核选项<br>内核初始化，centos7使用systemd代替init<br>执行initrd.target所有单元，包括挂载/etc/fstab<br>从initramfs根文件系统切换到磁盘根目录<br>systemd执行默认target配置，配置文件/etc/systemd/system/default.target<br>systemd执行sysinit.target初始化系统及basic.target准备操作系统<br>systemd启动multi-user.target下的本机与服务器服务<br>systemd执行multi-user.target下的/etc/rc.d/rc.local<br>Systemd执行multi-user.target下的getty.target及登录服务<br>systemd执行graphical需要的服务<br><strong>启动时间</strong><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#systemd-analyze </span></span><br><span class="line">Startup finished <span class="keyword">in</span> 1.876s (kernel) + 1.390s (initrd) + 11.770s (userspace) = 15.037s</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/11/13/linux-系统启动和内核管理/" data-id="cjof4zu92000fekvx1pssjuk3" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/启动/">启动</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/11/13/linux压缩工具/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          linux压缩工具
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/11/13/开博大吉/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">开博大吉</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/内核/">内核</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/压缩/">压缩</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/组/">组</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/启动/">启动</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工具/">工具</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/权限/">权限</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/查找/">查找</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/启动/" style="font-size: 10px;">启动</a> <a href="/tags/工具/" style="font-size: 10px;">工具</a> <a href="/tags/权限/" style="font-size: 10px;">权限</a> <a href="/tags/查找/" style="font-size: 10px;">查找</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/13/正则表达式gerp/">Linux三剑客之grep、正则表达式</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/用户、组和权限/">用户、组和权限</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/linux压缩工具/">linux压缩工具</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/linux-系统启动和内核管理/">linux-系统启动和内核管理</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/开博大吉/">开博大吉</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 linux<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
