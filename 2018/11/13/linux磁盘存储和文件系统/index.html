@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>磁盘储存和文件系统 | LiHongFei.blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="磁盘分区为什么分区：优化I/O性能实现磁盘空间配额限制提高修复速度隔离系统和程序安装多个OS采用不同文件系统">
+<meta name="keywords" content="磁盘">
+<meta property="og:type" content="article">
+<meta property="og:title" content="磁盘储存和文件系统">
+<meta property="og:url" content="http://yoursite.com/2018/11/13/linux磁盘存储和文件系统/index.html">
+<meta property="og:site_name" content="LiHongFei.blog">
+<meta property="og:description" content="磁盘分区为什么分区：优化I/O性能实现磁盘空间配额限制提高修复速度隔离系统和程序安装多个OS采用不同文件系统">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-10-23T10:48:08.136Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="磁盘储存和文件系统">
+<meta name="twitter:description" content="磁盘分区为什么分区：优化I/O性能实现磁盘空间配额限制提高修复速度隔离系统和程序安装多个OS采用不同文件系统">
+  
+    <link rel="alternate" href="/atom.xml" title="LiHongFei.blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">LiHongFei.blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-linux磁盘存储和文件系统" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/13/linux磁盘存储和文件系统/" class="article-date">
+  <time datetime="2018-11-13T02:52:26.882Z" itemprop="datePublished">2018-11-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/文件系统/">文件系统</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      磁盘储存和文件系统
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="磁盘分区"><a href="#磁盘分区" class="headerlink" title="磁盘分区"></a>磁盘分区</h2><p><strong>为什么分区：</strong><br>优化I/O性能<br>实现磁盘空间配额限制<br>提高修复速度<br>隔离系统和程序<br>安装多个OS<br>采用不同文件系统<br><a id="more"></a></p>
+<h2 id="分区"><a href="#分区" class="headerlink" title="分区"></a>分区</h2><p>两种分区方式：MBR，GPT<br><strong>MBR</strong>：1982年，使用32位表示扇区数，分区不超过2T，4个主分区；3主分区+1扩展(N个逻辑分区)<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#fdisk -l       #格式为`dos`的及为MBR格式分区</span></span><br><span class="line">Disk label <span class="built_in">type</span>: dos</span><br></pre></td></tr></table></figure></p>
+<p><strong>MBR分区结构</strong><br>![MBR]<br>可以把分区结构表备份出来，写入到其他硬盘，写入之后另一个硬盘的分区结构就会和备份的一样。（<strong>注意：swap 逻辑分区不会备份，而且分区大小要一致</strong>）<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#dd if=/dev/sda of=/data/abc bs=1 count=66 skip=446     #备份分区结构表  </span></span><br><span class="line">[root@centos7 data]<span class="comment">#dd if=abc of=/dev/sdb bs=1 count=66 seek=446    #把备份的分区结构表输入到sdb的硬盘</span></span><br><span class="line">[root@centos7 data]<span class="comment">#fdisk -l    </span></span><br><span class="line"></span><br><span class="line">Disk /dev/sda: 214.7 GB, 214748364800 bytes, 419430400 sectors</span><br><span class="line">Units = sectors of 1 * 512 = 512 bytes</span><br><span class="line">Sector size (logical/physical): 512 bytes / 512 bytes</span><br><span class="line">I/O size (minimum/optimal): 512 bytes / 512 bytes</span><br><span class="line">Disk label <span class="built_in">type</span>: dos</span><br><span class="line">Disk identifier: 0x000b997b</span><br><span class="line"></span><br><span class="line">   Device Boot      Start         End      Blocks   Id  System</span><br><span class="line">/dev/sda1   *        2048     2099199     1048576   83  Linux</span><br><span class="line">/dev/sda2         2099200   106956799    52428800   83  Linux</span><br><span class="line">/dev/sda3       106956800   169871359    31457280   83  Linux</span><br><span class="line">/dev/sda4       169871360   419430399   124779520    5  Extended</span><br><span class="line">/dev/sda5       169873408   178262015     4194304   82  Linux swap / Solaris</span><br><span class="line">Warning: invalid flag 0x0000 of partition table 5 will be corrected by w(rite)</span><br><span class="line"></span><br><span class="line">Disk /dev/sdb: 161.1 GB, 161061273600 bytes, 314572800 sectors</span><br><span class="line">Units = sectors of 1 * 512 = 512 bytes</span><br><span class="line">Sector size (logical/physical): 512 bytes / 512 bytes</span><br><span class="line">I/O size (minimum/optimal): 512 bytes / 512 bytes</span><br><span class="line">Disk label <span class="built_in">type</span>: dos</span><br><span class="line">Disk identifier: 0x00000000</span><br><span class="line"></span><br><span class="line">   Device Boot      Start         End      Blocks   Id  System</span><br><span class="line">/dev/sdb1   *        2048     2099199     1048576   83  Linux</span><br><span class="line">/dev/sdb2         2099200   106956799    52428800   83  Linux</span><br><span class="line">/dev/sdb3       106956800   169871359    31457280   83  Linux</span><br><span class="line">/dev/sdb4       169871360   419430399   124779520    5  Extended</span><br><span class="line">[root@centos7 data]<span class="comment">#hexdump -C /dev/sda -n 512 -v      #查看硬盘的512字节</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>清除节点表信息</strong><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#dd if=/dev/zero of=/dev/sdb bs=1 count=512</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>GPT分区结构</strong></p>
+<blockquote>
+<p>GPT:GUID（Globals Unique Identifiers）partition table 支持128个分区<br>使用64位，支持8Z（512Byte/block ）64Z （4096Byte/block）<br>使用128位UUID(Universally Unique Identifier) 表示磁盘和分区GPT分区表自动备份在头和尾两份，并有CRC校验位<br>UEFI (统一扩展固件接口)硬件支持GPT，使操作系统启动<br>GPT在最前面的512字节定义了和MBR结构一样的数据，防止老设备不识别GPL类型</p>
+</blockquote>
+<h2 id="管理分区"><a href="#管理分区" class="headerlink" title="管理分区"></a>管理分区</h2><blockquote>
+<p>列出块设备<br><strong>lsblk</strong><br><strong><code>lsblk -f</code></strong>可以查看未挂载分区的文件系统类型<br>创建分区使用：<br><strong>fdisk</strong>创建<strong>MBR</strong>分区<br><strong>gdisk</strong>创建<strong>GPT</strong>分区<br><strong>parted</strong>高级分区操作  </p>
+</blockquote>
+<h3 id="同步分区"><a href="#同步分区" class="headerlink" title="同步分区"></a>同步分区</h3><p><strong>partprobe</strong></p>
+<h3 id="parted命令"><a href="#parted命令" class="headerlink" title="parted命令"></a>parted命令</h3><p>parted的操作都是实时生效的，小心使用<br>用法：parted [选项]… [设备[命令[参数]…]…]<br>parted /dev/sdbmklabelgpt|msdos<br>parted /dev/sdbprint<br>parted /dev/sdbmkpartprimary 1 200 （默认M）<br>parted /dev/sdbrm1<br>parted –l 列出分区信息<br>例：对sdb硬盘进行分区<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#parted /dev/sdb mklabel msdos     #对分区进行制定文件系统 msdos就是MBR</span></span><br><span class="line">[root@centos7 data]<span class="comment">#parted /dev/sdb mkpart primary 1 2000         #分区从1M到2000M为一个分区，默认M为单位</span></span><br><span class="line">Information: You may need to update /etc/fstab</span><br><span class="line">[root@centos7 data]<span class="comment">#parted /dev/sdb mkpart primary 2001 4000</span></span><br><span class="line">Information: You may need to update /etc/fstab</span><br><span class="line">[root@centos7 data]<span class="comment">#lsblk /dev/sdb      #可以看到有了两个分区，皆为2G</span></span><br><span class="line">NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT</span><br><span class="line">sdb      8:16   0  150G  0 disk </span><br><span class="line">├─sdb1   8:17   0  1.9G  0 part </span><br><span class="line">└─sdb2   8:18   0  1.9G  0 part</span><br><span class="line">[root@centos7 data]<span class="comment">#fdisk /dev/sdb      #输入`m` 查看选项,再输入`d`可以删除分区</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="fdisk创建MBR分区"><a href="#fdisk创建MBR分区" class="headerlink" title="fdisk创建MBR分区"></a>fdisk创建MBR分区</h2><p>格式： fdisk [options] \<disk><br>其他选项：  </disk></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>p</td>
+<td>分区列表</td>
+</tr>
+<tr>
+<td>t</td>
+<td>更改分区类型</td>
+</tr>
+<tr>
+<td>n</td>
+<td>创建新分区</td>
+</tr>
+<tr>
+<td>d</td>
+<td>删除分区</td>
+</tr>
+<tr>
+<td>v</td>
+<td>校验分区</td>
+</tr>
+<tr>
+<td>u</td>
+<td>转换单位</td>
+</tr>
+<tr>
+<td>w</td>
+<td>保存并退出</td>
+</tr>
+<tr>
+<td>q</td>
+<td>不保存并退出</td>
+</tr>
+</tbody>
+</table>
+<p><code>fdisk</code>是交互式的，在分区的时候<strong>起始点扇区不要修改</strong>，分区后面要加单位，分区完毕要输入<code>w</code>保存才生效<br>逻辑分区只有在扩展分区建立好之后才可以分逻辑分区。<br><code>partprobe</code>把硬盘上的内容弄写入到内存中  （CentOS 7）<br><code>partx -a</code> centos6 同步新增加的分区<br><code>partx-d --nr</code>M-N /dev/DEVICE  删除分区用这个命令 （centos6）</p>
+<h2 id="gdisk"><a href="#gdisk" class="headerlink" title="gdisk"></a>gdisk</h2><p>gidsk和fdisk类似，他可以创建128个分区</p>
+<h2 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h2><p>从系统角度来看，文件系统是对文件存储设备的空间进行组织和分配，负责文件存储并对存入的文件进行保护和检索的系统。具体地说，它负责为用户建立文件，存入、读出、修改、转储文件，控制文件的存取，安全控制，日志，压缩，加密等<br>如果没有文件系统，我们只能看到010101。</p>
+<h3 id="文件系统类型"><a href="#文件系统类型" class="headerlink" title="文件系统类型"></a>文件系统类型</h3><p>Linux文件系统：ext2 ext3 ext4 xfs<br>光盘： iso9660<br>Windows：FAT32 NTFS<br>unix:FFS  UFS JFS2<br>网络文件系统： NFS  CIFS<br>集群文件系统：GFS2  OCFS2(oracle)<br>分布式文件系统： fastdfs,ceph, moosefs, mogilefs, glusterfs, Lustre  </p>
+<h3 id="日志功能"><a href="#日志功能" class="headerlink" title="日志功能"></a>日志功能</h3><p>日志型文件系统: ext3, ext4, xfs<br>非日志型文件系统: ext2, vfat  </p>
+<h3 id="文件系统的组成部分"><a href="#文件系统的组成部分" class="headerlink" title="文件系统的组成部分"></a>文件系统的组成部分</h3><p>用户空间的管理工具：mkfs.ext4, mkfs.xfs,mkfs.vfat<br>内核中的模块：ext4, xfs, vfat<br>Linux的虚拟文件系统：VFS</p>
+<h2 id="创建文件系统-mkfs"><a href="#创建文件系统-mkfs" class="headerlink" title="创建文件系统(mkfs)"></a>创建文件系统(mkfs)</h2><p>mkfs命令<br>(1)mkfs.FS_TYPE/dev/DEVICE<br>ext4<br>xfs<br>btrfs<br>vfat<br>(2) mkfs-t FS_TYPE /dev/DEVICE<br>-L ‘LABEL’设定卷标<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#mkfs.      #centos7的mkfs支持创建的系统，7最好是xfs。</span></span><br><span class="line">mkfs.btrfs   mkfs.ext2    mkfs.ext4    mkfs.minix   mkfs.vfat    </span><br><span class="line">mkfs.cramfs  mkfs.ext3    mkfs.fat     mkfs.msdos   mkfs.xfs</span><br></pre></td></tr></table></figure></p>
+<h3 id="其他命令选项（mkfs-）"><a href="#其他命令选项（mkfs-）" class="headerlink" title="其他命令选项（mkfs.）"></a>其他命令选项（mkfs.）</h3><p>mke2fs：ext系列文件系统专用管理工具<br>-t {ext2|ext3|ext4} 指定文件系统类型<br>-b {1024|2048|4096} 指定块大小<br>-L ‘LABEL’ 设置卷标<br>-i# 为数据空间中每多少个字节创建一个inode；不应该小于block大小<br>-N #指定分区中创建多少个inode<br>-I 一个inode记录占用的磁盘空间大小，128—4096<br>-m #默认5%,为管理人员预留空间占总空间的百分比<br>-O FEATURE[,…]启用指定特性<br>-O ^FEATURE关闭指定特性</p>
+<h2 id="blkid"><a href="#blkid" class="headerlink" title="blkid"></a>blkid</h2><p>blkid：块设备属性信息查看<br>-U UUID根据指定的UUID来查找对应的设备<br>-L LABEL根据指定的LABEL来查找对应的设备<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@CentOS6 ~]<span class="variable">$blkid</span> -U 114ef991-ccb3-4e7c-84df-8d244ba58793     <span class="comment">#查找这个UUID对应的分区。</span></span><br><span class="line">/dev/sda1</span><br></pre></td></tr></table></figure></p>
+<h2 id="e2label：管理ext系列文件系统的LABEL"><a href="#e2label：管理ext系列文件系统的LABEL" class="headerlink" title="e2label：管理ext系列文件系统的LABEL"></a>e2label：管理ext系列文件系统的LABEL</h2><p>设置label和查找<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@CentOS6 ~]<span class="variable">$e2label</span> /dev/sdb1 <span class="built_in">test</span>   <span class="comment">#设置sdb1分区标签为test</span></span><br><span class="line">[root@CentOS6 ~]<span class="variable">$e2label</span> /dev/sdb1</span><br><span class="line"><span class="built_in">test</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="findfs：查找分区"><a href="#findfs：查找分区" class="headerlink" title="findfs：查找分区"></a>findfs：查找分区</h2><p>通过LABEL或者UUID来查找分区：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@CentOS6 ~]<span class="variable">$findfs</span> UUID=c8df1360-9a66-40b2-9ad7-b01d69030874</span><br><span class="line">/dev/sda3</span><br><span class="line">[root@CentOS6 ~]<span class="variable">$findfs</span> LABEL=<span class="built_in">test</span></span><br><span class="line">/dev/sdb1</span><br></pre></td></tr></table></figure></p>
+<h2 id="tune2fs"><a href="#tune2fs" class="headerlink" title="tune2fs"></a>tune2fs</h2><p>tune2fs：重新设定ext系列文件系统可调整参数的值</p>
+<blockquote>
+<p>-l 查看指定文件系统超级块信息；super block<br>-L ‘LABEL‘修改卷标<br>-m #修预留给管理员的空间百分比<br>-j 将ext2升级为ext3<br>-O 文件系统属性启用或禁用,–O ^has_journal<br>-o 调整文件系统的默认挂载选项，–o ^acl<br>-U UUID修改UUID号<br>在centos6之前版手动创建的ext分区，默认<strong>没有ACL</strong>功能，要想开启acl功能可以用<code>tune2fs -o</code></p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@CentOS6 lihf]<span class="variable">$tune2fs</span> -o acl /dev/sdb1 </span><br><span class="line">tune2fs 1.41.12 (17-May-2010)</span><br></pre></td></tr></table></figure>
+<h2 id="dumpe2fs："><a href="#dumpe2fs：" class="headerlink" title="dumpe2fs："></a>dumpe2fs：</h2><p>块分组管理， -h：查看超级块信息，不显示分组信息</p>
+<h2 id="文件系统检测和修复-fsck"><a href="#文件系统检测和修复-fsck" class="headerlink" title="文件系统检测和修复 (fsck)"></a>文件系统检测和修复 (fsck)</h2><p>注意：一定不要在挂载状态下修复<br>fsck: File System Check<br>-p自动修复错误<br>-r交互式修复错误<br>-y自动回答为yes</p>
+<h2 id="挂载mount"><a href="#挂载mount" class="headerlink" title="挂载mount"></a>挂载mount</h2><p>挂载点下原有文件在挂载完成后会被临时隐藏<br>挂载点目录一般为空<br>一个设备可以挂载到多个目录下<br>一个目录不可以挂载多个设备<br>mount 挂载 umount 取消挂载<br>mount：通过查看/etc/mtab文件显示当前已挂载的所有设备</p>
+<h3 id="mount命令挂载文件系统"><a href="#mount命令挂载文件系统" class="headerlink" title="mount命令挂载文件系统"></a>mount命令挂载文件系统</h3><p>mount：通过查看/etc/mtab文件显示当前已挂载的所有设备<br>(1) 设备文件：例如/dev/sda5<br>(2) 卷标：-L ‘LABEL’, 例如-L ‘MYDATA’<br>(3) UUID, -U ‘UUID’：例如-U ‘0c50523c-43f1-45e7-85c0-a126711d406e’<br>dir：挂载点<br>事先存在；建议使用空目录<br>进程正在使用中的设备<strong>无法被卸载</strong></p>
+<h3 id="卸载命令"><a href="#卸载命令" class="headerlink" title="卸载命令"></a>卸载命令</h3><p>查看挂载情况<br><code>findmntMOUNT_POINT|device</code><br>查看正在访问指定文件系统的进程<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#findmnt /data</span></span><br><span class="line">TARGET SOURCE    FSTYPE OPTIONS</span><br><span class="line">/data  /dev/sda3 xfs    rw,relatime,seclabel,attr2,inode64,noquota</span><br></pre></td></tr></table></figure></p>
+<p><code>lsof MOUNT_POINT</code><br><code>fuser -v MOUNT_POINT</code><br>终止所有在正访问指定的文件系统的进程<br><code>fuser -km MOUNT_POINT</code><br>卸载<br><code>umountDEVICE</code><br><code>umountMOUNT_POINT</code></p>
+<h3 id="mount常用命令选项"><a href="#mount常用命令选项" class="headerlink" title="mount常用命令选项"></a>mount常用命令选项</h3><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-t vsftype</td>
+<td>指定要挂载的设备上的文件系统类型</td>
+</tr>
+<tr>
+<td>-r readonly</td>
+<td>只读挂载</td>
+</tr>
+<tr>
+<td>-w</td>
+<td>read and write, 读写挂载</td>
+</tr>
+<tr>
+<td>-n</td>
+<td>不更新/etc/mtab，mount不可见</td>
+</tr>
+<tr>
+<td>-a</td>
+<td>自动挂载所有支持自动挂载的设备(定义在了/etc/fstab文件中，且挂载选项中有auto功能)</td>
+</tr>
+<tr>
+<td>-L ‘LABEL’</td>
+<td>以卷标指定挂载设备</td>
+</tr>
+<tr>
+<td>-U ‘UUID’</td>
+<td>以UUID指定要挂载的设备</td>
+</tr>
+<tr>
+<td>-B, –bind</td>
+<td>绑定目录到另一个目录上</td>
+</tr>
+</tbody>
+</table>
+<h3 id="mount常用命令扩展选项"><a href="#mount常用命令扩展选项" class="headerlink" title="mount常用命令扩展选项"></a>mount常用命令扩展选项</h3><p>-o options：(挂载文件系统的选项)，多个选项使用逗号分隔<br>defaults：相当于rw, suid, dev, exec, auto, nouser, async  </p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>async异步模式</td>
+<td>sync同步模式,内存更改时，同时写磁盘</td>
+</tr>
+<tr>
+<td>atime/noatime</td>
+<td>包含目录和文件</td>
+</tr>
+<tr>
+<td>diratime/nodiratime</td>
+<td>目录的访问时间戳</td>
+</tr>
+<tr>
+<td>auto/noauto</td>
+<td>是否支持自动挂载,是否支持-a选项</td>
+</tr>
+<tr>
+<td>exec/noexec</td>
+<td>是否支持将文件系统上运行应用程序</td>
+</tr>
+<tr>
+<td>dev/nodev是</td>
+<td>否支持在此文件系统上使用设备文件</td>
+</tr>
+<tr>
+<td>suid/nosuid</td>
+<td>是否支持suid和sgid权限</td>
+</tr>
+<tr>
+<td>remount</td>
+<td>重新挂载</td>
+</tr>
+<tr>
+<td>ro只读</td>
+<td>rw读写</td>
+</tr>
+<tr>
+<td>user/nouser</td>
+<td>是否允许普通用户挂载此设备，/etc/fstab使用</td>
+</tr>
+<tr>
+<td>acl</td>
+<td>启用此文件系统上的acl功能</td>
+</tr>
+<tr>
+<td>loop</td>
+<td>使用loop设备，允许文件挂载到目录上</td>
+</tr>
+</tbody>
+</table>
+<h2 id="挂载点和-etc-fstab"><a href="#挂载点和-etc-fstab" class="headerlink" title="挂载点和/etc/fstab"></a>挂载点和/etc/fstab</h2><p>配置文件系统体系<br>被mount、fsck和其它程序使用<br>系统重启时保留文件系统体系<br>可以在设备栏使用文件系统卷标<br>使用mount -a 命令挂载/etc/fstab中的所有文件系统<br>/etc/fstab每行定义一个要挂载的文件系统</p>
+<h3 id="文件格式"><a href="#文件格式" class="headerlink" title="文件格式"></a>文件格式</h3><blockquote>
+<p>1、要挂载的设备<br>2、挂载点<br>3、文件系统类型：ext4,xfs,nfs,none<br>4、挂载选项：defaults，acl，bind<br>5、转储频率：0：不做备份1：每天转储2：每隔一天转储<br>6、fsck检查的文件系统的顺序：允许的数字是0, 1, 和2</p>
+</blockquote>
+<pre><code>0：不自检
+1：首先自检；一般只有rootfs才用
+2：非rootfs使用
+</code></pre><p><code>mount -a</code>没被挂载过的分区可以用这个挂载<br><code>mount -0 remount</code>重新挂载</p>
+<blockquote>
+<p>如果想要把目录挂载到目录  文件格式要写<code>none</code> 挂载选项<code>bine</code><br>如果想把文件挂载到目录，文件格式要写<strong>文件的系统格式</strong> 挂载选项写<code>loop</code><br>光盘格式：iso9660</p>
+</blockquote>
+<h2 id="SWAP"><a href="#SWAP" class="headerlink" title="SWAP"></a>SWAP</h2><p>模拟内存使用，可以在内存使用完之后使用模拟的swap分区，一般为物理内存的2倍（8G以内）<br>基本设置包括：<br>•创建交换分区或者文件<br>•使用mkswap写入特殊签名<br>•在/etc/fstab文件中添加适当的条目<br>•使用swapon-a 激活交换空间<br>建立swap分区的时间尽量放在高速的硬盘上面，比如固态硬盘，如果没有固态硬盘，尽量把swap分区放在硬盘的最外圈。</p>
+<h3 id="建立一个swap分区"><a href="#建立一个swap分区" class="headerlink" title="建立一个swap分区"></a>建立一个swap分区</h3><p>1、找一块硬盘，建立一个分区，大小为当前内存的2倍（8G以内）,<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#fdisk /dev/sdc</span></span><br></pre></td></tr></table></figure></p>
+<p>2、把新建分区的类型改为swap （MBR格式centos7为82 GPT为19）<br>3、分区创建完毕之后把分区的文件系统设置为swap （mkswap /dev/*）<br>4、想要永久保存就写到<code>/etc/fstab</code>里，<code>swapon -s</code>可以查看swap分区<br>5、想要swap生效 执行<code>swapon -a</code> 即可 关闭<code>swapoff</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#cat /proc/swaps     #sdc1为新加的swap</span></span><br><span class="line">Filename                                Type            Size    Used    Priority</span><br><span class="line">/dev/sda5                               partition       4194300 0       -1</span><br><span class="line">/dev/sdc1                               partition       4194300 0       -2</span><br></pre></td></tr></table></figure></p>
+<p>也可以建立一个大的文件当swap分区，把文件系统格式改为<code>swap</code> 再写入<code>/etc/fstab</code> 生效即可使用。</p>
+<h3 id="swap优先级问题"><a href="#swap优先级问题" class="headerlink" title="swap优先级问题"></a>swap优先级问题</h3><p>swap分区的优先级数字越大，优先级就越高<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#cat /proc/swaps     #新加的swap优先级-2没有-1高</span></span><br><span class="line">Filename                                Type            Size    Used    Priority</span><br><span class="line">/dev/sda5                               partition       4194300 0       -1</span><br><span class="line">/dev/sdc1                               partition       4194300 0       -2</span><br></pre></td></tr></table></figure></p>
+<p>想要指定分区的优先级需要在、<code>/etc/fstab</code>文件中指定<br><code>UUID=3bdb5e33-ee64-4105-b2c5-10704fe201b6 swap                  swap    pri=5  0 0</code><br>把pri值越大，优先级就越高，可以指定swap分区0到32767的优先级，值越大优先级越高<br>如果用户没有指定，那么核心会自动给swap指定一个优先级，这个优先级从-1开始，每加入一个新的没有用户指定优先级的swap，会给这个优先级减一</p>
+<h2 id="使用光盘"><a href="#使用光盘" class="headerlink" title="使用光盘"></a>使用光盘</h2><p>eject命令卸载或弹出磁盘<br><strong>创建ISO文件</strong><br>cp/dev/cdrom/root/centos7.iso<br>mkisofs -r -o /root/etc.iso /etc<br><strong>刻录光盘</strong><br>wodim–v –eject centos.iso</p>
+<h2 id="常见工具"><a href="#常见工具" class="headerlink" title="常见工具"></a>常见工具</h2><h3 id="df"><a href="#df" class="headerlink" title="df"></a>df</h3><p>文件系统空间占用等信息的查看工具<br>df[OPTION]… [FILE]…<br>-H 以1000为单位<br>-T 文件系统类型<br>-h: human-readable<br>-i：inodesinstead of blocks<br>-P: 以Posix兼容的格式输出</p>
+<h3 id="du"><a href="#du" class="headerlink" title="du"></a>du</h3><p>查看某目录总体空间占用状态：</p>
+<blockquote>
+<p>du [OPTION]… DIR<br>-h: human-readable  以G为单位<br>-s: summary –max-depth</p>
+</blockquote>
+<h3 id="dd"><a href="#dd" class="headerlink" title="dd"></a>dd</h3><p>用法：  </p>
+<blockquote>
+<p>ddif=/PATH/FROM/SRC of=/PATH/TO/DEST<br>bs=#：block size, 复制单元大小<br>count=#：复制多少个bs<br>of=file     写到所命名的文件而不是到标准输出<br>if=file    从所命名文件读取而不是从标准输入<br>bs=size    指定块大小（既是是ibs也是obs)<br>ibs=size      一次读size个byte<br>obs=size      一次写size个byte<br>cbs=size      一次转化size个byte<br>skip=blocks   从开头忽略blocks个ibs大小的块<br>seek=blocks    从开头忽略blocks个obs大小的块<br>count=n     只拷贝n个记录  </p>
+</blockquote>
+<p>conv=conversion[,conversion…] 用指定的参数转换文件</p>
+<blockquote>
+<p>ascii转换EBCDIC 为ASCII<br>ebcdic转换ASCII 为EBCDIC<br>lcase把大写字符转换为小写字符<br>ucase把小写字符转换为大写字符<br>nocreat不创建输出文件<br>noerror出错时不停止<br>notrunc不截短输出文件<br>sync 把每个输入块填充到ibs个字节，不足部分用空(NUL)字符补齐<br>Fdatasync写完成前，物理写入输出文件  </p>
+</blockquote>
+<h4 id="备份："><a href="#备份：" class="headerlink" title="备份："></a>备份：</h4><blockquote>
+<p>ddif=/dev/sdxof=/dev/sdy<br>将本地的/dev/sdx整盘备份到/dev/sdy<br>ddif=/dev/sdxof=/path/to/image<br>将/dev/sdx全盘数据备份到指定路径的image文件<br>ddif=/dev/sdx| gzip&gt;/path/to/image.gz<br>备份/dev/sdx全盘数据，并利用gzip压缩，保存到指定路径  </p>
+</blockquote>
+<h4 id="恢复："><a href="#恢复：" class="headerlink" title="恢复："></a>恢复：</h4><blockquote>
+<p>ddif=/path/to/image of=/dev/sdx<br>将备份文件恢复到指定盘<br>gzip-dc /path/to/image.gz | ddof=/dev/sdx<br>将压缩的备份文件恢复到指定盘  </p>
+</blockquote>
+<h4 id="拷贝内存资料到硬盘"><a href="#拷贝内存资料到硬盘" class="headerlink" title="拷贝内存资料到硬盘"></a>拷贝内存资料到硬盘</h4><p>ddif=/dev/mem of=/root/mem.binbs=1024<br>将内存里的数据拷贝到root目录下的mem.bin文件  </p>
+<h4 id="从光盘拷贝iso镜像"><a href="#从光盘拷贝iso镜像" class="headerlink" title="从光盘拷贝iso镜像"></a>从光盘拷贝iso镜像</h4><p>ddif=/dev/cdromof=/root/cd.iso<br>拷贝光盘数据到root文件夹下，并保存为cd.iso文件  </p>
+<h4 id="销毁磁盘数据"><a href="#销毁磁盘数据" class="headerlink" title="销毁磁盘数据"></a>销毁磁盘数据</h4><p>ddif=/dev/urandomof=/dev/sda1<br>利用随机的数据填充硬盘，在某些必要的场合可以用来销毁数据，执行此操作以后，/dev/sda1将无法挂载，创建和拷贝操作无法执行  </p>
+<h4 id="测试硬盘读写速度"><a href="#测试硬盘读写速度" class="headerlink" title="测试硬盘读写速度"></a>测试硬盘读写速度</h4><p>读取速度<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#dd if=/data/swapfile of=/dev/null</span></span><br><span class="line">4096000+0 records <span class="keyword">in</span></span><br><span class="line">4096000+0 records out</span><br><span class="line">2097152000 bytes (2.1 GB) copied, 7.0078 s, 299 MB/s</span><br></pre></td></tr></table></figure></p>
+<p>写入速度<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#dd if=/dev/zero of=/data/bigfile bs=100M count=10</span></span><br><span class="line">10+0 records <span class="keyword">in</span></span><br><span class="line">10+0 records out</span><br><span class="line">1048576000 bytes (1.0 GB) copied, 4.185 s, 251 MB/s</span><br></pre></td></tr></table></figure></p>
+<h4 id="修复硬盘"><a href="#修复硬盘" class="headerlink" title="修复硬盘"></a>修复硬盘</h4><p>dd if=/dev/sda of=/dev/sda<br>当硬盘较长时间（比如1,2年）放置不使用后，磁盘上会产生消磁点。当磁头读到这些区域时会遇到困难，并可能导致I/O错误。当这种情况影响到硬盘的第一个扇区时，可能导致硬盘报废。上边的命令有可能使这些数据起死回生,且这个过程是安全高效的</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/11/13/linux磁盘存储和文件系统/" data-id="cjof55r4e0009pgvx7q9zj8zw" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/磁盘/">磁盘</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/11/13/linux基础命令/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Linux基础知识
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/11/13/计算机基础/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">计算机基础</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/M/">M</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/内核/">内核</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/压缩/">压缩</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/文件系统/">文件系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/组/">组</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/编辑器/">编辑器</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/计划任务/">计划任务</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/软件包/">软件包</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/M34/">M34</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rpm，yum/">rpm，yum</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vim/">vim</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/启动/">启动</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/基础/">基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工具/">工具</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文件/">文件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/权限/">权限</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/查找/">查找</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/磁盘/">磁盘</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/进程/">进程</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/M34/" style="font-size: 10px;">M34</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/rpm，yum/" style="font-size: 10px;">rpm，yum</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/启动/" style="font-size: 10px;">启动</a> <a href="/tags/基础/" style="font-size: 10px;">基础</a> <a href="/tags/工具/" style="font-size: 20px;">工具</a> <a href="/tags/文件/" style="font-size: 10px;">文件</a> <a href="/tags/权限/" style="font-size: 10px;">权限</a> <a href="/tags/查找/" style="font-size: 20px;">查找</a> <a href="/tags/磁盘/" style="font-size: 20px;">磁盘</a> <a href="/tags/进程/" style="font-size: 10px;">进程</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/13/标准IO和管道/">标准I/O和管道</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/VIM编辑器使用/">VIM编辑器使用</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/linux基础命令/">Linux基础知识</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/linux磁盘存储和文件系统/">磁盘储存和文件系统</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/计算机基础/">计算机基础</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 linux<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

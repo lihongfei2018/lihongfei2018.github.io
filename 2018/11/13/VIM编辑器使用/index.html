@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>VIM编辑器使用 | LiHongFei.blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="什么是VIMUnix及类Unix系统文本编辑器，Vim是一个类似于Vi的著名的功能强大、高度可定制的文本编辑器，在Vi的基础上改进和增加了很多特性，单词缩写功能，动态单词补全，多级树状撤销和重做操作，颜色高亮等功能。 VIM是自由软件。">
+<meta name="keywords" content="vim">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VIM编辑器使用">
+<meta property="og:url" content="http://yoursite.com/2018/11/13/VIM编辑器使用/index.html">
+<meta property="og:site_name" content="LiHongFei.blog">
+<meta property="og:description" content="什么是VIMUnix及类Unix系统文本编辑器，Vim是一个类似于Vi的著名的功能强大、高度可定制的文本编辑器，在Vi的基础上改进和增加了很多特性，单词缩写功能，动态单词补全，多级树状撤销和重做操作，颜色高亮等功能。 VIM是自由软件。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://pf8eoyzmj.bkt.clouddn.com/timg%20%284%29.jpg">
+<meta property="og:updated_time" content="2018-10-13T01:50:06.426Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="VIM编辑器使用">
+<meta name="twitter:description" content="什么是VIMUnix及类Unix系统文本编辑器，Vim是一个类似于Vi的著名的功能强大、高度可定制的文本编辑器，在Vi的基础上改进和增加了很多特性，单词缩写功能，动态单词补全，多级树状撤销和重做操作，颜色高亮等功能。 VIM是自由软件。">
+<meta name="twitter:image" content="http://pf8eoyzmj.bkt.clouddn.com/timg%20%284%29.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="LiHongFei.blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">LiHongFei.blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-VIM编辑器使用" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/13/VIM编辑器使用/" class="article-date">
+  <time datetime="2018-11-13T02:52:26.904Z" itemprop="datePublished">2018-11-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/编辑器/">编辑器</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      VIM编辑器使用
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://pf8eoyzmj.bkt.clouddn.com/timg%20%284%29.jpg" alt=""></p>
+<h2 id="什么是VIM"><a href="#什么是VIM" class="headerlink" title="什么是VIM"></a>什么是VIM</h2><p>Unix及类Unix系统文本编辑器，Vim是一个类似于Vi的著名的功能强大、高度可定制的文本编辑器，在Vi的基础上改进和增加了很多特性，单词缩写功能，动态单词补全，多级树状撤销和重做操作，颜色高亮等功能。 VIM是自由软件。<br><a id="more"></a></p>
+<h2 id="VIM使用"><a href="#VIM使用" class="headerlink" title="VIM使用"></a>VIM使用</h2><h3 id="打开文件可选项"><a href="#打开文件可选项" class="headerlink" title="打开文件可选项"></a>打开文件可选项</h3><p><strong>如果该文件存在，文件被打开并显示内容<br>如果该文件不存在，当编辑后第一次存盘时创建它</strong><br>格式：vim [OPTION]… FILE<br><code>vim +#</code>可以指定数字，数字是几打开文件之后就会跳到第几行，直接加<code>+</code> 默认会直接跳到最后一行；<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#vim +2 test2</span></span><br><span class="line">[root@centos7 data]<span class="comment">#vim + test2</span></span><br></pre></td></tr></table></figure></p>
+<p><code>+/PATTERN</code>打开文件后，直接让光标处于第一个被PATTERN匹配到的行的行首<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#vim +/lihf test2</span></span><br></pre></td></tr></table></figure></p>
+<p><code>vim –b file</code> 二进制方式打开文件.(<strong>使用较少</strong>)<br><code>vim –d file1 file2…</code>比较多个文件,如果其中一个字符或者行是不同的，会高亮显示行，或者不一样的字符<br><code>vim -m file</code> 只读打开文件  </p>
+<h2 id="列模式"><a href="#列模式" class="headerlink" title="列模式"></a>列模式</h2><p><strong>可以对一列内容进行操作，按Ctrl+v进入列模式，可以进行删除复制等操作，如果想在这一列的前面插入，请输入shift+i，如果想在后面插入一列请输入shift+a，输出完成之后按ESC即可生效</strong>  </p>
+<h3 id="VIM三种模式"><a href="#VIM三种模式" class="headerlink" title="VIM三种模式"></a>VIM三种模式</h3><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>命令(Normal)模式：</td>
+<td>默认模式，移动光标，剪切/粘贴文本</td>
+</tr>
+<tr>
+<td>插入(Insert)或编辑模式：</td>
+<td>修改文本</td>
+</tr>
+<tr>
+<td>扩展命令(extended command )模式：</td>
+<td>保存，退出等</td>
+</tr>
+</tbody>
+</table>
+<p>进入到模式之后，退出当前模式按Esc键，Esc键默认返回到命令模式</p>
+<h3 id="模式转换"><a href="#模式转换" class="headerlink" title="模式转换"></a>模式转换</h3><p>命令模式–&gt; 插入模式–&gt;退出Esc  </p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>i</td>
+<td>insert, 在光标所在处输入</td>
+</tr>
+<tr>
+<td>I</td>
+<td>在当前光标所在行的行首输入</td>
+</tr>
+<tr>
+<td>a</td>
+<td>append, 在光标所在处后面输入</td>
+</tr>
+<tr>
+<td>A</td>
+<td>在当前光标所在行的行尾输入</td>
+</tr>
+<tr>
+<td>o</td>
+<td>在当前光标所在行的下方打开一个新行</td>
+</tr>
+<tr>
+<td>O</td>
+<td>在当前光标所在行的上方打开一个新行</td>
+</tr>
+</tbody>
+</table>
+<p>命令模式——–&gt; 扩展命令模式 输入<code>:</code>即可进入,下有其他选项</p>
+<blockquote>
+<p>r filename读文件内容到当前文件中<br>w filename将当前文件内容写入另一个文件<br>!command执行命令<br>r!command读入命令的输出  </p>
+</blockquote>
+<h3 id="关闭文件"><a href="#关闭文件" class="headerlink" title="关闭文件"></a>关闭文件</h3><p>扩展命令模式：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>:q</td>
+<td>退出</td>
+</tr>
+<tr>
+<td>:q!</td>
+<td>强制退出，丢弃做出的修改</td>
+</tr>
+<tr>
+<td>:wq</td>
+<td>保存退出</td>
+</tr>
+<tr>
+<td>:x</td>
+<td>保存退出</td>
+</tr>
+</tbody>
+</table>
+<p>命令模式</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ZZ</td>
+<td>保存退出</td>
+</tr>
+<tr>
+<td>ZQ</td>
+<td>不保存退出</td>
+</tr>
+</tbody>
+</table>
+<h2 id="命令模式-光标跳转"><a href="#命令模式-光标跳转" class="headerlink" title="命令模式-光标跳转"></a>命令模式-光标跳转</h2><h3 id="撤消更改"><a href="#撤消更改" class="headerlink" title="撤消更改"></a>撤消更改</h3><blockquote>
+<p>u撤销最近的更改<br>#u撤销之前多次更改<br>U撤消光标落在这行后所有此行的更改<br>按Ctrl-r重做最后的“撤消”更改<br>. 重复前一个操作<br>n.重复前一个操作n次  </p>
+</blockquote>
+<h3 id="方向键"><a href="#方向键" class="headerlink" title="方向键"></a>方向键</h3><blockquote>
+<p>h: 左<br>l: 右<br>j: 下<br>k: 上<br>在命令模式下用<code>h,j,k,l</code>前面加数字可以跳转数字指定的位置；  </p>
+</blockquote>
+<h3 id="单词跳转"><a href="#单词跳转" class="headerlink" title="单词跳转"></a>单词跳转</h3><blockquote>
+<p>w：下一个单词的词首<br>e：当前或下一单词的词尾<br>b：当前或前一个单词的词首<br>在命令模式下用<code>w,e,b</code>前面加可以指定一次跳转的单词数量</p>
+</blockquote>
+<h3 id="当前页跳转："><a href="#当前页跳转：" class="headerlink" title="当前页跳转："></a>当前页跳转：</h3><blockquote>
+<p>H：页首<br>M：页中间行<br>L:页底<br>zt：将光标所在当前行移到屏幕顶端<br>zz：将光标所在当前行移到屏幕中间<br>zb：将光标所在当前行移到屏幕底端  </p>
+</blockquote>
+<h3 id="行首行尾跳转："><a href="#行首行尾跳转：" class="headerlink" title="行首行尾跳转："></a>行首行尾跳转：</h3><blockquote>
+<p>^: 跳转至行首的第一个非空白字符<br>0: 跳转至行首<br>$: 跳转至行尾</p>
+</blockquote>
+<h3 id="行间移动："><a href="#行间移动：" class="headerlink" title="行间移动："></a>行间移动：</h3><blockquote>
+<p>扩展命令模式下：# 跳转至由#指定行<br>G：最后一行<br>1G, gg: 第一行  </p>
+</blockquote>
+<h2 id="命令模式翻屏操作快捷键"><a href="#命令模式翻屏操作快捷键" class="headerlink" title="命令模式翻屏操作快捷键"></a>命令模式翻屏操作快捷键</h2><p><strong>Ctrl+f:</strong>向文件尾部翻一屏<br><strong>Ctrl+b:</strong>向文件首部翻一屏<br>Ctrl+d: 向文件尾部翻半屏<br>Ctrl+u：向文件首部翻半屏  </p>
+<h2 id="命令模式操作"><a href="#命令模式操作" class="headerlink" title="命令模式操作"></a>命令模式操作</h2><p>字符编辑：</p>
+<blockquote>
+<p>x: 删除光标处的字符<br>#x: 删除光标处起始的#个字符<br>xp: 交换光标所在处的字符及其后面字符的位置  <strong>x：相当于剪切文本，p：相当于复制文本</strong><br>~:转换大小写<br>J:删除当前行后的换行符   </p>
+</blockquote>
+<h3 id="替换命令-r-replace"><a href="#替换命令-r-replace" class="headerlink" title="替换命令(r, replace)"></a>替换命令(r, replace)</h3><blockquote>
+<p>r: 替换光标所在处的字符，先按r 然后输入要替换的字符<br>R:切换成REPLACE模式，进入这个模式输入一个字符就会替换当前光标的字符  </p>
+</blockquote>
+<h3 id="删除命令："><a href="#删除命令：" class="headerlink" title="删除命令："></a>删除命令：</h3><blockquote>
+<p>d: 删除命令，可结合光标跳转字符，实现范围删除<br>d\$: 删除到行尾<br>d^:删除到非空行首<br>d0:删除到行首<br>#COMMAND<br>dd: 删除光标所在的行<br>#dd：多行删除<br>D：从当前光标位置一直删除到行尾，等同于d$</p>
+</blockquote>
+<h3 id="复制命令-y-yank-："><a href="#复制命令-y-yank-：" class="headerlink" title="复制命令(y, yank)："></a>复制命令(y, yank)：</h3><blockquote>
+<p>y: 复制，行为相似于d命令<br>y$  复制光标到行尾<br>y0  复制光标到行头<br>y^  复制行首的第一个非空白字符<br>ye  复制当前单词<br>yw<br>yb<br>#COMMAND<br>yy：复制行  </p>
+<p>#yy: 复制多行<br>Y: 复制整行  </p>
+</blockquote>
+<h3 id="粘贴命令-p-paste-："><a href="#粘贴命令-p-paste-：" class="headerlink" title="粘贴命令(p, paste)："></a>粘贴命令(p, paste)：</h3><blockquote>
+<p>p：缓冲区存的如果为整行，则粘贴当前光标所在行的下方；否则，则粘贴至当前光标所在处的后面<br>P：缓冲区存的如果为整行，则粘贴当前光标所在行的上方；否则，则粘贴至当前光标所在处的前面  </p>
+</blockquote>
+<h3 id="改变命令-c-change"><a href="#改变命令-c-change" class="headerlink" title="改变命令(c, change)"></a>改变命令(c, change)</h3><blockquote>
+<p>c: 修改后切换成插入模式<br>c$  删除到行尾并进入插入模式<br>c^  删除到行头并进去插入模式<br>c0  删除到行头并进去插入模式<br>cb  删除光标的前一个字符并进入插入模式<br>ce  删除光标到单词结尾并进入插入模式<br>cw  删除光标到单词结尾并进入插入模式<br>cc：删除当前行并输入新内容，相当于S<br>#cc<br>?C：删除当前光标到行尾，并切换成插入模式  </p>
+</blockquote>
+<h3 id="其他命令"><a href="#其他命令" class="headerlink" title="其他命令"></a>其他命令</h3><blockquote>
+<p>在命令模式下，首先输入10(次数)i 然后输入需要重复的内容lhf 就会出现10个lihf<br>例如0y$ 命令意味着： 可以删除整行 ，也可以加其他命令<br>0 → 先到行头<br>y → 从这里开始拷贝<br>$ → 拷贝到本行最后一个字符<br>ye 从当前位置拷贝到本单词的最后一个字符<br>di” 光标在”“之间，则删除”“之间的内容<br>yi( 光标在()之间，则复制()之间的内容<br>vi[ 光标在[]之间，则选中[]之间的内容<br><strong>dtx删除字符直到遇见光标之后的第一个x 字符</strong><br><strong>ytx复制字符直到遇见光标之后的第一个x 字符</strong>   </p>
+</blockquote>
+<h2 id="扩展命令模式：地址定界"><a href="#扩展命令模式：地址定界" class="headerlink" title="扩展命令模式：地址定界"></a>扩展命令模式：地址定界</h2><blockquote>
+<p>地址定界可以指定从第几行到第几行,中间<code>,</code>隔开<br>比如输入:2  跳到第二行<br>比如输入:2,+2 表示从第二行往后再加2行<br>比如输入:2,10 表示第2行到第10行这样做可以再加其他指令：d，y，p<br><code>.</code>标示当前行，可以再加其他指令：d，y，p<br><code>$</code> 最后一行<br><code>.,$-1</code> 当前行到倒数第二行，可以指定行<br><code>%</code> 全文, 相当于<code>1,$</code>  </p>
+</blockquote>
+<h3 id="支持标准正则表达式"><a href="#支持标准正则表达式" class="headerlink" title="支持标准正则表达式"></a>支持标准正则表达式</h3><p>示例：<br><code>/^root/,/^ftp/d</code> 删除root开头ftp结尾的行.<br>加<code>w file</code>将范围内的行另存至指定文件中<br>加<code>r file</code>在指定位置插入指定文件中的所有内容</p>
+<h3 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h3><blockquote>
+<p>/PATTERN：从当前光标所在处向文件尾部查找<br>?PATTERN：从当前光标所在处向文件首部查找<br>n：与命令同方向<br>N：与命令反方向  </p>
+</blockquote>
+<h3 id="扩展命令模式：查找并替换"><a href="#扩展命令模式：查找并替换" class="headerlink" title="扩展命令模式：查找并替换"></a>扩展命令模式：查找并替换</h3><p><strong>格式：s/要查找的内容/替换为的内容/修饰符</strong>  （<strong>括号可以用#或者@来代替</strong>）<br><strong>修饰符：</strong>    </p>
+<blockquote>
+<p>i: 忽略大小写<br>g: 全局替换；默认情况下，每一行只替换第一次出现<br>gc:全局替换，每次替换前询问<br>要查找的内容：可使用模式<br>替换为的内容：不能使用模式，但可以使用\1, \2, …等后向引用符号；还可以使用“&amp;”引用&gt;前面查找时查找到的整个内容<br>例：<code>%s/U/A/g</code> 结果为把文本里所有的U替换为A </p>
+</blockquote>
+<h2 id="VIM寄存器"><a href="#VIM寄存器" class="headerlink" title="VIM寄存器"></a>VIM寄存器</h2><blockquote>
+<p>有26个命名寄存器和1个无命名寄存器，常存放不同的剪贴版内容，可以不同会话间共享<br>寄存器名称a，b,…,z,格式：“寄存器放在数字和命令之间<br>如：3”tyy 表示复制3行到t寄存器中<br>“tp表示将t寄存器内容粘贴<br>未指定，将使用无命名寄存器<br>有10个数字寄存器，用0，1，…，9表示，0存放最近复制内容，1存放最近删除内容。当新的文本变更和删除时，1转存到2，2转存到3，以此类推。数字寄存器不能在不同会话间共享  </p>
+</blockquote>
+<h2 id="标记和宏-macro"><a href="#标记和宏-macro" class="headerlink" title="标记和宏(macro)"></a>标记和宏(macro)</h2><blockquote>
+<p>ma 将当前位置标记为a，26个字母均可做标记，mb、mc 等等；<br>‘a 跳转到a标记的位置；实用的文档内标记方法，文档中跳跃编辑时很有用<br>qa录制宏a，a为宏的名称<br>q 停止录制宏，<br>@a 执行宏a<br>@@ 重新执行上次执行的宏  </p>
+</blockquote>
+<h2 id="多文件模式"><a href="#多文件模式" class="headerlink" title="多文件模式"></a>多文件模式</h2><blockquote>
+<p>vim FILE1 FILE2 FILE3 …<br>:next 下一个<br>:prev前一个<br>:first 第一个<br>:last 最后一个<br>:wall 保存所有<br>:qall退出所有<br>:wqall  </p>
+</blockquote>
+<h2 id="使用多个“窗口”"><a href="#使用多个“窗口”" class="headerlink" title="使用多个“窗口”"></a>使用多个“窗口”</h2><blockquote>
+<p><strong>多文件分割</strong><br>vim -o|-O FILE1 FILE2 …<br>-o: 水平分割<br>-O: 垂直分割<br>在窗口间切换：Ctrl+w, Arrow<br><strong>单文件窗口分割</strong>：<br>Ctrl+w,s: split, 水平分割<br>Ctrl+w,v: vertical, 垂直分割<br>ctrl+w,q：取消相邻窗口<br>ctrl+w,o:取消全部窗口<br>：wqall退出  </p>
+</blockquote>
+<h2 id="定制vim的工作特性"><a href="#定制vim的工作特性" class="headerlink" title="定制vim的工作特性"></a>定制vim的工作特性</h2><blockquote>
+<p>配置文件：永久有效<br>全局：/etc/vimrc<br>个人：~/.vimrc<br>(1) 行号<br>显示：<strong>set number</strong>, 简写<strong>为 </strong>set nu<strong><br>取消显示：</strong>set nonumber, 简写为<strong>set nonu</strong><br>在文件夹里 直接写 <strong>set nu</strong> 保存即可<br>(2)忽略字符的大小写<br>启用：set ic<br>不忽略：set noic<br>(3) 自动缩进<br>启用：set ai<br>禁用：set noai<br>(4) 智能缩进<br>启用：smartindent简写set si<br>禁用：set nosi<br>(5) 高亮搜索<br>启用：set hlsearch<br>禁用：set nohlsearch<br>(6) 语法高亮<br>启用：syntax on<br>禁用：syntax off<br>(7) 显示Tab和换行符^I 和$显示<br>启用：set list<br>禁用：set nolist<br>(8) 文件格式<br>启用windows格式：set fileformat=dos<br>启用unix格式：set fileformat=unix<br>简写：set ff=dos|unix<br>(9) 设置文本宽度<br>set textwidth=65 (vimonly)<br>set wrapmargin=15<br>(10) 设置光标所在行的标识线<br>启用：set cursorline，简写cul<br>禁用：set no cursorline<br>(11) 复制保留格式<br>启用：set paste<br>禁用：set nopaste</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/11/13/VIM编辑器使用/" data-id="cjof55r4a0003pgvx8gzc9539" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vim/">vim</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/11/13/标准IO和管道/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          标准I/O和管道
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/11/13/linux基础命令/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Linux基础知识</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/M/">M</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/内核/">内核</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/压缩/">压缩</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/文件系统/">文件系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/组/">组</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/编辑器/">编辑器</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/计划任务/">计划任务</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/软件包/">软件包</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/M34/">M34</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rpm，yum/">rpm，yum</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vim/">vim</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/启动/">启动</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/基础/">基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工具/">工具</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文件/">文件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/权限/">权限</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/查找/">查找</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/磁盘/">磁盘</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/进程/">进程</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/M34/" style="font-size: 10px;">M34</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/rpm，yum/" style="font-size: 10px;">rpm，yum</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/启动/" style="font-size: 10px;">启动</a> <a href="/tags/基础/" style="font-size: 10px;">基础</a> <a href="/tags/工具/" style="font-size: 20px;">工具</a> <a href="/tags/文件/" style="font-size: 10px;">文件</a> <a href="/tags/权限/" style="font-size: 10px;">权限</a> <a href="/tags/查找/" style="font-size: 20px;">查找</a> <a href="/tags/磁盘/" style="font-size: 20px;">磁盘</a> <a href="/tags/进程/" style="font-size: 10px;">进程</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/13/标准IO和管道/">标准I/O和管道</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/VIM编辑器使用/">VIM编辑器使用</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/linux基础命令/">Linux基础知识</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/linux磁盘存储和文件系统/">磁盘储存和文件系统</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/计算机基础/">计算机基础</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 linux<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

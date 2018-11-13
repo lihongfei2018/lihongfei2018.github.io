@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>标准I/O和管道 | LiHongFei.blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="标准输入和输出对于程序来讲在执行命令的时候把数据加以处理然后再把结果显示出来，就需要我们用键盘来输入信息（input）程序处理完之后在输出给我们看（output），错误文件也会输出给我们。读入数据：Input；输出数据：Output  标准输入（STDIN）－0默认接受来自键盘的输入标准输出（STDOUT）－1默认输出到终端窗口标准错误（STDERR）－2默认输出到终端窗口">
+<meta name="keywords" content="linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="标准I&#x2F;O和管道">
+<meta property="og:url" content="http://yoursite.com/2018/11/13/标准IO和管道/index.html">
+<meta property="og:site_name" content="LiHongFei.blog">
+<meta property="og:description" content="标准输入和输出对于程序来讲在执行命令的时候把数据加以处理然后再把结果显示出来，就需要我们用键盘来输入信息（input）程序处理完之后在输出给我们看（output），错误文件也会输出给我们。读入数据：Input；输出数据：Output  标准输入（STDIN）－0默认接受来自键盘的输入标准输出（STDOUT）－1默认输出到终端窗口标准错误（STDERR）－2默认输出到终端窗口">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://pf8eoyzmj.bkt.clouddn.com/%E7%B4%A2%E9%9A%86.jpg">
+<meta property="og:updated_time" content="2018-09-27T01:38:46.302Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="标准I&#x2F;O和管道">
+<meta name="twitter:description" content="标准输入和输出对于程序来讲在执行命令的时候把数据加以处理然后再把结果显示出来，就需要我们用键盘来输入信息（input）程序处理完之后在输出给我们看（output），错误文件也会输出给我们。读入数据：Input；输出数据：Output  标准输入（STDIN）－0默认接受来自键盘的输入标准输出（STDOUT）－1默认输出到终端窗口标准错误（STDERR）－2默认输出到终端窗口">
+<meta name="twitter:image" content="http://pf8eoyzmj.bkt.clouddn.com/%E7%B4%A2%E9%9A%86.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="LiHongFei.blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">LiHongFei.blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-标准IO和管道" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/13/标准IO和管道/" class="article-date">
+  <time datetime="2018-11-13T02:52:26.912Z" itemprop="datePublished">2018-11-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/linux/">linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      标准I/O和管道
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://pf8eoyzmj.bkt.clouddn.com/%E7%B4%A2%E9%9A%86.jpg" alt="索隆"></p>
+<h2 id="标准输入和输出"><a href="#标准输入和输出" class="headerlink" title="标准输入和输出"></a>标准输入和输出</h2><p>对于程序来讲在执行命令的时候把数据加以处理然后再把结果显示出来，就需要我们用键盘来输入信息（input）程序处理完之后在输出给我们看（output），错误文件也会输出给我们。<br>读入数据：Input；输出数据：Output</p>
+<blockquote>
+<p>标准输入（STDIN）－0默认接受来自键盘的输入<br>标准输出（STDOUT）－1默认输出到终端窗口<br>标准错误（STDERR）－2默认输出到终端窗口<br><a id="more"></a></p>
+</blockquote>
+<h2 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h2><p>重定向是把我们输入的命令的结果输出到别的窗口，默认是自己的终端窗口  </p>
+<blockquote>
+<p>input   &gt;     output  一个大于号如果文件存在那么会覆盖这个文件,不存在则创建<br>input  &gt;&gt;    output 两个大于号如果文件存在那么会把要输出的内容追加到文件里,不存在则创建<br>在 <code>2&gt;</code>  前加数字2错误信息也会保存到文件夹里，文件存在则覆盖，不存在则创建<br>在<code>2&gt;&gt;</code>  前加数字2错误信息也会保存到文件夹里，文件存在则追加，不存在则创建<br>执行<code>set -C</code>之后不会覆盖文件，&gt;| 可强行覆盖    <code>set +C</code>开启可以覆盖<br>如果输出的结果不想别人看到 可以重定向到<code>/dev/null</code>下<br><code>&amp;&gt;</code>把所有输出重定向到文件</p>
+</blockquote>
+<h2 id="错误输出重定向"><a href="#错误输出重定向" class="headerlink" title="错误输出重定向"></a>错误输出重定向</h2><p><code>&amp;&gt;</code> 覆盖重定向<br><code>&amp;&gt;&gt;</code> 追加重定向<br>把错误信息放一个文件夹，正确信息放一个文件夹<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#ls /data/ dadad &gt; /data/a.txt 2&gt;/data/b.txt</span></span><br></pre></td></tr></table></figure></p>
+<p>把所有的输出信息全部放在一个文件夹<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#ls /data/ dadad &amp;&gt; /data/a.tt</span></span><br></pre></td></tr></table></figure></p>
+<p><code>2&amp;&gt;1</code>是把错误信息输出为正确信息<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment"># ls /data/  dadadad &gt; /data/c.txt 2&amp;&gt;1</span></span><br></pre></td></tr></table></figure></p>
+<p>把多个命令重定向到文件里<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#(ls;ll) &gt; /data/d.txt</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="tr命令使用"><a href="#tr命令使用" class="headerlink" title="tr命令使用"></a>tr命令使用</h2><p>tr可以通过标准输入转换字符，也可以删除字符<br><code>tr -d</code>可以删除指定的字符<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#tr -d 'abc'</span></span><br><span class="line">adadqdsadascaabb</span><br><span class="line">ddqdsds</span><br></pre></td></tr></table></figure></p>
+<p><code>tr -t</code>可以把字符转换成指定的字符<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#tr -t 'abcd' '1234'   </span></span><br><span class="line">abcdefg</span><br><span class="line">1234efg</span><br></pre></td></tr></table></figure></p>
+<p><code>tr -d</code> 可以删除指定的字符<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#tr -d '0-9'</span></span><br><span class="line">adada123451aaa</span><br><span class="line">adadaaaa</span><br></pre></td></tr></table></figure></p>
+<p><code>tr -c</code> 取反,回车之后ctrl+d 显示结果<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#tr -dc '0-9'</span></span><br><span class="line">adadad2123dad123</span><br><span class="line">2123123[root@centos7 ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure></p>
+<p><code>tr -s</code> 把相同的压缩<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#tr -s '0-9'</span></span><br><span class="line">111222333123123123 </span><br><span class="line">123123123123</span><br></pre></td></tr></table></figure></p>
+<h2 id="多行重定向"><a href="#多行重定向" class="headerlink" title="多行重定向"></a>多行重定向</h2><p>多行重定向可以先把文件写好然后重定向到文件里,下例<code>b</code>是结束，可随意修改，不指定的话<code>ctrl+d</code>退出编辑，建议写<code>EOF</code>，也可把变量写在里面。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#cat &gt; a2.txt &lt;&lt;b</span></span><br><span class="line">&gt; aa</span><br><span class="line">&gt; bb</span><br><span class="line">&gt; cc</span><br><span class="line">&gt; b</span><br></pre></td></tr></table></figure></p>
+<h2 id="发送邮件"><a href="#发送邮件" class="headerlink" title="发送邮件"></a>发送邮件</h2><p>格式：mail -s “邮件标题”  用户名<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#mail -s "aab" root             </span></span><br><span class="line">aaa</span><br><span class="line">bb</span><br><span class="line">.</span><br></pre></td></tr></table></figure></p>
+<h2 id="管道符"><a href="#管道符" class="headerlink" title="管道符 |"></a>管道符 |</h2><p>格式：<code>cmd1</code> | <code>cmd2</code>  <code>cmd1</code>必须是标准输出，错误的命令管道符不处理，处理错误的信息在|后加&amp; <code>|&amp;</code><br>把标准输出传到下个命令,例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#cat a2.txt | mail -s "aab" root</span></span><br></pre></td></tr></table></figure>
+<h3 id="less命令"><a href="#less命令" class="headerlink" title="less命令"></a>less命令</h3><p>less可以把文件做翻页处理，下例是把<code>/etc/</code>下的文件一页一页的显示。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#ls /etc/ |less</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="tee命令使用"><a href="#tee命令使用" class="headerlink" title="tee命令使用"></a>tee命令使用</h2><p>如果一个文件重定向到另一个文件夹，默认在当前终端上不显示，可以用<code>tee</code>工具<br>让他显示,并且也会保存到指定的文件里；<br>如果文件存在，默认<code>tee</code>命令会覆盖里面的内容，可以使用<code>tee -a</code>来追加到文件里。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#pwd | tee test2/a222</span></span><br><span class="line">/data</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/11/13/标准IO和管道/" data-id="cjof55r3u0000pgvxnc9vqd6i" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/11/13/VIM编辑器使用/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">VIM编辑器使用</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/M/">M</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/内核/">内核</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/压缩/">压缩</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/文件系统/">文件系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/组/">组</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/编辑器/">编辑器</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/计划任务/">计划任务</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/软件包/">软件包</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/M34/">M34</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rpm，yum/">rpm，yum</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vim/">vim</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/启动/">启动</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/基础/">基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工具/">工具</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文件/">文件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/权限/">权限</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/查找/">查找</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/磁盘/">磁盘</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/进程/">进程</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/M34/" style="font-size: 10px;">M34</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/rpm，yum/" style="font-size: 10px;">rpm，yum</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/启动/" style="font-size: 10px;">启动</a> <a href="/tags/基础/" style="font-size: 10px;">基础</a> <a href="/tags/工具/" style="font-size: 20px;">工具</a> <a href="/tags/文件/" style="font-size: 10px;">文件</a> <a href="/tags/权限/" style="font-size: 10px;">权限</a> <a href="/tags/查找/" style="font-size: 20px;">查找</a> <a href="/tags/磁盘/" style="font-size: 20px;">磁盘</a> <a href="/tags/进程/" style="font-size: 10px;">进程</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/13/标准IO和管道/">标准I/O和管道</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/VIM编辑器使用/">VIM编辑器使用</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/linux基础命令/">Linux基础知识</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/linux磁盘存储和文件系统/">磁盘储存和文件系统</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/计算机基础/">计算机基础</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 linux<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

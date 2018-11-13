@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Linux基础知识 | LiHongFei.blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="显示当前系统使用的SHELL shell被称为命令解释器,是一种高级语言，他可以把我们输入的命令转换为机器可以识别的语言，（0和1）也可用cat命令查看当前系统装了哪些shell">
+<meta name="keywords" content="linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux基础知识">
+<meta property="og:url" content="http://yoursite.com/2018/11/13/linux基础命令/index.html">
+<meta property="og:site_name" content="LiHongFei.blog">
+<meta property="og:description" content="显示当前系统使用的SHELL shell被称为命令解释器,是一种高级语言，他可以把我们输入的命令转换为机器可以识别的语言，（0和1）也可用cat命令查看当前系统装了哪些shell">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://pf8eoyzmj.bkt.clouddn.com/timg.jfif">
+<meta property="og:image" content="http://pf8eoyzmj.bkt.clouddn.com/%E5%8A%A8%E7%94%BB%20%280%29.gif">
+<meta property="og:updated_time" content="2018-09-22T06:22:08.025Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux基础知识">
+<meta name="twitter:description" content="显示当前系统使用的SHELL shell被称为命令解释器,是一种高级语言，他可以把我们输入的命令转换为机器可以识别的语言，（0和1）也可用cat命令查看当前系统装了哪些shell">
+<meta name="twitter:image" content="http://pf8eoyzmj.bkt.clouddn.com/timg.jfif">
+  
+    <link rel="alternate" href="/atom.xml" title="LiHongFei.blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">LiHongFei.blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-linux基础命令" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/13/linux基础命令/" class="article-date">
+  <time datetime="2018-11-13T02:52:26.894Z" itemprop="datePublished">2018-11-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/linux/">linux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Linux基础知识
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://pf8eoyzmj.bkt.clouddn.com/timg.jfif" alt="image"></p>
+<h2 id="显示当前系统使用的SHELL"><a href="#显示当前系统使用的SHELL" class="headerlink" title="显示当前系统使用的SHELL"></a>显示当前系统使用的SHELL</h2><p> <code>shell</code>被称为命令解释器,是一种高级语言，他可以把我们输入的命令转换为机器可以识别的语言，（0和1）也可用<code>cat</code>命令查看当前系统装了哪些shell</p>
+<a id="more"></a>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#ehco $SHELL</span></span><br><span class="line">[root@centos7 ~]<span class="comment">#/bin/bash</span></span><br><span class="line">[root@centos7 ~]<span class="comment">#cat /etc/shell</span></span><br><span class="line">/bin/sh</span><br><span class="line">/bin/bash</span><br><span class="line">/sbin/nologin</span><br><span class="line">/usr/bin/sh</span><br><span class="line">/usr/bin/bash</span><br><span class="line">/usr/sbin/nologin</span><br><span class="line">/bin/tcsh</span><br><span class="line">/bin/csh</span><br></pre></td></tr></table></figure>
+<h2 id="命令提示符-id-u-PS1"><a href="#命令提示符-id-u-PS1" class="headerlink" title="命令提示符(id -u)(PS1)"></a>命令提示符(id -u)(PS1)</h2><p>“#” 为管理员  “$” 为普通用户<br>也可输入命令来查看，显示为“0” 就是管理员，不是“0”的皆为普通用户<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@centons6 ~]<span class="comment">#</span></span><br><span class="line">[lihf@centons6 ~]$</span><br><span class="line">[root@centos7 ~]<span class="comment">#id -u</span></span><br><span class="line">0</span><br></pre></td></tr></table></figure></p>
+<p>命令提示符可以通过修改PS1变量来改变字体颜色、亮度等，例：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#PS1="\[\e[1;5;41;33m\][\u@\h \W]\\$\[\e[0m\]"</span></span><br></pre></td></tr></table></figure></p>
+<p>数字1为显示高亮；数字5为为闪烁；数字41为填充颜色；数字33为字体颜色<br>\u显示当前用户；\h显示主机名简称；\w显示当前工作目录；\W显示当前工作目录基名<br>\t 显示24小时时间格式；\T显示12小时时间格式；!显示命令历史数；# 开机后命令历史<br>若想保存下来可在<code>/etc/profile.d/</code>  下建立一个 <code>.sh</code>后缀的文件把修改过的PS1变量写进去保存，可用<code>nano</code>修改</p>
+<h2 id="命令的分类：-type-enable"><a href="#命令的分类：-type-enable" class="headerlink" title="命令的分类：(type)(enable)"></a>命令的分类：(type)(enable)</h2><p>在linux中有两种命令，一种为内部命令，一种为外部命令：<br>内部命令：由shell自带的,可用<code>type</code>命令查看, 显示<code>shell builtin</code>为内部命令，直接显示出路径的为外部命令。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#type cd</span></span><br><span class="line"><span class="built_in">cd</span> is a shell <span class="built_in">builtin</span></span><br><span class="line">[root@centos7 ~]<span class="comment">#type nano</span></span><br><span class="line">nano is /usr/bin/nano</span><br></pre></td></tr></table></figure></p>
+<p>内部命令可用<code>enable</code>来禁用/开启内部命令<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#enable -n cd (禁用pwd命令)</span></span><br><span class="line">[root@centos7 ~]<span class="comment">#enable cd (启用命令)</span></span><br><span class="line">[root@centos7 ~]<span class="comment">#enable -n (查看所有禁用的命令)</span></span><br><span class="line">[root@centos7 ~]<span class="comment">#enable (查看内部命令)</span></span><br></pre></td></tr></table></figure></p>
+<p>可用命令<code>echo $PASH</code>来查看外部命令<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#echo $PATH</span></span><br><span class="line">/usr/<span class="built_in">local</span>/sbin:/usr/<span class="built_in">local</span>/bin:/usr/sbin:/usr/bin:/root/bin</span><br></pre></td></tr></table></figure></p>
+<h2 id="别名：-alias"><a href="#别名：-alias" class="headerlink" title="别名： (alias)"></a>别名： (alias)</h2><p>别名可以把很长的一串命令用很短的几个单词来表达，想当于定义一个变量。<br>查看shell里可以使用的别名命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#alias </span></span><br><span class="line"><span class="built_in">alias</span> cp=<span class="string">'cp -i'</span></span><br><span class="line"><span class="built_in">alias</span> egrep=<span class="string">'egrep --color=auto'</span></span><br><span class="line"><span class="built_in">alias</span> fgrep=<span class="string">'fgrep --color=auto'</span></span><br><span class="line"><span class="built_in">alias</span> grep=<span class="string">'grep --color=auto'</span></span><br><span class="line"><span class="built_in">alias</span> l.=<span class="string">'ls -d .* --color=auto'</span></span><br><span class="line"><span class="built_in">alias</span> ll=<span class="string">'ls -l --color=auto'</span></span><br><span class="line"><span class="built_in">alias</span> ls=<span class="string">'ls --color=auto'</span></span><br><span class="line"><span class="built_in">alias</span> mv=<span class="string">'mv -i'</span></span><br><span class="line"><span class="built_in">alias</span> rm=<span class="string">'rm -i'</span></span><br><span class="line"><span class="built_in">alias</span> <span class="built_in">which</span>=<span class="string">'alias | /usr/bin/which --tty-only --read-alias --show-dot --show-tilde'</span></span><br></pre></td></tr></table></figure></p>
+<p>定义别名格式为：alias 名字=’长命令’<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#alias cdpk="cd /run/media/root/CentOS\ 7\ x86_64/Packages/"</span></span><br><span class="line">[root@centos7 ~]<span class="comment">#cdpk</span></span><br><span class="line">[root@centos7 Packages]<span class="comment">#</span></span><br></pre></td></tr></table></figure></p>
+<p>取消别名<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]#unalias cdpk</span><br></pre></td></tr></table></figure></p>
+<p>只对当前登录有效，退出不保存，若想保存可在<code>/.bashrc</code>下添加(只对当前用户)，全局保存在<code>/etc/bashrc</code>下添加。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#nano .bashrc</span></span><br><span class="line">.bashrc</span><br><span class="line"></span><br><span class="line"> User specific aliases and <span class="built_in">functions</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">alias</span> rm=<span class="string">'rm -i'</span></span><br><span class="line"><span class="built_in">alias</span> cp=<span class="string">'cp -i'</span></span><br><span class="line"><span class="built_in">alias</span> mv=<span class="string">'mv -i'</span></span><br><span class="line"></span><br><span class="line">Source global definitions</span><br><span class="line"><span class="keyword">if</span> [ -f /etc/bashrc ]; <span class="keyword">then</span></span><br><span class="line">        . /etc/bashrc</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="hash-缓存"><a href="#hash-缓存" class="headerlink" title="hash 缓存"></a>hash 缓存</h2><p>系统初始hash表为空，当外部命令执行时，默认会从PATH路径下寻找该命令，找到后会将这条命令的路径记录到hash表中，当再次使用该命令时，shell解释器首先会查看hash表，存在的话就执行，如果不存在，将会去PATH路径下寻找。利用hash缓存表可大大提高命令的调用速率。<br><code>hash -d +name</code> 清除缓存<br><code>hash -r</code> 清除所有的缓存<br>查看<code>hash</code>表已执行过并保存的命令<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#hash</span></span><br><span class="line">hits    <span class="built_in">command</span></span><br><span class="line">1    /usr/bin/nano</span><br></pre></td></tr></table></figure></p>
+<h3 id="在linux中-hash-别名、内部、外部命令的优先级顺序是：-别名——内部命令——hash表——外部命令"><a href="#在linux中-hash-别名、内部、外部命令的优先级顺序是：-别名——内部命令——hash表——外部命令" class="headerlink" title="在linux中 hash 别名、内部、外部命令的优先级顺序是： 别名——内部命令——hash表——外部命令"></a>在linux中 hash 别名、内部、外部命令的优先级顺序是： 别名——内部命令——hash表——外部命令</h3><h2 id="命令格式"><a href="#命令格式" class="headerlink" title="命令格式"></a>命令格式</h2><p>COMMAND（命令） [OPTIONS…]（选项 -a -t） <a href="对应参数">ARGUMENTS…</a><br>取消和结束命令执行：Ctrl+c，Ctrl+d<br>多个选项以及多参数和命令之间使用空白字符分隔 <code>;</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#ls;pwd</span></span><br><span class="line">anaconda-ks.cfg  Desktop  Documents  Downloads  initial-setup-ks.cfg  Music  Pictures  Public  Templates  Videos</span><br><span class="line">/root</span><br></pre></td></tr></table></figure></p>
+<h2 id="日期和时间"><a href="#日期和时间" class="headerlink" title="日期和时间"></a>日期和时间</h2><p>系统时间：linux安装时默认的时间<br>硬件时间：主机BIOS里的时间<br>显示当前linux里的系统时间/硬件时间<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#date </span></span><br><span class="line">Thu Sep 20 21:47:24 CST 2018</span><br><span class="line">[root@centos7 ~]<span class="comment">#clock</span></span><br><span class="line">Thu 20 Sep 2018 11:30:33 PM CST  -0.711035 seconds</span><br></pre></td></tr></table></figure></p>
+<p>硬件和系统时间都不正确可自己手动修改,命令格式为 <code>date 月日时分年.秒</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#date 092015402018.30</span></span><br><span class="line">Thu Sep 20 15:40:30 CST 2018</span><br></pre></td></tr></table></figure></p>
+<p>如果系统或者硬件时间某一个不正常，可用命令同步。<br><code>clock -w</code>以系统时间为准 覆盖硬件时间<br><code>clock -s</code>以硬件时间为准 覆盖系统时间<br>查看当月的日历：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#cal</span></span><br><span class="line">   September 2018   </span><br><span class="line">Su Mo Tu We Th Fr Sa</span><br><span class="line">                   1</span><br><span class="line"> 2  3  4  5  6  7  8</span><br><span class="line"> 9 10 11 12 13 14 15</span><br><span class="line">16 17 18 19 20 21 22</span><br><span class="line">23 24 25 26 27 28 29</span><br><span class="line">30</span><br></pre></td></tr></table></figure></p>
+<h2 id="关机-重启命令"><a href="#关机-重启命令" class="headerlink" title="关机/重启命令"></a>关机/重启命令</h2><p><code>poweroff</code> 关机断电 ；<code>halt</code> 关机但不断电 ；<code>reboot</code> 重启<br>shutdown + 时间 +h 指定时间之后关机 shutdown -r 重启 shutdown -c 取消关机  不指定时间默认是1分钟后关机；shutdown -now 立刻关机。</p>
+<h2 id="whoami命令"><a href="#whoami命令" class="headerlink" title="whoami命令"></a>whoami命令</h2><p>whoami  查看当前是谁在登录操作系统，显示用户名；<br>who am i 可以查看哪个用户登录的，什么模式登录的<br>who  查看有多少人在登录<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#whoami</span></span><br><span class="line">root</span><br><span class="line">[root@centos7 ~]<span class="comment">#who am i</span></span><br><span class="line">root     pts/2        2018-09-20 16:14 (192.168.100.1)</span><br><span class="line">[root@centos7 ~]<span class="comment">#who</span></span><br><span class="line">root     :0           2018-09-20 16:55 (:0)</span><br><span class="line">root     pts/1        2018-09-20 20:32 (192.168.100.1)</span><br><span class="line">root     pts/0        2018-09-20 16:07 (:0)</span><br><span class="line">root     pts/2        2018-09-20 16:14 (192.168.100.1)</span><br></pre></td></tr></table></figure></p>
+<h2 id="screen命令："><a href="#screen命令：" class="headerlink" title="screen命令："></a>screen命令：</h2><p>screen命令可用在退出远程终端或者断网之后仍然可以继续运行一个耗时很长程序，不会因为退出终端或者断网而停止运行。<br>输入命令<code>screen</code> 建立，然后运行一个耗时很长的任务。（实验后期补上）</p>
+<p>screen也可以远程帮助别人，两人在同一个网络，假如一个人需要帮助，寻求帮助的人可以建立一个screen会话，另一人加入进去。<br><code>screen -S +name</code> 创建一个会话（图名字为11）<code>screen -x 11</code> 即可加入会话。<br>自己临时单方面的退出快捷键<code>ctrl+a，b</code>，<code>exit</code> 关闭 查看已建立的会话 <code>screen -ls</code><br><img src="http://pf8eoyzmj.bkt.clouddn.com/%E5%8A%A8%E7%94%BB%20%280%29.gif" alt="gif"></p>
+<h2 id="echo命令"><a href="#echo命令" class="headerlink" title="echo命令"></a>echo命令</h2><p><code>echo</code> 功能是回显输入的内容<br><code>echo</code>命令的基础用法<br><code>echo -e &quot;\a</code> 命令可用使电脑发出声响，比如在运行一个程序的时候时间比较长，可用在命令后面加上，执行完命令之后有提示音可以知道命令执行完毕了，睡眠5秒后发出声响。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#[root@centos7 ~]#sleep 5;echo -e "\a"</span></span><br></pre></td></tr></table></figure></p>
+<p><code>echo</code>后面内容加单引号<code>&#39; &#39;</code> 只会回显输入的内容，不管是内容变量还是命令都不会执行。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#echo 'pwd'</span></span><br><span class="line"><span class="built_in">pwd</span></span><br><span class="line">[root@centos7 ~]<span class="comment">#echo '$PS1'</span></span><br><span class="line"><span class="variable">$PS1</span></span><br></pre></td></tr></table></figure></p>
+<p><code>echo</code>后面内容加双引号<code>&quot; &quot;</code> 只会回显内容和变量，不能识别内容是不是命令。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#echo "aabb"</span></span><br><span class="line">aabb</span><br><span class="line">[root@centos7 ~]<span class="comment">#echo "$PS1"</span></span><br><span class="line">\[\e[1;35m\][\u@\h \W]\$\[\e[0m\]</span><br><span class="line">[root@centos7 ~]<span class="comment">#echo "ls"  </span></span><br><span class="line">ls</span><br></pre></td></tr></table></figure></p>
+<p><code>echo</code>后面内容加反单引号<code>`</code> `可以识别内容是变量或命令。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#echo `$PATH`</span></span><br><span class="line">-bash: /usr/<span class="built_in">local</span>/sbin:/usr/<span class="built_in">local</span>/bin:/usr/sbin:/usr/bin:/root/bin: No such file or directory</span><br><span class="line">[root@centos7 ~]<span class="comment">#echo `pwd`  </span></span><br><span class="line">/root</span><br><span class="line">[root@centos7 ~]<span class="comment">#echo `aaaaaa`</span></span><br><span class="line">bash: aaaaaa: <span class="built_in">command</span> not found...</span><br></pre></td></tr></table></figure></p>
+<h2 id="大括号的应用"><a href="#大括号的应用" class="headerlink" title="{ }大括号的应用"></a>{ }大括号的应用</h2><p>打印连续的字符串：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#echo &#123;1..10&#125;</span></span><br><span class="line">1 2 3 4 5 6 7 8 9 10</span><br><span class="line">[root@centos7 ~]<span class="comment">#echo &#123;1..10..2&#125;</span></span><br><span class="line">1 3 5 7 9</span><br><span class="line">[root@centos7 data]<span class="comment">#echo &#123;a..z&#125;</span></span><br><span class="line">a b c d e f g h i j k l m n o p q r s t u v w x y z</span><br></pre></td></tr></table></figure></p>
+<p>也可用来创建多个文件：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#touch test&#123;1..3&#125;</span></span><br><span class="line">[root@centos7 data]<span class="comment">#ls</span></span><br><span class="line">test1  test2  test3</span><br><span class="line">[root@centos7 data]<span class="comment">#touch test&#123;1..3&#125;.&#123;txt,bak&#125;</span></span><br><span class="line">[root@centos7 data]<span class="comment">#ls</span></span><br><span class="line">test1.bak  test1.txt  test2.bak  test2.txt  test3.bak  test3.txt</span><br></pre></td></tr></table></figure></p>
+<h2 id="history-命令的使用"><a href="#history-命令的使用" class="headerlink" title="history 命令的使用"></a>history 命令的使用</h2><p><code>history</code>可以查看以前输入过的命令历史，并且存在文件夹里<code>.bash_history</code> 可用<code>cat</code>命令查看.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 data]<span class="comment">#history </span></span><br><span class="line">    1  ip -a</span><br><span class="line">    2  ifconfig</span><br><span class="line">    3  i fconfig</span><br><span class="line">    4  ifconfig</span><br><span class="line">    5  nmcli connection modify ens33 connection.yes</span><br><span class="line">    6  nmcli connection modify ens33 connection yes</span><br><span class="line">    7  ip -a</span><br><span class="line">    8  tty</span><br></pre></td></tr></table></figure></p>
+<p>可用<code>history -c</code>清空命令历史，只会清空保存在内存中的历史，不会清空保存在磁盘上的命令历史。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@centos7 ~]<span class="comment">#history -c</span></span><br><span class="line">[root@centos7 ~]<span class="comment">#history </span></span><br><span class="line">1 <span class="built_in">history</span></span><br></pre></td></tr></table></figure></p>
+<p>几种常见的用法：</p>
+<table>
+<thead>
+<tr>
+<th>command</th>
+<th>content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>history -a</td>
+<td>可以把内存里的命令历史存到硬盘里         -</td>
+</tr>
+<tr>
+<td>history -r</td>
+<td>可以把保存在硬盘里的命令历史读取到内存里的列表</td>
+</tr>
+<tr>
+<td>history -w</td>
+<td>可以把历史命令保存到指定文件夹里</td>
+</tr>
+<tr>
+<td>history n</td>
+<td>只显示指定的几条历史命令</td>
+</tr>
+<tr>
+<td>ctrl + r</td>
+<td>在命令行历史里搜索命令ctrl+g 退出</td>
+</tr>
+<tr>
+<td>esc + .</td>
+<td>可以d调用前一个命令的最后一个参数</td>
+</tr>
+</tbody>
+</table>
+<p><code>HISTTIMEFORMAT=&quot;%F%T &quot;</code> 可让命令历史显示时间，方便知道什么时候敲过什么命令</p>
+<h2 id="bash的快捷键"><a href="#bash的快捷键" class="headerlink" title="bash的快捷键"></a>bash的快捷键</h2><table>
+<thead>
+<tr>
+<th>command</th>
+<th>content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ctrl + l</td>
+<td>清屏，相当于clear命令</td>
+</tr>
+<tr>
+<td>Ctrl + o</td>
+<td>执行当前命令，并重新显示本命令</td>
+</tr>
+<tr>
+<td>Ctrl + s</td>
+<td>阻止屏幕输出，锁定</td>
+</tr>
+<tr>
+<td>Ctrl + q</td>
+<td>允许屏幕输出</td>
+</tr>
+<tr>
+<td>Ctrl + c</td>
+<td>终止命令</td>
+</tr>
+<tr>
+<td>Alt + r</td>
+<td>删除当前整行</td>
+</tr>
+<tr>
+<td>Ctrl + xx</td>
+<td>光标在命令行首和光标之间移动</td>
+</tr>
+</tbody>
+</table>
+<h2 id="man-帮助"><a href="#man-帮助" class="headerlink" title="man 帮助"></a>man 帮助</h2><p><code>man</code>帮助的几个章节</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>用户命令</td>
+</tr>
+<tr>
+<td>3</td>
+<td>C库调用</td>
+</tr>
+<tr>
+<td>4</td>
+<td>设备文件及特殊文件</td>
+</tr>
+<tr>
+<td>5</td>
+<td>配置文件格式</td>
+</tr>
+<tr>
+<td>6</td>
+<td>游戏</td>
+</tr>
+<tr>
+<td>7</td>
+<td>杂项</td>
+</tr>
+<tr>
+<td>8</td>
+<td>管理类的命令</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Linux 内核API</td>
+</tr>
+</tbody>
+</table>
+<p>内部命令可以通过help COMMAND来查看命令的简单用法。  aaaa<br>外部命令可以通过COMMAND –help来查看简单的用法，注意并不是所有的外部命令都支持–help<br>man文档默认放在/usr/shar/man下面<br><code>whatis + comment</code> 可以查看命令在帮助的哪个章节</p>
+<h2 id="man帮助用法1"><a href="#man帮助用法1" class="headerlink" title="man帮助用法1"></a><a href="http://man.linuxde.net/man" target="_blank" rel="noopener">man帮助用法1</a></h2><h2 id="man帮助用法2"><a href="#man帮助用法2" class="headerlink" title="man帮助用法2"></a><a href="https://blog.csdn.net/u010010725/article/details/51916255?locationNum=4&amp;fps=1" target="_blank" rel="noopener">man帮助用法2</a></h2>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/11/13/linux基础命令/" data-id="cjof55r4b0004pgvxw0f1thr4" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/11/13/VIM编辑器使用/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          VIM编辑器使用
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/11/13/linux磁盘存储和文件系统/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">磁盘储存和文件系统</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/M/">M</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/内核/">内核</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/压缩/">压缩</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/文件系统/">文件系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/组/">组</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/编辑器/">编辑器</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/计划任务/">计划任务</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/软件包/">软件包</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/M34/">M34</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rpm，yum/">rpm，yum</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vim/">vim</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/启动/">启动</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/基础/">基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工具/">工具</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文件/">文件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/权限/">权限</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/查找/">查找</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/磁盘/">磁盘</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/进程/">进程</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/M34/" style="font-size: 10px;">M34</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/rpm，yum/" style="font-size: 10px;">rpm，yum</a> <a href="/tags/vim/" style="font-size: 10px;">vim</a> <a href="/tags/启动/" style="font-size: 10px;">启动</a> <a href="/tags/基础/" style="font-size: 10px;">基础</a> <a href="/tags/工具/" style="font-size: 20px;">工具</a> <a href="/tags/文件/" style="font-size: 10px;">文件</a> <a href="/tags/权限/" style="font-size: 10px;">权限</a> <a href="/tags/查找/" style="font-size: 20px;">查找</a> <a href="/tags/磁盘/" style="font-size: 20px;">磁盘</a> <a href="/tags/进程/" style="font-size: 10px;">进程</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/11/13/标准IO和管道/">标准I/O和管道</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/VIM编辑器使用/">VIM编辑器使用</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/linux基础命令/">Linux基础知识</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/linux磁盘存储和文件系统/">磁盘储存和文件系统</a>
+          </li>
+        
+          <li>
+            <a href="/2018/11/13/计算机基础/">计算机基础</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 linux<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
